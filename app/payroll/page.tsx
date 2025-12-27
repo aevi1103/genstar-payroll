@@ -32,6 +32,7 @@ export default async function ProtectedPage() {
 				Hello <span className="font-semibold">{session.user.email}</span>
 			</p>
 			<p className="text-sm text-gray-600">Role: {role}</p>
+
 			<LogoutButton />
 		</div>
 	);

@@ -16,6 +16,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+import { House } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 const redirectTo = "/payroll";
 
@@ -95,7 +97,7 @@ export function LoginForm({
 								<Input
 									id="email"
 									type="email"
-									placeholder="m@example.com"
+									placeholder="genstar@example.com"
 									required
 									value={email}
 									onChange={(e) => setEmail(e.target.value)}
@@ -165,7 +167,7 @@ export function LoginForm({
 								Sign in with Google
 							</Button>
 						</div>
-						<div className="mt-4 text-center text-sm">
+						<div className="mt-4 text-center text-sm flex items-center gap-2">
 							Don&apos;t have an account?{" "}
 							<Link
 								href="/auth/sign-up"
@@ -173,6 +175,24 @@ export function LoginForm({
 							>
 								Sign up
 							</Link>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Link href="/" className="underline underline-offset-4">
+										<Button
+											variant={"link"}
+											size="sm"
+											// size="icon"
+											aria-label="Submit"
+											className="cursor-pointer"
+										>
+											<House />
+										</Button>
+									</Link>
+								</TooltipTrigger>
+								<TooltipContent>
+									<p>Go to Home</p>
+								</TooltipContent>
+							</Tooltip>
 						</div>
 					</form>
 				</CardContent>
