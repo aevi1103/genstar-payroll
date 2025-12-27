@@ -438,12 +438,54 @@ model users {
   oauth_consents              oauth_consents[]
   one_time_tokens             one_time_tokens[]
   sessions                    sessions[]
+  employee_salary             employee_salary[]
+  payroll                     payroll[]
   user_profiles               user_profiles[]
   user_roles                  user_roles[]
 
   @@index([instance_id])
   @@index([is_anonymous])
   @@schema("auth")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model employee_salary {
+  id             BigInt    @id @default(autoincrement())
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  modified_at    DateTime? @db.Timestamptz(6)
+  user_id        String    @default(dbgenerated("auth.uid()")) @db.Uuid
+  salary_per_day Float     @default(0) @db.Real
+  users          users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model payroll {
+  id           BigInt    @id @default(autoincrement())
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  modified_at  DateTime? @db.Timestamptz(6)
+  user_id      String?   @default(dbgenerated("auth.uid()")) @db.Uuid
+  clock_in     DateTime  @db.Timestamptz(6)
+  clock_out    DateTime? @db.Timestamptz(6)
+  gps_location String?   @db.VarChar
+  users        users?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model payroll_settings {
+  id                         BigInt    @id @default(autoincrement())
+  created_at                 DateTime  @default(now()) @db.Timestamptz(6)
+  modified_at                DateTime? @db.Timestamptz(6)
+  working_day_hours_per_week Int       @default(48)
+  regular_ot_rate_percent    Float     @default(1.25) @db.Real
+  weekend_ot_rate            Float     @default(1.3) @db.Real
+  created_by                 String    @db.VarChar
+  modified_by                String?   @db.VarChar
+
+  @@schema("public")
 }
 
 enum aal_level {
