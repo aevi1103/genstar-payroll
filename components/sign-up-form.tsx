@@ -80,7 +80,7 @@ export function SignUpForm({
 
 	return (
 		<div className={cn("flex flex-col gap-6", className)} {...props}>
-			<Card>
+			<Card className="border-0 sm:border shadow-none sm:shadow-sm">
 				<CardHeader>
 					<div className="flex justify-center mb-6">
 						<Image
