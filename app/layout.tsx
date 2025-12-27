@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,8 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Genstar Printinng Services - Payroll Management System",
-	description: "Payroll Management System",
+	title: "Genstar Printinng Services",
+	description:
+		"Quality-driven offset, digital, and large-format print solutions tailored to your business needs.",
 };
 
 export default function RootLayout({
@@ -28,6 +30,7 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
 				{children}
+				<Toaster />
 			</body>
 		</html>
 	);

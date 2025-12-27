@@ -2,6 +2,7 @@ import { Header } from "@/components/header";
 import { AboutSection } from "@/components/about";
 import { VisionSection } from "@/components/vision";
 import { ServicesSection } from "@/components/services";
+import { ContactForm } from "@/components/contact-form";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function Home() {
@@ -115,6 +116,9 @@ export default async function Home() {
 			</section>
 			<section id="about" className="scroll-mt-20">
 				<AboutSection />
+			</section>
+			<section id="contact" className="scroll-mt-20">
+				<ContactForm />
 			</section>
 		</main>
 	);

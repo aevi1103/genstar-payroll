@@ -38,6 +38,9 @@ export function Header({ user }: HeaderProps) {
 					<Link href="#about" className="hover:text-emerald-900">
 						About
 					</Link>
+					<Link href="#contact" className="hover:text-emerald-900">
+						Contact
+					</Link>
 				</nav>
 				{user ? (
 					<div className="flex items-center gap-3 text-sm text-emerald-900/80">
