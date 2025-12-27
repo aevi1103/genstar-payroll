@@ -66,7 +66,7 @@ export function ContactForm(): React.ReactElement {
 					{/* Contact Information and Map */}
 					<div className="space-y-4">
 						<h3 className="text-lg font-semibold text-emerald-900">
-							Let's discuss your printing needs
+							Lets discuss your printing needs
 						</h3>
 						<p className="text-sm text-emerald-900/80">
 							Whether you need offset printing, digital solutions, or large

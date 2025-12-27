@@ -23,10 +23,6 @@ export function Header({ user }: HeaderProps) {
 							priority
 						/>
 					</Link>
-
-					<div className="hidden text-sm font-semibold text-emerald-900 sm:block">
-						Quality-driven offset, digital, and large-format print.
-					</div>
 				</div>
 				<nav className="hidden items-center gap-4 text-sm text-emerald-800 md:flex">
 					<Link href="#services" className="hover:text-emerald-900">
@@ -41,6 +37,12 @@ export function Header({ user }: HeaderProps) {
 					<Link href="#contact" className="hover:text-emerald-900">
 						Contact
 					</Link>
+
+					{user && (
+						<Link href="/payroll" className="hover:text-emerald-900">
+							Payroll
+						</Link>
+					)}
 				</nav>
 				{user ? (
 					<div className="flex items-center gap-3 text-sm text-emerald-900/80">

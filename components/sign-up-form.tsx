@@ -17,6 +17,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 
+const redirectTo = "/payroll";
+
 export function SignUpForm({
 	className,
 	...props
@@ -45,7 +47,7 @@ export function SignUpForm({
 				email,
 				password,
 				options: {
-					emailRedirectTo: `${window.location.origin}/protected`,
+					emailRedirectTo: `${window.location.origin}${redirectTo}`,
 				},
 			});
 			if (error) throw error;
@@ -66,7 +68,7 @@ export function SignUpForm({
 			const { error } = await supabase.auth.signInWithOAuth({
 				provider: "google",
 				options: {
-					redirectTo: `${window.location.origin}/auth/confirm?next=/protected`,
+					redirectTo: `${window.location.origin}/auth/confirm?next=${redirectTo}`,
 				},
 			});
 			if (error) throw error;
