@@ -56,6 +56,7 @@ export async function clockInOut() {
 			created_at: now.toDate(),
 			payroll_week: now.week(),
 			payroll_year: now.year(),
+			modified_at: new Date(),
 		},
 	});
 
