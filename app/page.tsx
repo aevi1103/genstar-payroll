@@ -4,16 +4,34 @@ import { VisionSection } from "@/components/vision";
 import { ServicesSection } from "@/components/services";
 import { ContactForm } from "@/components/contact-form";
 import { createClient } from "@/lib/supabase/server";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-export default async function Home() {
+export default async function Home({
+	searchParams,
+}: {
+	searchParams: Promise<{ message?: string }>;
+}) {
 	const supabase = await createClient();
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
 
+	const { message } = await searchParams;
+
 	return (
 		<main className="relative min-h-screen bg-linear-to-b from-emerald-50 via-white to-emerald-50 text-emerald-950">
 			<Header user={user} />
+
+			{message === "no role assigned to user" && (
+				<div className="mx-auto max-w-6xl px-6 pt-6">
+					<Alert className="border-red-200 bg-red-50">
+						<AlertDescription className="text-red-800">
+							No role has been assigned to your account. Please contact an
+							administrator to request access.
+						</AlertDescription>
+					</Alert>
+				</div>
+			)}
 
 			<section className="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16 md:flex-row md:items-center md:py-24">
 				<div className="flex-1 space-y-6">

@@ -38,7 +38,7 @@ export function PayrollMessageDialog({ message, error }: Props) {
 					<AlertDialogDescription>
 						<Alert variant={error ? "destructive" : "default"}>
 							<AlertCircleIcon />
-							<AlertTitle>Error</AlertTitle>
+							<AlertTitle>{error ? "Error" : "Success"}</AlertTitle>
 							<AlertDescription>{description}</AlertDescription>
 						</Alert>
 					</AlertDialogDescription>

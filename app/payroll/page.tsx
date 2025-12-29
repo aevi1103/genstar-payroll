@@ -26,7 +26,6 @@ export default async function ProtectedPage({
 			</p>
 
 			{message && <p className="text-md text-green-600">{message}</p>}
-
 			{error && <p className="text-md text-red-600">{error}</p>}
 
 			<div>

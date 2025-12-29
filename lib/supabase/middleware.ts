@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { prisma } from "@/prisma/client";
 
 export async function updateSession(request: NextRequest) {
 	let supabaseResponse = NextResponse.next({
@@ -9,7 +10,9 @@ export async function updateSession(request: NextRequest) {
 	// With Fluid compute, don't put this client in a global environment
 	// variable. Always create a new one on each request.
 	const supabase = createServerClient(
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
 		{
 			cookies: {
@@ -17,12 +20,14 @@ export async function updateSession(request: NextRequest) {
 					return request.cookies.getAll();
 				},
 				setAll(cookiesToSet) {
+					// biome-ignore lint/complexity/noForEach: <explanation>
 					cookiesToSet.forEach(({ name, value }) =>
 						request.cookies.set(name, value),
 					);
 					supabaseResponse = NextResponse.next({
 						request,
 					});
+					// biome-ignore lint/complexity/noForEach: <explanation>
 					cookiesToSet.forEach(({ name, value, options }) =>
 						supabaseResponse.cookies.set(name, value, options),
 					);
@@ -44,12 +49,39 @@ export async function updateSession(request: NextRequest) {
 	const isAuthRoute =
 		pathname.startsWith("/login") || pathname.startsWith("/auth");
 	const isPublicRoute = pathname === "/" || isAuthRoute;
+	const isPayrollRoute = pathname.startsWith("/payroll");
 
 	if (!user && !isPublicRoute) {
 		// no user, potentially respond by redirecting the user to the login page
 		const url = request.nextUrl.clone();
 		url.pathname = "/auth/login";
 		return NextResponse.redirect(url);
+	}
+
+	// Check role access for payroll routes
+	if (user && isPayrollRoute) {
+		try {
+			const userRoles = await prisma.user_roles.findFirst({
+				where: {
+					user_id: user.sub,
+				},
+			});
+
+			if (!userRoles) {
+				// No role assigned, redirect to home with message
+				const url = request.nextUrl.clone();
+				url.pathname = "/";
+				url.searchParams.set("message", "no role assigned to user");
+				return NextResponse.redirect(url);
+			}
+		} catch (error) {
+			console.error("Error checking user roles:", error);
+			// On error, redirect to home with message
+			const url = request.nextUrl.clone();
+			url.pathname = "/";
+			url.searchParams.set("message", "no role assigned to user");
+			return NextResponse.redirect(url);
+		}
 	}
 
 	// IMPORTANT: You *must* return the supabaseResponse object as it is.
