@@ -4,6 +4,9 @@ import { redirect } from "next/navigation";
 import { getSessionWithRole } from "@/lib/session";
 import { prisma } from "@/prisma/client";
 import dayjs from "dayjs";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+
+dayjs.extend(weekOfYear);
 
 // Server action that toggles a user's clock-in/clock-out state for today.
 export async function clockInOut() {
