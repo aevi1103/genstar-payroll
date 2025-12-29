@@ -23,12 +23,8 @@ const userNavs: { navMain: NavMainItem[] } = {
 			isActive: true,
 			items: [
 				{
-					title: "Clock In/Out",
+					title: "My Payroll",
 					url: "/payroll",
-				},
-				{
-					title: "History",
-					url: "/payroll/history",
 				},
 				{
 					title: "Payroll Reports",
@@ -71,7 +67,7 @@ export function AppSidebar({ session, ...props }: AppSidebarProps) {
 						alt="GenStar Payroll"
 						width={180}
 						height={50}
-						className="h-auto w-full"
+						className="mx-auto h-auto w-1/2 sm:w-2/3 lg:w-full"
 						priority
 					/>
 				</div>

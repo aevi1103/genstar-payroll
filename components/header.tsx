@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 import { LogoutButton } from "@/components/logout-button";
@@ -14,8 +13,7 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 } from "@/components/ui/drawer";
-
-const logoSrc = encodeURI("/genstar logo.png");
+import { Logo } from "./logo";
 
 interface HeaderProps {
 	user: User | null;
@@ -28,15 +26,7 @@ export function Header({ user }: HeaderProps) {
 		<header className="sticky top-0 z-20 border-b border-emerald-100/70 bg-emerald-50/80 backdrop-blur">
 			<div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
 				<div className="flex items-center gap-3">
-					<Link href="/">
-						<Image
-							src={logoSrc}
-							alt="GenStar Printing Services"
-							width={140}
-							height={50}
-							priority
-						/>
-					</Link>
+					<Logo />
 				</div>
 
 				{/* Desktop nav */}
