@@ -3,14 +3,15 @@ import { PayrollMessageDialog } from "@/components/payroll/payroll-message-dialo
 import { CurrentTime } from "@/components/payroll/current-time";
 import { getSessionWithRole } from "@/lib/session";
 
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 export default async function ProtectedPage({
 	searchParams,
 }: {
-	searchParams?: Record<string, string | string[] | undefined>;
+	searchParams?: SearchParams;
 }) {
 	const session = await getSessionWithRole();
-	const messageParam = searchParams?.message;
-	const errorParam = searchParams?.error;
+	const messageParam = (await searchParams)?.message;
+	const errorParam = (await searchParams)?.error;
 
 	const message = typeof messageParam === "string" ? messageParam : undefined;
 	const error = typeof errorParam === "string" ? errorParam : undefined;
@@ -23,6 +24,10 @@ export default async function ProtectedPage({
 			<p className="text-xl text-gray-600">
 				Today&apos;s Date: <CurrentTime />
 			</p>
+
+			{message && <p className="text-md text-green-600">{message}</p>}
+
+			{error && <p className="text-md text-red-600">{error}</p>}
 
 			<div>
 				<ClockInOut session={session} />
