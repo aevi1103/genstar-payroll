@@ -1,9 +1,12 @@
 "use client";
 import { QRCode } from "@/components/ui/shadcn-io/qr-code";
-import React from "react";
+import { useState } from "react";
 
 export default function QrCode() {
-	const url = new URL("/api/payroll/clock-in-out", window.location.origin);
+	const [url] = useState<string | null>(() => {
+		if (typeof window === "undefined") return null;
+		return new URL("/payroll/entry", window.location.origin).toString();
+	});
 
 	return (
 		<div className="h-full w-full flex flex-col gap-4 justify-center items-center">
@@ -12,7 +15,7 @@ export default function QrCode() {
 				valid Genstar account.
 			</p>
 
-			<QRCode className="size-1/2 " data={url.toString()} />
+			{url ? <QRCode className="size-1/2 " data={url} /> : null}
 			<p className="text-2xl">Scan to Clock-in or Clock-out</p>
 		</div>
 	);

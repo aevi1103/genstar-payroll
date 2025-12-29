@@ -1,7 +1,15 @@
 import type { SessionWithRole } from "@/lib/session";
-import React from "react";
+import { clockInOut } from "@/app/payroll/entry/actions";
 import { Button } from "../ui/button";
 
 export const ClockInOut = ({ session }: { session: SessionWithRole }) => {
-	return <Button variant="outline">Clock In</Button>;
+	void session; // session is already validated upstream; retained for type clarity
+
+	return (
+		<form action={clockInOut}>
+			<Button type="submit" variant="outline">
+				Clock In / Out
+			</Button>
+		</form>
+	);
 };

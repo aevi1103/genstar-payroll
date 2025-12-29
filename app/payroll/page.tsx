@@ -1,10 +1,19 @@
-import { LogoutButton } from "@/components/logout-button";
 import { ClockInOut } from "@/components/payroll/clock-in-out";
+import { PayrollMessageDialog } from "@/components/payroll/payroll-message-dialog";
 import { CurrentTime } from "@/components/payroll/current-time";
 import { getSessionWithRole } from "@/lib/session";
 
-export default async function ProtectedPage() {
+export default async function ProtectedPage({
+	searchParams,
+}: {
+	searchParams?: Record<string, string | string[] | undefined>;
+}) {
 	const session = await getSessionWithRole();
+	const messageParam = searchParams?.message;
+	const errorParam = searchParams?.error;
+
+	const message = typeof messageParam === "string" ? messageParam : undefined;
+	const error = typeof errorParam === "string" ? errorParam : undefined;
 
 	return (
 		<div className="flex h-full w-full flex-col gap-3">
@@ -18,6 +27,8 @@ export default async function ProtectedPage() {
 			<div>
 				<ClockInOut session={session} />
 			</div>
+
+			<PayrollMessageDialog message={message} error={error} />
 		</div>
 	);
 }
