@@ -3,6 +3,7 @@ import { PayrollMessageDialog } from "@/components/payroll/payroll-message-dialo
 import { CurrentTime } from "@/components/payroll/current-time";
 import { getSessionWithRole } from "@/lib/session";
 import { Logo } from "@/components/logo";
+import { PayrollHistory } from "@/components/payroll/payroll-history";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 export default async function ProtectedPage({
@@ -19,7 +20,7 @@ export default async function ProtectedPage({
 
 	return (
 		<div className="flex h-full w-full flex-col gap-3">
-			<div className="hidden lg:flex flex-col gap-3">
+			<div className="flex flex-col h-full gap-3">
 				<h1 className="text-lg">
 					Hi <span className="font-semibold">{session.user.name}!</span>
 				</h1>
@@ -27,8 +28,8 @@ export default async function ProtectedPage({
 					Today&apos;s Date: <CurrentTime />
 				</p>
 
-				<div>
-					<ClockInOut session={session} />
+				<div className="flex-1">
+					<PayrollHistory />
 				</div>
 
 				<PayrollMessageDialog message={message} error={error} />
