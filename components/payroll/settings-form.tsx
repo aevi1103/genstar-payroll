@@ -6,7 +6,8 @@ import {
 	payrollSettingsSchema,
 	type PayrollSettingsFormData,
 } from "@/lib/schemas/payroll-settings";
-import { zodResolver } from "@hookform/resolvers/zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -29,7 +30,7 @@ export const SettingsForm = ({
 	const [isLoading, setIsLoading] = useState(false);
 
 	const form = useForm<PayrollSettingsFormData>({
-		resolver: zodResolver(payrollSettingsSchema),
+		resolver: standardSchemaResolver(payrollSettingsSchema),
 		mode: "onChange",
 		defaultValues: {
 			working_day_hours_per_week:
