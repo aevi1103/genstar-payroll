@@ -68,8 +68,6 @@ export async function clockInOut() {
 			clock_in_time: now.toDate(),
 			clock_in_date: today,
 			created_at: now.toDate(),
-			payroll_week: now.week(),
-			payroll_year: now.year(),
 			modified_at: new Date(),
 			week_start: weekStart,
 			week_end: weekEnd,
