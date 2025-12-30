@@ -15,7 +15,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Genstar Printinng Services",
+	title: {
+		default: "Genstar Printing Services",
+		template: "%s | Genstar Printing Services",
+	},
 	description:
 		"Quality-driven offset, digital, and large-format print solutions tailored to your business needs.",
 };

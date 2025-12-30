@@ -1,9 +1,11 @@
-import { ClockInOut } from "@/components/payroll/clock-in-out";
 import { PayrollMessageDialog } from "@/components/payroll/payroll-message-dialog";
 import { CurrentTime } from "@/components/payroll/current-time";
-import { getSessionWithRole } from "@/lib/session";
-import { Logo } from "@/components/logo";
 import { PayrollHistory } from "@/components/payroll/payroll-history";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Payroll Hours",
+};
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 export default async function ProtectedPage({
@@ -11,7 +13,6 @@ export default async function ProtectedPage({
 }: {
 	searchParams?: SearchParams;
 }) {
-	const session = await getSessionWithRole();
 	const messageParam = (await searchParams)?.message;
 	const errorParam = (await searchParams)?.error;
 
@@ -21,9 +22,9 @@ export default async function ProtectedPage({
 	return (
 		<div className="flex h-full w-full flex-col gap-3">
 			<div className="flex flex-col h-full gap-3">
-				<h1 className="text-lg">
+				{/* <h1 className="text-lg">
 					Hi <span className="font-semibold">{session.user.name}!</span>
-				</h1>
+				</h1> */}
 				<p className="text-xl text-gray-600">
 					Today&apos;s Date: <CurrentTime />
 				</p>

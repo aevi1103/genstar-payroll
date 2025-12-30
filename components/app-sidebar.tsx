@@ -23,11 +23,11 @@ const userNavs: { navMain: NavMainItem[] } = {
 			isActive: true,
 			items: [
 				{
-					title: "My Payroll",
+					title: "Hours",
 					url: "/payroll",
 				},
 				{
-					title: "Payroll Reports",
+					title: "Payroll",
 					url: "/payroll/reports",
 				},
 				{
