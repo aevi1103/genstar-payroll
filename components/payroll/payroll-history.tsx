@@ -1,10 +1,5 @@
 "use client";
-import {
-	AllCommunityModule,
-	type ColDef,
-	type ColGroupDef,
-	ModuleRegistry,
-} from "ag-grid-community";
+import type { ColDef, ColGroupDef } from "ag-grid-community";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import type { PayrollRecord } from "@/app/api/payroll/history/route";
@@ -14,8 +9,8 @@ import { AlertCircleIcon } from "lucide-react";
 import { HistoryLoader } from "./history-loader";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import { TableWrapper } from "../table-wrapper";
 
-ModuleRegistry.registerModules([AllCommunityModule]);
 dayjs.extend(duration);
 
 const shortDateFormat = "MM/DD/YYYY";
@@ -201,13 +196,15 @@ export const PayrollHistory = () => {
 	}
 
 	return (
-		<AgGridReact
-			columnDefs={colDefs}
-			rowData={data || []}
-			getRowId={(params) => params?.data?.id?.toString() || ""}
-			defaultColDef={{
-				filter: true,
-			}}
-		/>
+		<TableWrapper>
+			<AgGridReact
+				columnDefs={colDefs}
+				rowData={data || []}
+				getRowId={(params) => params?.data?.id?.toString() || ""}
+				defaultColDef={{
+					filter: true,
+				}}
+			/>
+		</TableWrapper>
 	);
 };

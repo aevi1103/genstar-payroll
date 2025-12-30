@@ -20,13 +20,19 @@ model role_permissions {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model user_profiles {
-  id         BigInt    @id @default(autoincrement())
-  created_at DateTime  @default(now()) @db.Timestamptz(6)
-  user_id    String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  hire_date  DateTime? @db.Date
-  address    String?
-  updated_at DateTime? @db.Timestamptz(6)
-  users      users?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id          BigInt    @id @default(autoincrement())
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  user_id     String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  hire_date   DateTime? @db.Date
+  address     String?
+  updated_at  DateTime? @db.Timestamptz(6)
+  phone       String?   @db.VarChar
+  position    String?   @db.VarChar
+  active      Boolean?
+  first_name  String?   @db.VarChar
+  last_name   String?   @db.VarChar
+  middle_name String?   @db.VarChar
+  users       users?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }

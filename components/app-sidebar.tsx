@@ -2,7 +2,7 @@
 
 import type * as React from "react";
 import { SquareTerminal } from "lucide-react";
-import { NavMain, type NavMainItem } from "@/components/nav-main";
+import { Nav, type NavMainItem } from "@/components/nav";
 import { NavUser } from "@/components/nav-user";
 import {
 	Sidebar,
@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import type { SessionWithRole } from "@/lib/session";
 
-const userNavs: { navMain: NavMainItem[] } = {
+const navs = {
 	navMain: [
 		{
 			title: "Payroll Dashboard",
@@ -36,12 +36,27 @@ const userNavs: { navMain: NavMainItem[] } = {
 				},
 			],
 		},
-	],
-};
-
-const adminNavs = {
-	navMain: userNavs.navMain,
-	settings: [],
+	] as NavMainItem[],
+	settings: [
+		{
+			title: "Settings",
+			isAdmin: true,
+			isActive: true,
+			url: "/payroll/settings",
+			icon: SquareTerminal,
+			items: [
+				{
+					title: "User Profile",
+					isAdmin: true,
+					url: "/payroll/settings/user/profile",
+				},
+				{
+					title: "Payroll Settings",
+					url: "/payroll/settings/payroll",
+				},
+			],
+		},
+	] as NavMainItem[],
 };
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
@@ -56,7 +71,7 @@ export function AppSidebar({ session, ...props }: AppSidebarProps) {
 	};
 
 	const logoSrc = encodeURI("/genstar logo.png");
-	const data = session.role.toLowerCase() === "admin" ? adminNavs : userNavs;
+	const isAdmin = session.role.toLowerCase() === "admin";
 
 	return (
 		<Sidebar collapsible="icon" {...props}>
@@ -73,7 +88,8 @@ export function AppSidebar({ session, ...props }: AppSidebarProps) {
 				</div>
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={data.navMain} />
+				<Nav items={navs.navMain} />
+				{isAdmin && <Nav items={navs.settings} />}
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser user={displayUser} />

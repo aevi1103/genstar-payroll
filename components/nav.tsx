@@ -21,6 +21,7 @@ import {
 export interface NavMainProps {
 	items: {
 		title: string;
+		isAdmin?: boolean;
 		url: string;
 		icon?: LucideIcon;
 		isActive?: boolean;
@@ -33,10 +34,10 @@ export interface NavMainProps {
 
 export type NavMainItem = NavMainProps["items"][number];
 
-export function NavMain({ items }: NavMainProps) {
+export function Nav({ items }: NavMainProps) {
 	return (
 		<SidebarGroup>
-			<SidebarGroupLabel>Menu</SidebarGroupLabel>
+			{/* <SidebarGroupLabel>Menu</SidebarGroupLabel> */}
 			<SidebarMenu>
 				{items.map((item) => (
 					<Collapsible
