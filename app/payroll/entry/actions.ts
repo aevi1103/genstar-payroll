@@ -9,14 +9,14 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 dayjs.extend(weekOfYear);
 
 // Server action that toggles a user's clock-in/clock-out state for today.
-export async function clockInOut() {
+export async function clockInOut(clientTime?: string | Date) {
 	const { session, role } = await getSessionWithRole();
 
 	if (!session || !role) {
 		redirect("/auth/login");
 	}
 
-	const now = dayjs();
+	const now = clientTime ? dayjs(clientTime) : dayjs();
 	const today = now.startOf("day").toDate();
 	const weekStart = now.startOf("week").add(1, "day").startOf("day").toDate();
 	const weekEnd = now.endOf("week").startOf("day").toDate();

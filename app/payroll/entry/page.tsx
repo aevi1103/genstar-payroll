@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
+"use client";
+
 import { clockInOut } from "./actions";
+import { useEffect } from "react";
 
-export const metadata: Metadata = {
-	title: "Payroll Entry",
-};
-
-export default async function PayrollEntryPage() {
-	await clockInOut();
+export default function PayrollEntryPage() {
+	useEffect(() => {
+		const clientTime = new Date();
+		clockInOut(clientTime);
+	}, []);
 
 	return null;
 }
