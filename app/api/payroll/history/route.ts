@@ -18,6 +18,17 @@ export const getPayrollHistory = async (userId: string) => {
 		orderBy: {
 			clock_in_time: "desc",
 		},
+		include: {
+			users: {
+				select: {
+					employee_salary: {
+						select: {
+							salary_per_day: true,
+						},
+					},
+				},
+			},
+		},
 	});
 };
 

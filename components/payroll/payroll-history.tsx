@@ -15,6 +15,45 @@ dayjs.extend(duration);
 
 const shortDateFormat = "MM/DD/YYYY";
 
+const formatCurrency = (value: number | null) => {
+	if (value === null || value === undefined) {
+		return "";
+	}
+	return Intl.NumberFormat("en-PH", {
+		style: "currency",
+		currency: "PHP",
+	}).format(value);
+};
+
+const mapDataSource = (data: PayrollRecord[]) => {
+	const ds = data.map((record) => {
+		const salaryPerDay = record.users?.employee_salary?.[0]?.salary_per_day;
+		const salaryPerHour = salaryPerDay ? Number(salaryPerDay) / 8 : null;
+
+		const hoursWorked = dayjs(record.clock_out_time || new Date()).diff(
+			dayjs(record.clock_in_time),
+			"hours",
+			true,
+		);
+
+		const amountEarned = salaryPerHour
+			? salaryPerHour * Number(hoursWorked || 0)
+			: null;
+
+		return {
+			...record,
+			salaryPerDay,
+			salaryPerHour,
+			hoursWorked,
+			amountEarned,
+		};
+	});
+
+	return ds;
+};
+
+type DataSource = ReturnType<typeof mapDataSource>[number];
+
 export const PayrollHistory = () => {
 	const { data, error, isLoading } = useQuery({
 		queryKey: ["payroll-history"],
@@ -23,14 +62,14 @@ export const PayrollHistory = () => {
 				(res) => res.json(),
 			);
 
-			return data;
+			return mapDataSource(data);
 		},
 		refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes
 	});
 
-	const [colDefs] = useState<
-		(ColDef<PayrollRecord> | ColGroupDef<PayrollRecord>)[]
-	>([
+	console.log("PayrollHistory data:", data);
+
+	const [colDefs] = useState<(ColDef<DataSource> | ColGroupDef<DataSource>)[]>([
 		{
 			colId: "status",
 			headerName: "Status",
@@ -89,28 +128,10 @@ export const PayrollHistory = () => {
 			headerName: "Hours Worked",
 			children: [
 				{
-					colId: "hoursWorked",
+					field: "hoursWorked",
 					headerName: "Hours",
-					valueGetter: (params) => {
-						const clockIn = params.data?.clock_in_time;
-						const clockOut = params.data?.clock_out_time;
-						if (clockIn && clockOut) {
-							const hoursDiff = dayjs(clockOut).diff(
-								dayjs(clockIn),
-								"hours",
-								true,
-							);
-							return hoursDiff.toFixed(2);
-						}
-
-						const now = dayjs();
-						if (clockIn && !clockOut) {
-							const hoursDiff = now.diff(dayjs(clockIn), "hours", true);
-							return hoursDiff.toFixed(2);
-						}
-
-						return "Active";
-					},
+					valueFormatter: (params) =>
+						params.value ? params.value.toFixed(2) : "0.00",
 				},
 				{
 					colId: "elapsedTime",
@@ -137,6 +158,24 @@ export const PayrollHistory = () => {
 
 						return "Active";
 					},
+				},
+				{
+					field: "amountEarned",
+					headerName: "Amount Earned",
+					valueFormatter: (params) =>
+						formatCurrency(params.value as number | null),
+				},
+				{
+					field: "salaryPerDay",
+					headerName: "Salary Per Day",
+					valueFormatter: (params) =>
+						formatCurrency(params.value as number | null),
+				},
+				{
+					field: "salaryPerHour",
+					headerName: "Amount Per Hour",
+					valueFormatter: (params) =>
+						formatCurrency(params.value as number | null),
 				},
 			],
 		},
