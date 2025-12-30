@@ -19,7 +19,7 @@ export async function clockInOut() {
 	const now = dayjs();
 	const today = now.startOf("day").toDate();
 	const weekStart = now.startOf("week").add(1, "day").startOf("day").toDate();
-	const weekEnd = now.endOf("week").endOf("day").toDate();
+	const weekEnd = now.endOf("week").startOf("day").toDate();
 
 	const record = await prisma.payroll.findFirst({
 		where: {
