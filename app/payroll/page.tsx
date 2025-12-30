@@ -26,7 +26,8 @@ export default async function ProtectedPage({
 					Hi <span className="font-semibold">{session.user.name}!</span>
 				</h1> */}
 				<p className="text-xl text-gray-600">
-					Today&apos;s Date: <CurrentTime />
+					<span className="font-semibold">Current Time: </span>
+					<CurrentTime />
 				</p>
 
 				<div className="flex-1">

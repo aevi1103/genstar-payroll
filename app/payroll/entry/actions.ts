@@ -18,6 +18,8 @@ export async function clockInOut() {
 
 	const now = dayjs();
 	const today = now.startOf("day").toDate();
+	const weekStart = now.startOf("week").add(1, "day").startOf("day").toDate();
+	const weekEnd = now.endOf("week").endOf("day").toDate();
 
 	const record = await prisma.payroll.findFirst({
 		where: {
@@ -35,6 +37,18 @@ export async function clockInOut() {
 	}
 
 	if (record?.clock_in_date && !record.clock_out_date) {
+		// Prevent clocking out within 1 minute of clocking in
+		const clockInTime = dayjs(record.clock_in_time);
+		const timeDiffInMinutes = now.diff(clockInTime, "minute");
+
+		if (timeDiffInMinutes < 1) {
+			redirect(
+				`/payroll?error=${encodeURIComponent(
+					"Please wait at least 1 minute after clocking in before clocking out",
+				)}`,
+			);
+		}
+
 		await prisma.payroll.update({
 			where: {
 				id: record.id,
@@ -57,6 +71,8 @@ export async function clockInOut() {
 			payroll_week: now.week(),
 			payroll_year: now.year(),
 			modified_at: new Date(),
+			week_start: weekStart,
+			week_end: weekEnd,
 		},
 	});
 

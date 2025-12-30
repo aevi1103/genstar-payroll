@@ -469,10 +469,10 @@ model payroll {
   clock_in_time  DateTime  @db.Timestamptz(6)
   clock_out_time DateTime? @db.Timestamptz(6)
   gps_location   String?   @db.VarChar
-  payroll_week   Int
-  payroll_year   Int
   clock_in_date  DateTime  @db.Timestamptz(6)
   clock_out_date DateTime? @db.Timestamptz(6)
+  week_start     DateTime  @db.Timestamptz(6)
+  week_end       DateTime  @db.Timestamptz(6)
   users          users?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")

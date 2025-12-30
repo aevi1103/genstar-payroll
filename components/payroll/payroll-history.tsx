@@ -18,6 +18,8 @@ import duration from "dayjs/plugin/duration";
 ModuleRegistry.registerModules([AllCommunityModule]);
 dayjs.extend(duration);
 
+const shortDateFormat = "MM/DD/YYYY";
+
 export const PayrollHistory = () => {
 	const { data, error, isLoading } = useQuery({
 		queryKey: ["payroll-history"],
@@ -28,6 +30,7 @@ export const PayrollHistory = () => {
 
 			return data;
 		},
+		refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes
 	});
 
 	const [colDefs] = useState<
@@ -62,15 +65,13 @@ export const PayrollHistory = () => {
 			colId: "weekRange",
 			headerName: "Payroll Week",
 			valueGetter: (params) => {
-				if (!params.data?.clock_in_time) {
+				if (!params.data) {
 					return "N/A";
 				}
 
-				const startOdWeek = dayjs(params.data.clock_in_time)
-					.startOf("week")
-					.add(1, "day");
-				const endOfWeek = dayjs(params.data.clock_in_time).endOf("week");
-				return `${startOdWeek.format("MM/DD/YYYY")} - ${endOfWeek.format("MM/DD/YYYY")}`;
+				const startOdWeek = dayjs(params.data.week_start);
+				const endOfWeek = dayjs(params.data.week_end);
+				return `${startOdWeek.format(shortDateFormat)} - ${endOfWeek.format(shortDateFormat)}`;
 			},
 		},
 		{
@@ -160,16 +161,6 @@ export const PayrollHistory = () => {
 					? new Date(params.value).toLocaleDateString()
 					: "Active";
 			},
-		},
-		{
-			field: "payroll_year",
-			headerName: "Year",
-			initialHide: true,
-		},
-		{
-			field: "payroll_week",
-			headerName: "Week",
-			initialHide: true,
 		},
 		{
 			field: "created_at",
