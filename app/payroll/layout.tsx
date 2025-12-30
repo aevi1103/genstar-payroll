@@ -13,7 +13,6 @@ import {
 import { Separator } from "@radix-ui/react-separator";
 import { getSessionWithRole } from "@/lib/session";
 import { Logo } from "@/components/logo";
-import type { Metadata } from "next";
 
 export default async function Layout({
 	children,
