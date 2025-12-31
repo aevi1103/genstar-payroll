@@ -5,7 +5,6 @@ import { Spinner } from "@/components/ui/spinner";
 import { clockInOut } from "./actions";
 
 export default function PayrollEntryPage() {
-	const [isLoading, setIsLoading] = useState(true);
 	const [status, setStatus] = useState<string>("Initializing...");
 
 	useEffect(() => {
@@ -34,7 +33,6 @@ export default function PayrollEntryPage() {
 				}
 			} catch (error) {
 				console.error("Error during clock in/out:", error);
-				setIsLoading(false);
 			}
 		};
 

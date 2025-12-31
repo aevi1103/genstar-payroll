@@ -1,10 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import {
-	Breadcrumb,
-	BreadcrumbList,
-	BreadcrumbItem,
-	BreadcrumbLink,
-} from "@/components/ui/breadcrumb";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import {
 	SidebarProvider,
 	SidebarInset,
@@ -12,11 +7,14 @@ import {
 } from "@/components/ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
 import { getSessionWithRole } from "@/lib/session";
+import DynamicBreadcrumb from "@/components/dynamic-bread-crumb";
 import { Logo } from "@/components/logo";
 
 export default async function Layout({
 	children,
-}: { children: React.ReactNode }) {
+}: {
+	children: React.ReactNode;
+}) {
 	const sessionWithRole = await getSessionWithRole();
 
 	return (
@@ -31,13 +29,7 @@ export default async function Layout({
 							className="hidden lg:block mr-2 data-[orientation=vertical]:h-4"
 						/>
 						<Breadcrumb>
-							<BreadcrumbList>
-								<BreadcrumbItem className="hidden md:block">
-									<BreadcrumbLink href="#">
-										Payroll Management System
-									</BreadcrumbLink>
-								</BreadcrumbItem>
-							</BreadcrumbList>
+							<DynamicBreadcrumb />
 						</Breadcrumb>
 					</div>
 					<div className="flex lg:hidden">
