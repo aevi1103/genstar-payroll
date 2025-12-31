@@ -9,20 +9,20 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 dayjs.extend(weekOfYear);
 
 // Server action that toggles a user's clock-in/clock-out state for today.
-export async function clockInOut(clientTime?: string | Date) {
+export async function clockInOut() {
 	const { session, role } = await getSessionWithRole();
 
 	if (!session || !role) {
 		redirect("/auth/login");
 	}
 
-	const now = clientTime ? dayjs(clientTime) : dayjs();
+	const now = dayjs();
 	const today = now.startOf("day").toDate();
 	const weekStart = now.startOf("week").add(1, "day").startOf("day").toDate();
 	const weekEnd = now.endOf("week").startOf("day").toDate();
 
 	console.log("clock in date:", today);
-	console.log("now:", now.toISOString());
+	console.log("now:", now.toDate());
 
 	const record = await prisma.payroll.findFirst({
 		where: {
@@ -32,6 +32,11 @@ export async function clockInOut(clientTime?: string | Date) {
 	});
 
 	if (record?.clock_in_date && record.clock_out_date) {
+		console.log("User has already clocked out for today.");
+		console.log("today:", {
+			now,
+			today,
+		});
 		redirect(
 			`/payroll?error=${encodeURIComponent(
 				"You have already clocked out for today",
