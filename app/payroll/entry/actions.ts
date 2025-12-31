@@ -21,6 +21,9 @@ export async function clockInOut(clientTime?: string | Date) {
 	const weekStart = now.startOf("week").add(1, "day").startOf("day").toDate();
 	const weekEnd = now.endOf("week").startOf("day").toDate();
 
+	console.log("clock in date:", today);
+	console.log("now:", now.toISOString());
+
 	const record = await prisma.payroll.findFirst({
 		where: {
 			user_id: session.user.id,
