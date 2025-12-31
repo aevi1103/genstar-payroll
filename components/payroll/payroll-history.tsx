@@ -13,8 +13,9 @@ import { TableWrapper } from "../table-wrapper";
 import { shortDateFormat, formatCurrency } from "@/lib/utils";
 import { UserLocationDialog } from "./user-location-dialog";
 import { GpsLocationBtn } from "./gps-location-btn";
-import { ClockOutBtn } from "./clock-out-btn";
+import { ClockOutTime } from "./clock-out-time";
 import { DeletePayrollBtn } from "./delete-payroll-btn";
+import { ClockInTime } from "./clock-in-time";
 // import utc from "dayjs/plugin/utc";
 
 // dayjs.extend(utc);
@@ -64,8 +65,8 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 	const [colDefs] = useState<(ColDef<DataSource> | ColGroupDef<DataSource>)[]>([
 		{
 			colId: "actions",
-			headerName: "Actions",
-			width: 100,
+			// headerName: "Actions",
+			width: 50,
 			pinned: "left",
 			cellClass: "!flex !items-center !justify-center !h-full",
 			cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
@@ -78,6 +79,7 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 		{
 			colId: "status",
 			headerName: "Status",
+			initialWidth: 120,
 			valueGetter: (params) => {
 				const clockIn = params.data?.clock_in_time;
 				const clockOut = params.data?.clock_out_time;
@@ -116,16 +118,21 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 		{
 			field: "clock_in_time",
 			headerName: "Clock In",
+			initialWidth: 230,
 			valueFormatter: (params) => {
 				return new Date(params.value).toLocaleString();
+			},
+			cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+				return <ClockInTime params={params} isAdmin={isAdmin} />;
 			},
 		},
 		{
 			field: "clock_out_time",
 			headerName: "Clock Out",
+			initialWidth: 200,
 			cellClass: "!flex !items-center !justify-center !h-full",
 			cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
-				return <ClockOutBtn params={params} isAdmin={isAdmin} />;
+				return <ClockOutTime params={params} isAdmin={isAdmin} />;
 			},
 		},
 
@@ -135,12 +142,14 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 				{
 					field: "hoursWorked",
 					headerName: "Hours",
+					initialWidth: 100,
 					valueFormatter: (params) =>
 						params.value ? params.value.toFixed(2) : "0.00",
 				},
 				{
 					colId: "elapsedTime",
 					headerName: "Elapsed Time",
+					initialWidth: 150,
 					valueGetter: (params) => {
 						const clockIn = params.data?.clock_in_time;
 						const clockOut = params.data?.clock_out_time;
@@ -167,18 +176,21 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 				{
 					field: "amountEarned",
 					headerName: "Amount Earned",
+					initialWidth: 170,
 					valueFormatter: (params) =>
 						formatCurrency(params.value as number | null),
 				},
 				{
 					field: "salaryPerDay",
-					headerName: "Salary Per Day",
+					headerName: "Salary / Day",
+					initialWidth: 170,
 					valueFormatter: (params) =>
 						formatCurrency(params.value as number | null),
 				},
 				{
 					field: "salaryPerHour",
-					headerName: "Amount Per Hour",
+					initialWidth: 170,
+					headerName: "Amount / Hour",
 					valueFormatter: (params) =>
 						formatCurrency(params.value as number | null),
 				},
@@ -189,56 +201,72 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 			children: [
 				{
 					field: "gps_location",
-					headerName: "Clock In GPS",
-					valueFormatter: (params) => {
-						return params.value ? params.value : "N/A";
-					},
+					headerName: "Clock In",
+					cellClass: "!flex !items-center !justify-center !h-full",
 					cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
 						return <GpsLocationBtn params={params} type="clock_in" />;
 					},
 				},
 				{
 					field: "gps_location_clock_out",
-					headerName: "Clock Out GPS",
-					valueFormatter: (params) => {
-						return params.value ? params.value : "N/A";
-					},
+					headerName: "Clock Out",
+					cellClass: "!flex !items-center !justify-center !h-full",
 					cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
 						return <GpsLocationBtn params={params} type="clock_out" />;
 					},
 				},
 			],
 		},
-
 		{
-			field: "clock_in_date",
-			headerName: "Clock In Date",
-			valueFormatter: (params) => {
-				return new Date(params.value).toLocaleDateString();
-			},
+			headerName: "Date",
+			children: [
+				{
+					field: "clock_in_date",
+					initialWidth: 150,
+					headerName: "Clock In",
+					valueFormatter: (params) => {
+						return new Date(params.value).toLocaleDateString();
+					},
+				},
+				{
+					field: "clock_out_date",
+					initialWidth: 150,
+					headerName: "Clock Out",
+					valueFormatter: (params) => {
+						return params.value
+							? new Date(params.value).toLocaleDateString()
+							: "Active";
+					},
+				},
+			],
 		},
 		{
-			field: "clock_out_date",
-			headerName: "Clock Out Date",
-			valueFormatter: (params) => {
-				return params.value
-					? new Date(params.value).toLocaleDateString()
-					: "Active";
-			},
-		},
-		{
-			field: "created_at",
-			headerName: "Created At",
-			valueFormatter: (params) => {
-				return new Date(params.value).toLocaleString();
-			},
-		},
-		{
-			field: "modified_at",
-			headerName: "Modified At",
-			valueFormatter: (params) => {
-				return params.value ? new Date(params.value).toLocaleString() : "N/A";
-			},
+			headerName: "Entry Info",
+			hide: !isAdmin,
+			children: [
+				{
+					field: "created_at",
+					headerName: "Created At",
+					valueFormatter: (params) => {
+						return new Date(params.value).toLocaleString();
+					},
+				},
+				{
+					field: "modified_at",
+					headerName: "Modified At",
+					valueFormatter: (params) => {
+						return params.value ? new Date(params.value).toLocaleString() : "";
+					},
+				},
+				{
+					field: "created_by",
+					headerName: "Created By",
+				},
+				{
+					field: "modified_by",
+					headerName: "Modified By",
+				},
+			],
 		},
 	]);
 

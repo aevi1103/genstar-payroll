@@ -19,9 +19,10 @@ export default function QrCode() {
 
 	return (
 		<div className="h-full w-full flex flex-col gap-4 justify-center items-center">
-			<p className="text-center text-gray-600 max-w-sm">
-				Scan the QR code with your phone to clock in or out. You must have a
-				valid Genstar account.
+			<p className="text-gray-600 max-w-md text-center lg:text-lg">
+				Use your phone to scan this QR code to clock in or out. You will need a
+				valid Genstar account—sign in if prompted—and your administrator must
+				approve your account before you can proceed.
 			</p>
 
 			{url ? <QRCode className="size-1/2 " data={url} /> : null}

@@ -1,7 +1,8 @@
 import type { CustomCellRendererProps } from "ag-grid-react";
-import React, { memo } from "react";
+import { memo } from "react";
 import type { DataSource } from "./payroll-history";
 import { useLocationDialogStore } from "@/lib/stores/location-dialog-store";
+import { MapPin } from "lucide-react";
 
 export const GpsLocationBtn = memo(
 	({
@@ -19,7 +20,7 @@ export const GpsLocationBtn = memo(
 				: params.data?.gps_location_clock_out;
 
 		if (!value) {
-			return "N/A";
+			return "";
 		}
 
 		if (!value) {
@@ -34,12 +35,15 @@ export const GpsLocationBtn = memo(
 		return (
 			<button
 				type="button"
-				className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+				className="text-blue-600 hover:text-blue-800 underline cursor-pointer text-xs flex items-center gap-1"
 				onClick={() => {
 					openDialog(lat, lng);
 				}}
 			>
-				{params.value}
+				<span className="text-xs!">
+					<MapPin />
+				</span>
+				View Location
 			</button>
 		);
 	},

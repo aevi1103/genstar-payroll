@@ -255,14 +255,12 @@ export function ManualPayrollEntryFormDialog() {
 			<DialogContent className="sm:max-w-125">
 				<DialogHeader>
 					<DialogTitle>
-						{payrollEntryData
-							? "Edit Manual Payroll Entry"
-							: "Create Manual Payroll Entry"}
+						{payrollEntryData ? "Edit Payroll Entry" : "Create Payroll Entry"}
 					</DialogTitle>
 					<DialogDescription>
 						{payrollEntryData
-							? "Edit an existing manual payroll entry for an employee."
-							: "Create a manual payroll entry for an employee."}
+							? "Edit an existing payroll entry for an employee."
+							: "Create a payroll entry for an employee."}
 					</DialogDescription>
 				</DialogHeader>
 

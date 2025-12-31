@@ -37,11 +37,6 @@ export default async function ProtectedPage({
 					{isAdmin && <ManualPayrollButton />}
 				</div>
 
-				{/* <p className="lg:text-xl text-gray-600">
-					<span className="font-semibold">Current Time: </span>
-					<CurrentTime />
-				</p> */}
-
 				<div className="flex-1">
 					<PayrollHistory isAdmin={isAdmin} />
 				</div>
