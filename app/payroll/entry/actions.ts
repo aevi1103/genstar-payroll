@@ -9,15 +9,21 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 dayjs.extend(weekOfYear);
 
 // Server action that toggles a user's clock-in/clock-out state for today.
-export async function clockInOut() {
+export async function clockInOut(latitude?: number, longitude?: number) {
 	const { session, role } = await getSessionWithRole();
 
 	if (!session || !role) {
 		redirect("/auth/login");
 	}
 
+	const gpsLocation = latitude && longitude 
+		? `${latitude.toFixed(6)},${longitude.toFixed(6)}` 
+		: null;
+
 	const now = dayjs();
 	const today = now.startOf("day").toDate();
+	today.setUTCHours(0, 0, 0, 0);
+
 	const weekStart = now.startOf("week").add(1, "day").startOf("day").toDate();
 	const weekEnd = now.endOf("week").startOf("day").toDate();
 
@@ -32,11 +38,6 @@ export async function clockInOut() {
 	});
 
 	if (record?.clock_in_date && record.clock_out_date) {
-		console.log("User has already clocked out for today.");
-		console.log("today:", {
-			now,
-			today,
-		});
 		redirect(
 			`/payroll?error=${encodeURIComponent(
 				"You have already clocked out for today",
@@ -64,6 +65,7 @@ export async function clockInOut() {
 			data: {
 				clock_out_time: now.toDate(),
 				clock_out_date: today,
+				...(gpsLocation && { gps_location: gpsLocation }),
 			},
 		});
 
@@ -79,6 +81,7 @@ export async function clockInOut() {
 			modified_at: new Date(),
 			week_start: weekStart,
 			week_end: weekEnd,
+			...(gpsLocation && { gps_location: gpsLocation }),
 		},
 	});
 
