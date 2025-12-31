@@ -48,8 +48,8 @@ export default function PayrollEntryPage() {
 					<Spinner />
 				</div>
 				<div className="space-y-2">
-					<p className="text-lg font-semibold text-white">{status}</p>
-					<p className="text-sm text-slate-300">Please wait...</p>
+					<p className="text-lg font-semibold">{status}</p>
+					<p className="text-sm">Please wait...</p>
 				</div>
 			</div>
 		</div>
