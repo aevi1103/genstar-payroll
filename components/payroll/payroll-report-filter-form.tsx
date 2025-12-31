@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { CalendarIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
@@ -59,7 +59,7 @@ export const PayrollReportFilterForm = () => {
 	}, [searchParamsString]);
 
 	const form = useForm<FilterValues>({
-		resolver: zodResolver(filterSchema),
+		resolver: standardSchemaResolver(filterSchema),
 		defaultValues: {
 			weekStart: parsedInitialDates.weekStart,
 			weekEnd: parsedInitialDates.weekEnd,
@@ -67,7 +67,6 @@ export const PayrollReportFilterForm = () => {
 	});
 
 	const weekStartValue = parsedInitialDates.weekStart;
-	const weekEndValue = parsedInitialDates.weekEnd;
 
 	useEffect(() => {
 		form.reset({
