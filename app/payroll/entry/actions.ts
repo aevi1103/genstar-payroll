@@ -16,9 +16,10 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 		redirect("/auth/login");
 	}
 
-	const gpsLocation = latitude && longitude 
-		? `${latitude.toFixed(6)},${longitude.toFixed(6)}` 
-		: null;
+	const gpsLocation =
+		latitude && longitude
+			? `${latitude.toFixed(6)},${longitude.toFixed(6)}`
+			: null;
 
 	const now = dayjs();
 	const today = now.startOf("day").toDate();
@@ -26,9 +27,6 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 
 	const weekStart = now.startOf("week").add(1, "day").startOf("day").toDate();
 	const weekEnd = now.endOf("week").startOf("day").toDate();
-
-	console.log("clock in date:", today);
-	console.log("now:", now.toDate());
 
 	const record = await prisma.payroll.findFirst({
 		where: {
@@ -65,7 +63,7 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 			data: {
 				clock_out_time: now.toDate(),
 				clock_out_date: today,
-				...(gpsLocation && { gps_location: gpsLocation }),
+				gps_location_clock_out: gpsLocation,
 			},
 		});
 
@@ -81,7 +79,7 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 			modified_at: new Date(),
 			week_start: weekStart,
 			week_end: weekEnd,
-			...(gpsLocation && { gps_location: gpsLocation }),
+			gps_location: gpsLocation,
 		},
 	});
 

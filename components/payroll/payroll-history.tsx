@@ -3,27 +3,19 @@ import type { ColDef, ColGroupDef } from "ag-grid-community";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import type { PayrollRecord } from "@/app/api/payroll/history/route";
-import { AgGridReact } from "ag-grid-react";
+import { AgGridReact, type CustomCellRendererProps } from "ag-grid-react";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { AlertCircleIcon } from "lucide-react";
 import { HistoryLoader } from "./history-loader";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { TableWrapper } from "../table-wrapper";
+import { shortDateFormat, formatCurrency } from "@/lib/utils";
+import { UserLocationDialog } from "./user-location-dialog";
+import { useLocationDialogStore } from "@/lib/stores/location-dialog-store";
+import { GpsLocationBtn } from "./gps-location-btn";
 
 dayjs.extend(duration);
-
-const shortDateFormat = "MM/DD/YYYY";
-
-const formatCurrency = (value: number | null) => {
-	if (value === null || value === undefined) {
-		return "";
-	}
-	return Intl.NumberFormat("en-PH", {
-		style: "currency",
-		currency: "PHP",
-	}).format(value);
-};
 
 const mapDataSource = (data: PayrollRecord[]) => {
 	const ds = data.map((record) => {
@@ -52,9 +44,10 @@ const mapDataSource = (data: PayrollRecord[]) => {
 	return ds;
 };
 
-type DataSource = ReturnType<typeof mapDataSource>[number];
+export type DataSource = ReturnType<typeof mapDataSource>[number];
 
 export const PayrollHistory = () => {
+	const { openDialog } = useLocationDialogStore();
 	const { data, error, isLoading } = useQuery({
 		queryKey: ["payroll-history"],
 		queryFn: async () => {
@@ -124,6 +117,32 @@ export const PayrollHistory = () => {
 					: "Active";
 			},
 		},
+		{
+			headerName: "Location",
+			children: [
+				{
+					field: "gps_location",
+					headerName: "Clock In GPS",
+					valueFormatter: (params) => {
+						return params.value ? params.value : "N/A";
+					},
+					cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+						return <GpsLocationBtn params={params} type="clock_in" />;
+					},
+				},
+				{
+					field: "gps_location_clock_out",
+					headerName: "Clock Out GPS",
+					valueFormatter: (params) => {
+						return params.value ? params.value : "N/A";
+					},
+					cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+						return <GpsLocationBtn params={params} type="clock_out" />;
+					},
+				},
+			],
+		},
+
 		{
 			headerName: "Hours Worked",
 			children: [
@@ -235,15 +254,18 @@ export const PayrollHistory = () => {
 	}
 
 	return (
-		<TableWrapper>
-			<AgGridReact
-				columnDefs={colDefs}
-				rowData={data || []}
-				getRowId={(params) => params?.data?.id?.toString() || ""}
-				defaultColDef={{
-					filter: true,
-				}}
-			/>
-		</TableWrapper>
+		<>
+			<UserLocationDialog />
+			<TableWrapper>
+				<AgGridReact
+					columnDefs={colDefs}
+					rowData={data || []}
+					getRowId={(params) => params?.data?.id?.toString() || ""}
+					defaultColDef={{
+						filter: true,
+					}}
+				/>
+			</TableWrapper>
+		</>
 	);
 };
