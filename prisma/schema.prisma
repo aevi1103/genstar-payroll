@@ -480,6 +480,8 @@ model payroll {
   week_start             DateTime  @db.Timestamptz(6)
   week_end               DateTime  @db.Timestamptz(6)
   gps_location_clock_out String?   @db.VarChar
+  is_manual              Boolean?
+  modified_by            String?   @db.VarChar
   users                  users?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")

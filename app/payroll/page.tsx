@@ -1,6 +1,8 @@
 import { PayrollMessageDialog } from "@/components/payroll/payroll-message-dialog";
-import { CurrentTime } from "@/components/payroll/current-time";
+
 import { PayrollHistory } from "@/components/payroll/payroll-history";
+import { ManualPayrollEntryFormDialog } from "@/components/payroll/manual-payroll-entry-form-dialog";
+import { ManualPayrollButton } from "@/components/payroll/manual-payroll-button";
 import type { Metadata } from "next";
 import { getSessionWithRole } from "@/lib/session";
 
@@ -26,11 +28,14 @@ export default async function ProtectedPage({
 	return (
 		<div className="flex h-full w-full flex-col gap-3">
 			<div className="flex flex-col h-full gap-3">
-				<p className="text-muted-foreground mt-2">
-					{isAdmin
-						? "View and manage clock-in and clock-out history for all employees below."
-						: "View your clock-in and clock-out history below."}
-				</p>
+				<div className="flex items-center justify-between">
+					<p className="text-muted-foreground mt-2">
+						{isAdmin
+							? "View and manage clock-in and clock-out history for all employees below."
+							: "View your clock-in and clock-out history below."}
+					</p>
+					{isAdmin && <ManualPayrollButton />}
+				</div>
 
 				{/* <p className="lg:text-xl text-gray-600">
 					<span className="font-semibold">Current Time: </span>
@@ -38,11 +43,13 @@ export default async function ProtectedPage({
 				</p> */}
 
 				<div className="flex-1">
-					<PayrollHistory />
+					<PayrollHistory isAdmin={isAdmin} />
 				</div>
 
 				<PayrollMessageDialog message={message} error={error} />
 			</div>
+
+			<ManualPayrollEntryFormDialog />
 		</div>
 	);
 }

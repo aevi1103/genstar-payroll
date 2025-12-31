@@ -18,7 +18,7 @@ export const getPayrollHistory = async (userId: string, isAdmin: boolean) => {
 	return await prisma.payroll.findMany({
 		where: qry,
 		orderBy: {
-			clock_in_time: "desc",
+			created_at: "desc",
 		},
 		include: {
 			users: {
@@ -38,7 +38,7 @@ export type PayrollRecord = Prisma.PromiseReturnType<
 	typeof getPayrollHistory
 >[number];
 
-export async function GET(request: Request) {
+export async function GET() {
 	try {
 		const { session, role } = await getSessionWithRole();
 
@@ -61,6 +61,70 @@ export async function GET(request: Request) {
 		return Response.json(serializeData(data), { status: 200 });
 	} catch (error) {
 		console.error("Payroll history error:", error);
+
+		const errorMessage =
+			error instanceof Error ? error.message : "Internal server error";
+
+		return Response.json({ error: errorMessage }, { status: 500 });
+	}
+}
+
+export async function DELETE(request: Request) {
+	try {
+		const { session, role } = await getSessionWithRole();
+
+		if (!session) {
+			return Response.json({ error: "Unauthorized" }, { status: 401 });
+		}
+
+		if (!role) {
+			return Response.json(
+				{ error: "Forbidden - insufficient permissions" },
+				{ status: 403 },
+			);
+		}
+
+		const { id } = await request.json();
+
+		if (!id) {
+			return Response.json(
+				{ error: "Payroll record ID is required" },
+				{ status: 400 },
+			);
+		}
+
+		const isAdmin = role.toLowerCase() === "admin";
+
+		// Check if the record exists and belongs to the user (if not admin)
+		const record = await prisma.payroll.findUnique({
+			where: { id },
+		});
+
+		if (!record) {
+			return Response.json(
+				{ error: "Payroll record not found" },
+				{ status: 404 },
+			);
+		}
+
+		// Non-admin users can only delete their own records
+		if (!isAdmin && record.user_id !== session.user.id) {
+			return Response.json(
+				{ error: "Forbidden - you can only delete your own records" },
+				{ status: 403 },
+			);
+		}
+
+		await prisma.payroll.delete({
+			where: { id },
+		});
+
+		return Response.json(
+			{ message: "Payroll record deleted successfully" },
+			{ status: 200 },
+		);
+	} catch (error) {
+		console.error("Delete payroll record error:", error);
 
 		const errorMessage =
 			error instanceof Error ? error.message : "Internal server error";

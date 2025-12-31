@@ -1,6 +1,6 @@
 "use client";
 import type { ColDef, ColGroupDef } from "ag-grid-community";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import type { PayrollRecord } from "@/app/api/payroll/history/route";
 import { AgGridReact, type CustomCellRendererProps } from "ag-grid-react";
@@ -12,9 +12,12 @@ import duration from "dayjs/plugin/duration";
 import { TableWrapper } from "../table-wrapper";
 import { shortDateFormat, formatCurrency } from "@/lib/utils";
 import { UserLocationDialog } from "./user-location-dialog";
-import { useLocationDialogStore } from "@/lib/stores/location-dialog-store";
 import { GpsLocationBtn } from "./gps-location-btn";
+import { ClockOutBtn } from "./clock-out-btn";
+import { DeletePayrollBtn } from "./delete-payroll-btn";
+// import utc from "dayjs/plugin/utc";
 
+// dayjs.extend(utc);
 dayjs.extend(duration);
 
 const mapDataSource = (data: PayrollRecord[]) => {
@@ -46,23 +49,32 @@ const mapDataSource = (data: PayrollRecord[]) => {
 
 export type DataSource = ReturnType<typeof mapDataSource>[number];
 
-export const PayrollHistory = () => {
-	const { openDialog } = useLocationDialogStore();
+export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 	const { data, error, isLoading } = useQuery({
 		queryKey: ["payroll-history"],
 		queryFn: async () => {
 			const data: PayrollRecord[] = await fetch("/api/payroll/history").then(
 				(res) => res.json(),
 			);
-
 			return mapDataSource(data);
 		},
 		refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes
 	});
 
-	console.log("PayrollHistory data:", data);
-
 	const [colDefs] = useState<(ColDef<DataSource> | ColGroupDef<DataSource>)[]>([
+		{
+			colId: "actions",
+			headerName: "Actions",
+			width: 100,
+			pinned: "left",
+			cellClass: "!flex !items-center !justify-center !h-full",
+			cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+				return <DeletePayrollBtn params={params} isAdmin={isAdmin} />;
+			},
+			filter: false,
+			sortable: false,
+			hide: !isAdmin,
+		},
 		{
 			colId: "status",
 			headerName: "Status",
@@ -111,10 +123,9 @@ export const PayrollHistory = () => {
 		{
 			field: "clock_out_time",
 			headerName: "Clock Out",
-			valueFormatter: (params) => {
-				return params.value
-					? new Date(params.value).toLocaleString()
-					: "Active";
+			cellClass: "!flex !items-center !justify-center !h-full",
+			cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+				return <ClockOutBtn params={params} isAdmin={isAdmin} />;
 			},
 		},
 
@@ -218,7 +229,6 @@ export const PayrollHistory = () => {
 		{
 			field: "created_at",
 			headerName: "Created At",
-			initialHide: true,
 			valueFormatter: (params) => {
 				return new Date(params.value).toLocaleString();
 			},
@@ -226,7 +236,6 @@ export const PayrollHistory = () => {
 		{
 			field: "modified_at",
 			headerName: "Modified At",
-			initialHide: true,
 			valueFormatter: (params) => {
 				return params.value ? new Date(params.value).toLocaleString() : "N/A";
 			},

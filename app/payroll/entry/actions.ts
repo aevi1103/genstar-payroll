@@ -64,6 +64,8 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 				clock_out_time: now.toDate(),
 				clock_out_date: today,
 				gps_location_clock_out: gpsLocation,
+				modified_at: new Date(),
+				modified_by: session.user.email || "system",
 			},
 		});
 
@@ -80,6 +82,7 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 			week_start: weekStart,
 			week_end: weekEnd,
 			gps_location: gpsLocation,
+			created_by: session.user.email || "system",
 		},
 	});
 
