@@ -42,7 +42,7 @@ export default function PayrollEntryPage() {
 	}, []);
 
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-linear-to-b from-slate-900 to-slate-800">
+		<div className="flex min-h-screen items-center justify-center">
 			<div className="space-y-4 text-center">
 				<div className="flex justify-center">
 					<Spinner />
