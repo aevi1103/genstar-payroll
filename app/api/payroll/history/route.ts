@@ -10,11 +10,13 @@ const serializeData = (data: unknown): unknown => {
 	);
 };
 
-export const getPayrollHistory = async (userId: string) => {
+export const getPayrollHistory = async (userId: string, isAdmin: boolean) => {
+	const qry: Prisma.payrollFindManyArgs["where"] = isAdmin
+		? {}
+		: { user_id: userId };
+
 	return await prisma.payroll.findMany({
-		where: {
-			user_id: userId,
-		},
+		where: qry,
 		orderBy: {
 			clock_in_time: "desc",
 		},
@@ -38,20 +40,23 @@ export type PayrollRecord = Prisma.PromiseReturnType<
 
 export async function GET(request: Request) {
 	try {
-		const session = await getSessionWithRole();
+		const { session, role } = await getSessionWithRole();
 
-		if (!session.session) {
+		if (!session) {
 			return Response.json({ error: "Unauthorized" }, { status: 401 });
 		}
 
-		if (!session.role) {
+		if (!role) {
 			return Response.json(
 				{ error: "Forbidden - insufficient permissions" },
 				{ status: 403 },
 			);
 		}
 
-		const data = await getPayrollHistory(session.session.user.id);
+		const data = await getPayrollHistory(
+			session.user.id,
+			role.toLowerCase() === "admin",
+		);
 
 		return Response.json(serializeData(data), { status: 200 });
 	} catch (error) {

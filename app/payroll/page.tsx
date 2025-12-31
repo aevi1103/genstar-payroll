@@ -22,10 +22,7 @@ export default async function ProtectedPage({
 	return (
 		<div className="flex h-full w-full flex-col gap-3">
 			<div className="flex flex-col h-full gap-3">
-				{/* <h1 className="text-lg">
-					Hi <span className="font-semibold">{session.user.name}!</span>
-				</h1> */}
-				<p className="text-xl text-gray-600">
+				<p className="lg:text-xl text-gray-600">
 					<span className="font-semibold">Current Time: </span>
 					<CurrentTime />
 				</p>

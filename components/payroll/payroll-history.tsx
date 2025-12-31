@@ -117,31 +117,6 @@ export const PayrollHistory = () => {
 					: "Active";
 			},
 		},
-		{
-			headerName: "Location",
-			children: [
-				{
-					field: "gps_location",
-					headerName: "Clock In GPS",
-					valueFormatter: (params) => {
-						return params.value ? params.value : "N/A";
-					},
-					cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
-						return <GpsLocationBtn params={params} type="clock_in" />;
-					},
-				},
-				{
-					field: "gps_location_clock_out",
-					headerName: "Clock Out GPS",
-					valueFormatter: (params) => {
-						return params.value ? params.value : "N/A";
-					},
-					cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
-						return <GpsLocationBtn params={params} type="clock_out" />;
-					},
-				},
-			],
-		},
 
 		{
 			headerName: "Hours Worked",
@@ -195,6 +170,31 @@ export const PayrollHistory = () => {
 					headerName: "Amount Per Hour",
 					valueFormatter: (params) =>
 						formatCurrency(params.value as number | null),
+				},
+			],
+		},
+		{
+			headerName: "Location",
+			children: [
+				{
+					field: "gps_location",
+					headerName: "Clock In GPS",
+					valueFormatter: (params) => {
+						return params.value ? params.value : "N/A";
+					},
+					cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+						return <GpsLocationBtn params={params} type="clock_in" />;
+					},
+				},
+				{
+					field: "gps_location_clock_out",
+					headerName: "Clock Out GPS",
+					valueFormatter: (params) => {
+						return params.value ? params.value : "N/A";
+					},
+					cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+						return <GpsLocationBtn params={params} type="clock_out" />;
+					},
 				},
 			],
 		},
