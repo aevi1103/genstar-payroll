@@ -1,6 +1,7 @@
 import { getSessionWithRole } from "@/lib/session";
 import { prisma } from "@/prisma/client";
 import type { Prisma } from "@prisma/client";
+import dayjs from "dayjs";
 
 const serializeData = (data: unknown): unknown => {
 	return JSON.parse(
@@ -10,10 +11,30 @@ const serializeData = (data: unknown): unknown => {
 	);
 };
 
-export const getPayrollHistory = async (userId: string, isAdmin: boolean) => {
-	const qry: Prisma.payrollFindManyArgs["where"] = isAdmin
+interface PayrollHistoryParams {
+	userId: string;
+	isAdmin: boolean;
+	weekStartDate?: string;
+	weekEndDate?: string;
+}
+
+export const getPayrollHistory = async (params: PayrollHistoryParams) => {
+	let qry: Prisma.payrollFindManyArgs["where"] = params.isAdmin
 		? {}
-		: { user_id: userId };
+		: { user_id: params.userId };
+
+	if (params.weekStartDate && params.weekEndDate) {
+		const weekStart = dayjs(params.weekStartDate).startOf("day").toDate();
+		const weekEnd = dayjs(params.weekEndDate).endOf("day").toDate();
+
+		qry = {
+			...qry,
+			week_start: {
+				gte: weekStart,
+				lte: weekEnd,
+			},
+		};
+	}
 
 	return await prisma.payroll.findMany({
 		where: qry,
@@ -23,6 +44,15 @@ export const getPayrollHistory = async (userId: string, isAdmin: boolean) => {
 		include: {
 			users: {
 				select: {
+					id: true,
+					email: true,
+					user_profiles: {
+						select: {
+							first_name: true,
+							last_name: true,
+							middle_name: true,
+						},
+					},
 					employee_salary: {
 						select: {
 							salary_per_day: true,
@@ -38,7 +68,7 @@ export type PayrollRecord = Prisma.PromiseReturnType<
 	typeof getPayrollHistory
 >[number];
 
-export async function GET() {
+export async function GET(request: Request) {
 	try {
 		const { session, role } = await getSessionWithRole();
 
@@ -53,10 +83,10 @@ export async function GET() {
 			);
 		}
 
-		const data = await getPayrollHistory(
-			session.user.id,
-			role.toLowerCase() === "admin",
-		);
+		const data = await getPayrollHistory({
+			userId: session.user.id,
+			isAdmin: role.toLowerCase() === "admin",
+		});
 
 		return Response.json(serializeData(data), { status: 200 });
 	} catch (error) {

@@ -1,21 +1,26 @@
-"use client";
-import { QRCode } from "@/components/ui/shadcn-io/qr-code";
-import { useState } from "react";
-import { useIsClient } from "@uidotdev/usehooks";
+import { ClockInOutQrCode } from "@/components/payroll/qr-code";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { getSessionWithRole } from "@/lib/session";
+import { AlertCircleIcon } from "lucide-react";
 
 // export const metadata: Metadata = {
 // 	title: "Payroll QR Code",
 // };
 
-export default function QrCode() {
-	const isClient = useIsClient();
+export default async function QrCode() {
+	const { session, role } = await getSessionWithRole();
 
-	const [url] = useState<string | null>(() => {
-		if (typeof window === "undefined") return null;
-		return new URL("/payroll/entry", window.location.origin).toString();
-	});
-
-	if (!isClient) return null;
+	if (!session || role.toLowerCase() !== "admin") {
+		return (
+			<Alert variant="destructive">
+				<AlertCircleIcon />
+				<AlertTitle>Unauthorized</AlertTitle>
+				<AlertDescription>
+					<p>You do not have permission to view this page.</p>
+				</AlertDescription>
+			</Alert>
+		);
+	}
 
 	return (
 		<div className="h-full w-full flex flex-col gap-4 justify-center items-center">
@@ -25,7 +30,7 @@ export default function QrCode() {
 				approve your account before you can proceed.
 			</p>
 
-			{url ? <QRCode className="size-1/2 " data={url} /> : null}
+			<ClockInOutQrCode />
 			<p className="text-2xl">Scan to Clock-in or Clock-out</p>
 		</div>
 	);

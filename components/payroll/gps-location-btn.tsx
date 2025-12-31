@@ -1,15 +1,15 @@
 import type { CustomCellRendererProps } from "ag-grid-react";
 import { memo } from "react";
-import type { DataSource } from "./payroll-history";
 import { useLocationDialogStore } from "@/lib/stores/location-dialog-store";
 import { MapPin } from "lucide-react";
+import type { PayrollDataSource } from "@/hooks/use-payroll-history-query";
 
 export const GpsLocationBtn = memo(
 	({
 		params,
 		type,
 	}: {
-		params: CustomCellRendererProps<DataSource>;
+		params: CustomCellRendererProps<PayrollDataSource>;
 		type: "clock_in" | "clock_out";
 	}) => {
 		const { openDialog } = useLocationDialogStore();

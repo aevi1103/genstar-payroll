@@ -1,7 +1,7 @@
 "use client";
 
 import type * as React from "react";
-import { SquareTerminal } from "lucide-react";
+import { Gauge, ShieldUser, SquareTerminal } from "lucide-react";
 import { Nav, type NavMainItem } from "@/components/nav";
 import { NavUser } from "@/components/nav-user";
 import {
@@ -19,7 +19,7 @@ const navs = {
 		{
 			title: "Payroll Dashboard",
 			url: "/payroll",
-			icon: SquareTerminal,
+			icon: Gauge,
 			isActive: true,
 			items: [
 				{
@@ -31,20 +31,24 @@ const navs = {
 					url: "/payroll/reports",
 				},
 				{
-					title: "QR Code",
-					url: "/payroll/qrcode",
+					title: "13 Month Pay",
+					url: "/payroll/13monthpay",
 				},
 			],
 		},
 	] as NavMainItem[],
 	settings: [
 		{
-			title: "Settings",
+			title: "Admin",
 			isAdmin: true,
 			isActive: true,
 			url: "/payroll/settings",
-			icon: SquareTerminal,
+			icon: ShieldUser,
 			items: [
+				{
+					title: "QR Code",
+					url: "/payroll/qrcode",
+				},
 				{
 					title: "User Profile",
 					isAdmin: true,

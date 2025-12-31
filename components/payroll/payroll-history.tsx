@@ -1,6 +1,6 @@
 "use client";
 import type { ColDef, ColGroupDef } from "ag-grid-community";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import type { PayrollRecord } from "@/app/api/payroll/history/route";
 import { AgGridReact, type CustomCellRendererProps } from "ag-grid-react";
@@ -16,65 +16,52 @@ import { GpsLocationBtn } from "./gps-location-btn";
 import { ClockOutTime } from "./clock-out-time";
 import { DeletePayrollBtn } from "./delete-payroll-btn";
 import { ClockInTime } from "./clock-in-time";
+import {
+	type PayrollDataSource,
+	usePayrollHistoryQuery,
+} from "@/hooks/use-payroll-history-query";
 // import utc from "dayjs/plugin/utc";
 
 // dayjs.extend(utc);
 dayjs.extend(duration);
 
-const mapDataSource = (data: PayrollRecord[]) => {
-	const ds = data.map((record) => {
-		const salaryPerDay = record.users?.employee_salary?.[0]?.salary_per_day;
-		const salaryPerHour = salaryPerDay ? Number(salaryPerDay) / 8 : null;
-
-		const hoursWorked = dayjs(record.clock_out_time || new Date()).diff(
-			dayjs(record.clock_in_time),
-			"hours",
-			true,
-		);
-
-		const amountEarned = salaryPerHour
-			? salaryPerHour * Number(hoursWorked || 0)
-			: null;
-
-		return {
-			...record,
-			salaryPerDay,
-			salaryPerHour,
-			hoursWorked,
-			amountEarned,
-		};
-	});
-
-	return ds;
-};
-
-export type DataSource = ReturnType<typeof mapDataSource>[number];
-
 export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
-	const { data, error, isLoading } = useQuery({
-		queryKey: ["payroll-history"],
-		queryFn: async () => {
-			const data: PayrollRecord[] = await fetch("/api/payroll/history").then(
-				(res) => res.json(),
-			);
-			return mapDataSource(data);
-		},
-		refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes
+	const { data, error, isLoading } = usePayrollHistoryQuery({
+		weekStartDate: undefined,
+		weekEndDate: undefined,
 	});
 
-	const [colDefs] = useState<(ColDef<DataSource> | ColGroupDef<DataSource>)[]>([
+	const [colDefs] = useState<
+		(ColDef<PayrollDataSource> | ColGroupDef<PayrollDataSource>)[]
+	>([
 		{
 			colId: "actions",
 			// headerName: "Actions",
 			width: 50,
 			pinned: "left",
 			cellClass: "!flex !items-center !justify-center !h-full",
-			cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
 				return <DeletePayrollBtn params={params} isAdmin={isAdmin} />;
 			},
 			filter: false,
 			sortable: false,
 			hide: !isAdmin,
+		},
+		{
+			field: "users.user_profiles",
+			headerName: "Employee",
+			hide: !isAdmin,
+			initialWidth: 200,
+			valueGetter: (params) => {
+				const profile = params.data?.users?.user_profiles?.[0];
+				if (!profile) return params.data?.users?.email || "N/A";
+				const firstName = profile.first_name || "";
+				const middleName = profile.middle_name
+					? ` ${profile.middle_name.charAt(0)}.`
+					: "";
+				const lastName = profile.last_name || "";
+				return `${lastName}, ${firstName}${middleName}`;
+			},
 		},
 		{
 			colId: "status",
@@ -122,7 +109,7 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 			valueFormatter: (params) => {
 				return new Date(params.value).toLocaleString();
 			},
-			cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
 				return <ClockInTime params={params} isAdmin={isAdmin} />;
 			},
 		},
@@ -131,7 +118,7 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 			headerName: "Clock Out",
 			initialWidth: 200,
 			cellClass: "!flex !items-center !justify-center !h-full",
-			cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
 				return <ClockOutTime params={params} isAdmin={isAdmin} />;
 			},
 		},
@@ -203,7 +190,9 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 					field: "gps_location",
 					headerName: "Clock In",
 					cellClass: "!flex !items-center !justify-center !h-full",
-					cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+					cellRenderer: (
+						params: CustomCellRendererProps<PayrollDataSource>,
+					) => {
 						return <GpsLocationBtn params={params} type="clock_in" />;
 					},
 				},
@@ -211,7 +200,9 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 					field: "gps_location_clock_out",
 					headerName: "Clock Out",
 					cellClass: "!flex !items-center !justify-center !h-full",
-					cellRenderer: (params: CustomCellRendererProps<DataSource>) => {
+					cellRenderer: (
+						params: CustomCellRendererProps<PayrollDataSource>,
+					) => {
 						return <GpsLocationBtn params={params} type="clock_out" />;
 					},
 				},

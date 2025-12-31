@@ -1,15 +1,14 @@
 import type { CustomCellRendererProps } from "ag-grid-react";
-
-import type { DataSource } from "./payroll-history";
 import { Button } from "../ui/button";
 import { Pencil } from "lucide-react";
 import { useManualPayrollDialogStore } from "@/lib/stores/manual-payroll-dialog-store";
+import type { PayrollDataSource } from "@/hooks/use-payroll-history-query";
 
 export const ClockInTime = ({
 	params,
 	isAdmin,
 }: {
-	params: CustomCellRendererProps<DataSource>;
+	params: CustomCellRendererProps<PayrollDataSource>;
 	isAdmin: boolean;
 }) => {
 	const setPayrollEntryData = useManualPayrollDialogStore(

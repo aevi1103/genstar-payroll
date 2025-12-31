@@ -14,14 +14,14 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import type { CustomCellRendererProps } from "ag-grid-react";
-import type { DataSource } from "./payroll-history";
 import { toast } from "sonner";
+import type { PayrollDataSource } from "@/hooks/use-payroll-history-query";
 
 export const DeletePayrollBtn = ({
 	params,
 	isAdmin,
 }: {
-	params: CustomCellRendererProps<DataSource>;
+	params: CustomCellRendererProps<PayrollDataSource>;
 	isAdmin: boolean;
 }) => {
 	const queryClient = useQueryClient();
