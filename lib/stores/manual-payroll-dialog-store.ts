@@ -1,13 +1,12 @@
-import type { DataSource } from "@/components/payroll/payroll-history";
 import { create } from "zustand";
-
+import type { PayrollDataSource } from "@/hooks/use-payroll-history-query";
 interface ManualPayrollDialogState {
 	isOpen: boolean;
 	openDialog: () => void;
 	closeDialog: () => void;
 
-	payrollEntryData: DataSource | null | undefined;
-	setPayrollEntryData: (data: DataSource | null | undefined) => void;
+	payrollEntryData: PayrollDataSource | null | undefined;
+	setPayrollEntryData: (data: PayrollDataSource | null | undefined) => void;
 }
 
 export const useManualPayrollDialogStore = create<ManualPayrollDialogState>(
@@ -17,7 +16,7 @@ export const useManualPayrollDialogStore = create<ManualPayrollDialogState>(
 		closeDialog: () => set({ isOpen: false }),
 
 		payrollEntryData: null,
-		setPayrollEntryData: (data: DataSource | null | undefined) =>
+		setPayrollEntryData: (data: PayrollDataSource | null | undefined) =>
 			set({ payrollEntryData: data }),
 	}),
 );

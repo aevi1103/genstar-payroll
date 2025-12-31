@@ -1,8 +1,6 @@
 "use client";
 import type { ColDef, ColGroupDef } from "ag-grid-community";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import type { PayrollRecord } from "@/app/api/payroll/history/route";
 import { AgGridReact, type CustomCellRendererProps } from "ag-grid-react";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { AlertCircleIcon } from "lucide-react";
