@@ -94,8 +94,8 @@ export async function POST(request: Request) {
 				data: {
 					clock_in_time: clockIn.toDate(),
 					clock_in_date: date,
-					clock_out_time: body.clockOutTime ? clockOut?.toDate() : undefined,
-					clock_out_date: body.clockOutTime ? clockOutDate : undefined,
+					clock_out_time: body.clockOutTime ? clockOut?.toDate() : null,
+					clock_out_date: body.clockOutTime ? clockOutDate : null,
 					gps_location: gpsLocationClockIn,
 					gps_location_clock_out: body.clockOutTime
 						? gpsLocationClockOut

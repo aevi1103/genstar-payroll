@@ -14,55 +14,7 @@ import {
 import Image from "next/image";
 import type { SessionWithRole } from "@/lib/session";
 import Link from "next/link";
-
-const navs = {
-	navMain: [
-		{
-			title: "Payroll Dashboard",
-			url: "/payroll",
-			icon: Gauge,
-			isActive: true,
-			items: [
-				{
-					title: "Hours",
-					url: "/payroll",
-				},
-				{
-					title: "Payroll",
-					url: "/payroll/reports",
-				},
-				{
-					title: "13 Month Pay",
-					url: "/payroll/13monthpay",
-				},
-			],
-		},
-	] as NavMainItem[],
-	settings: [
-		{
-			title: "Admin",
-			isAdmin: true,
-			isActive: true,
-			url: "/payroll/settings",
-			icon: ShieldUser,
-			items: [
-				{
-					title: "QR Code",
-					url: "/payroll/qrcode",
-				},
-				{
-					title: "User Profile",
-					isAdmin: true,
-					url: "/payroll/settings/user/profile",
-				},
-				{
-					title: "Payroll Settings",
-					url: "/payroll/settings/payroll",
-				},
-			],
-		},
-	] as NavMainItem[],
-};
+import { navs } from "@/lib/routes";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 	session: SessionWithRole;
@@ -71,7 +23,7 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 export function AppSidebar({ session, ...props }: AppSidebarProps) {
 	const displayUser = {
 		name: session.user.name ?? "User",
-		email: session.user?.email ?? "user@example.com",
+		email: session.user?.email ?? "genstar.printing@genstar.com",
 		avatar: session?.user.avatar ?? "/avatars/shadcn.jpg",
 	};
 
@@ -96,7 +48,12 @@ export function AppSidebar({ session, ...props }: AppSidebarProps) {
 			</SidebarHeader>
 			<SidebarContent>
 				<Nav items={navs.navMain} />
-				{isAdmin && <Nav items={navs.settings} />}
+				{isAdmin && (
+					<>
+						<Nav items={navs.deductions} />
+						<Nav items={navs.settings} />
+					</>
+				)}
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser user={displayUser} />

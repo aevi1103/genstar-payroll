@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -274,7 +274,7 @@ export function ManualPayrollEntryFormDialog() {
 								QR code
 							</Link>{" "}
 							system to ensure accurate time tracking, and will automatically
-							adjust time for late clock-ins.
+							adjust time for late and early clock-ins clock-ins
 						</p>
 					</DialogDescription>
 				</DialogHeader>
@@ -330,74 +330,22 @@ export function ManualPayrollEntryFormDialog() {
 						/>
 
 						{/* Clock In Time */}
-						<div className="space-y-2">
-							<FormLabel>Clock In Time</FormLabel>
-							<div className="flex gap-3 w-full">
-								{/* Clock In Date */}
-								<Popover open={clockInOpen} onOpenChange={setClockInOpen}>
-									<PopoverTrigger asChild>
-										<Button
-											variant="outline"
-											className={`flex-1 justify-between font-normal ${
-												!clockInDate ? "border-red-500" : ""
-											}`}
-											disabled={isPending}
-										>
-											{clockInDate
-												? format(clockInDate, "MMM d, yyyy")
-												: "Select date"}
-											<ChevronDownIcon className="h-4 w-4" />
-										</Button>
-									</PopoverTrigger>
-									<PopoverContent
-										className="w-auto overflow-hidden p-0"
-										align="start"
-									>
-										<Calendar
-											mode="single"
-											selected={clockInDate}
-											onSelect={(date) => {
-												setClockInDate(date);
-												setClockInOpen(false);
-											}}
-											disabled={(date) => date > new Date()}
-										/>
-									</PopoverContent>
-								</Popover>
-
-								{/* Clock In Time Input */}
-								<FormField
-									control={form.control}
-									name="clockInTime"
-									render={({ field }) => (
-										<Input
-											{...field}
-											type="time"
-											step="1"
-											disabled={isPending}
-											className="flex-1"
-										/>
-									)}
-								/>
-							</div>
-							{!clockInDate && (
-								<p className="text-sm font-medium text-red-500">
-									Clock in date is required
-								</p>
-							)}
-
-							{payrollEntryData && (
+						<div className="space-y-4">
+							<div className="space-y-2">
+								<FormLabel>Clock In Time</FormLabel>
 								<div className="flex gap-3 w-full">
-									{/* Clock Out Date */}
-									<Popover open={clockOutOpen} onOpenChange={setClockOutOpen}>
+									{/* Clock In Date */}
+									<Popover open={clockInOpen} onOpenChange={setClockInOpen}>
 										<PopoverTrigger asChild>
 											<Button
 												variant="outline"
-												className="flex-1 justify-between font-normal"
+												className={`flex-1 justify-between font-normal ${
+													!clockInDate ? "border-red-500" : ""
+												}`}
 												disabled={isPending}
 											>
-												{clockOutDate
-													? format(clockOutDate, "MMM d, yyyy")
+												{clockInDate
+													? format(clockInDate, "MMM d, yyyy")
 													: "Select date"}
 												<ChevronDownIcon className="h-4 w-4" />
 											</Button>
@@ -408,22 +356,20 @@ export function ManualPayrollEntryFormDialog() {
 										>
 											<Calendar
 												mode="single"
-												selected={clockOutDate}
+												selected={clockInDate}
 												onSelect={(date) => {
-													setClockOutDate(date);
-													setClockOutOpen(false);
+													setClockInDate(date);
+													setClockInOpen(false);
 												}}
-												disabled={(date) =>
-													clockInDate ? date < clockInDate : false
-												}
+												disabled={(date) => date > new Date()}
 											/>
 										</PopoverContent>
 									</Popover>
 
-									{/* Clock Out Time Input */}
+									{/* Clock In Time Input */}
 									<FormField
 										control={form.control}
-										name="clockOutTime"
+										name="clockInTime"
 										render={({ field }) => (
 											<Input
 												{...field}
@@ -435,8 +381,86 @@ export function ManualPayrollEntryFormDialog() {
 										)}
 									/>
 								</div>
+							</div>
+
+							{!clockInDate && (
+								<p className="text-sm font-medium text-red-500">
+									Clock in date is required
+								</p>
+							)}
+
+							{payrollEntryData && (
+								<div className="space-y-2">
+									<FormLabel>Clock Out Time</FormLabel>
+									<div className="flex gap-3 w-full">
+										{/* Clock Out Date */}
+										<Popover open={clockOutOpen} onOpenChange={setClockOutOpen}>
+											<PopoverTrigger asChild>
+												<Button
+													variant="outline"
+													className="flex-1 justify-between font-normal"
+													disabled={isPending}
+												>
+													{clockOutDate
+														? format(clockOutDate, "MMM d, yyyy")
+														: "Select date"}
+													<ChevronDownIcon className="h-4 w-4" />
+												</Button>
+											</PopoverTrigger>
+											<PopoverContent
+												className="w-auto overflow-hidden p-0"
+												align="start"
+											>
+												<Calendar
+													mode="single"
+													selected={clockOutDate}
+													onSelect={(date) => {
+														setClockOutDate(date);
+														setClockOutOpen(false);
+													}}
+													disabled={(date) =>
+														clockInDate ? date < clockInDate : false
+													}
+												/>
+											</PopoverContent>
+										</Popover>
+
+										{/* Clock Out Time Input */}
+										<FormField
+											control={form.control}
+											name="clockOutTime"
+											render={({ field }) => (
+												<Input
+													{...field}
+													type="time"
+													step="1"
+													disabled={isPending}
+													className="flex-1"
+												/>
+											)}
+										/>
+
+										{/* Clear Clock Out Button */}
+										{clockOutDate && (
+											<Button
+												type="button"
+												variant="outline"
+												size="icon"
+												onClick={() => {
+													setClockOutDate(undefined);
+													form.setValue("clockOutTime", "");
+												}}
+												disabled={isPending}
+												title="Clear clock out"
+											>
+												<XIcon className="h-4 w-4" />
+											</Button>
+										)}
+									</div>
+								</div>
 							)}
 						</div>
+
 						{/* Form Actions */}
 						<div className="flex justify-end gap-2 pt-4">
 							<Button

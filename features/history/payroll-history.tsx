@@ -45,7 +45,6 @@ export const PayrollHistory = ({
 	>([
 		{
 			colId: "actions",
-			// headerName: "Actions",
 			width: 50,
 			pinned: "left",
 			cellClass: "!flex !items-center !justify-center !h-full",

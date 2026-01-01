@@ -447,8 +447,7 @@ model users {
   cash_advances               cash_advances[]
   employee_salary             employee_salary[]
   payroll                     payroll[]
-  payroll_sss                 payroll_sss[]
-  payroll_tax                 payroll_tax[]
+  payroll_deductions          payroll_deductions[]
   user_profiles               user_profiles[]
   user_roles                  user_roles[]
   user_weekly_payroll         user_weekly_payroll[]
@@ -572,48 +571,33 @@ model cash_advances {
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model payroll_sss {
+model user_weekly_payroll {
+  id                 BigInt               @id(map: "user_payroll_pkey") @default(autoincrement())
+  created_at         DateTime             @default(now()) @db.Timestamptz(6)
+  user_id            String               @default(dbgenerated("auth.uid()")) @db.Uuid
+  week_start         DateTime             @db.Timestamptz(6)
+  week_end           DateTime             @db.Timestamptz(6)
+  payroll            payroll[]
+  payroll_deductions payroll_deductions[]
+  users              users                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model payroll_deductions {
   id                  BigInt              @id @default(autoincrement())
   created_at          DateTime            @default(now()) @db.Timestamptz(6)
   modified_at         DateTime?           @db.Timestamptz(6)
-  weekly_payroll_id   BigInt
-  user_id             String              @default(dbgenerated("auth.uid()")) @db.Uuid
   sss                 Float               @db.Real
+  pag_ibig            Float?              @db.Real
+  tax                 Float?              @db.Real
+  user_id             String              @default(dbgenerated("auth.uid()")) @db.Uuid
+  weekly_payroll_id   BigInt
   created_by          String              @db.VarChar
   modified_by         String?             @db.VarChar
   users               users               @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_weekly_payroll user_weekly_payroll @relation(fields: [weekly_payroll_id], references: [id], onDelete: Cascade)
-
-  @@schema("public")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model payroll_tax {
-  id                  BigInt              @id @default(autoincrement())
-  created_at          DateTime            @default(now()) @db.Timestamptz(6)
-  modified_at         DateTime            @db.Timestamptz(6)
-  user_id             String              @default(dbgenerated("auth.uid()")) @db.Uuid
-  weekly_payroll_id   BigInt
-  tax                 Float               @db.Real
-  created_by          String              @db.VarChar
-  modified_by         String              @db.VarChar
-  users               users               @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_weekly_payroll user_weekly_payroll @relation(fields: [weekly_payroll_id], references: [id], onDelete: Cascade)
-
-  @@schema("public")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model user_weekly_payroll {
-  id          BigInt        @id(map: "user_payroll_pkey") @default(autoincrement())
-  created_at  DateTime      @default(now()) @db.Timestamptz(6)
-  user_id     String        @default(dbgenerated("auth.uid()")) @db.Uuid
-  week_start  DateTime      @db.Timestamptz(6)
-  week_end    DateTime      @db.Timestamptz(6)
-  payroll     payroll[]
-  payroll_sss payroll_sss[]
-  payroll_tax payroll_tax[]
-  users       users         @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
