@@ -23,6 +23,7 @@ const mapDataSource = (data: PayrollRecord[]) => {
 			salaryPerHour,
 			hoursWorked,
 			amountEarned,
+			is_manual: record.is_manual || false,
 		};
 	});
 

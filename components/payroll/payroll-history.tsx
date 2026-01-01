@@ -248,6 +248,10 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 					},
 				},
 				{
+					field: "is_manual",
+					headerName: "Manual Entry",
+				},
+				{
 					field: "created_by",
 					headerName: "Created By",
 				},

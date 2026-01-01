@@ -83,6 +83,8 @@ export async function POST(request: Request) {
 			},
 		});
 
+		console.log("Existing record:", existingRecord);
+
 		if (existingRecord) {
 			const res = await prisma.payroll.update({
 				where: {
