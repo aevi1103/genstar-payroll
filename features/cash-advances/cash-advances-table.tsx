@@ -220,6 +220,7 @@ export const CashAdvancesTable = ({ cashAdvances }: CashAdvancesTableProps) => {
 		{
 			headerName: "Actions",
 			cellClass: "!h-full !items-center !flex",
+			pinned: "right",
 			cellRenderer: ActionsCellRenderer,
 			sortable: false,
 			filter: false,
