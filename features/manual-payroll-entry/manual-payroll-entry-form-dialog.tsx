@@ -79,7 +79,7 @@ export function ManualPayrollEntryFormDialog() {
 		mode: "onChange",
 		defaultValues: {
 			userId: "",
-			clockInTime: dayjs().hour(9).minute(0).second(0).format("HH:mm:ss"),
+			clockInTime: dayjs().hour(8).minute(0).second(0).format("HH:mm:ss"),
 			clockOutTime: "",
 			clockInLatitude: undefined,
 			clockInLongitude: undefined,
@@ -108,7 +108,7 @@ export function ManualPayrollEntryFormDialog() {
 
 			const clockOutDateOnly = payrollEntryData.clock_out_date
 				? dayjs(clockOut).format(shortDateFormat)
-				: undefined;
+				: clockInDateOnly; // Default to clock-in date if no clock-out date
 
 			// If editing existing entry, populate form with existing data
 			form.reset({
@@ -116,7 +116,7 @@ export function ManualPayrollEntryFormDialog() {
 				clockInTime: dayjs(clockIn).format("HH:mm:ss").toString(),
 				clockOutTime: payrollEntryData.clock_out_time
 					? dayjs(clockOut).format("HH:mm:ss").toString()
-					: "",
+					: "17:00:00", // Default to 5pm if no clock-out time
 			});
 			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setClockInDate(
@@ -125,9 +125,7 @@ export function ManualPayrollEntryFormDialog() {
 					: undefined,
 			);
 			setClockOutDate(
-				payrollEntryData.clock_out_date
-					? dayjs(clockOutDateOnly).toDate()
-					: undefined,
+				clockOutDateOnly ? dayjs(clockOutDateOnly).toDate() : undefined,
 			);
 		}
 	}, [form, payrollEntryData]);
