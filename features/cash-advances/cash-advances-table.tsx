@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 import type { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AgGridReact, type CustomCellRendererProps } from "ag-grid-react";
-import { Check, Loader2, Trash2 } from "lucide-react";
+import { Check, Loader2, Trash2, Undo2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -96,10 +96,10 @@ const ActionsCellRenderer = (
 	};
 
 	return (
-		<div className="flex gap-2">
+		<div className="flex gap-2 justify-between w-full">
 			{!props.data?.is_paid ? (
 				<PaymentDialog cashAdvance={props.data}>
-					<Button size="sm" variant="outline">
+					<Button size="sm" variant="outline" className="flex-1">
 						<Check className="mr-2 h-4 w-4" />
 						Record Payment
 					</Button>
@@ -110,14 +110,19 @@ const ActionsCellRenderer = (
 					variant="outline"
 					onClick={handleRevertToUnpaid}
 					disabled={isLoadingRevert}
+					className="flex-1"
 				>
 					{isLoadingRevert ? (
 						<Loader2 className="h-4 w-4 animate-spin" />
 					) : (
-						"Revert to Unpaid"
+						<>
+							<Undo2 className="mr-2 h-4 w-4" />
+							Revert to Unpaid
+						</>
 					)}
 				</Button>
 			)}
+
 			<AlertDialog>
 				<AlertDialogTrigger asChild>
 					<Button size="sm" variant="destructive" disabled={isLoadingDelete}>
@@ -241,9 +246,6 @@ export const CashAdvancesTable = ({ cashAdvances }: CashAdvancesTableProps) => {
 					sortable: true,
 					resizable: true,
 				}}
-				pagination={true}
-				paginationPageSize={10}
-				paginationPageSizeSelector={[10, 25, 50]}
 			/>
 		</TableWrapper>
 	);
