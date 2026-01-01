@@ -13,11 +13,18 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 	const shiftStartGracePeriod = settings?.late_grace_period_minutes || 5;
 	const gracePeridTime = shiftStartTime.add(shiftStartGracePeriod, "minute");
 
-	// adjust clock in time if clock is within grace period
+	const startOfDay = dayjs(clockInTime).startOf("day");
+
+	if (clockInTime.isBefore(shiftStartTime) && clockInTime.isAfter(startOfDay)) {
+		// if clock in is before shift start time but after start of day, set to shift start time
+		return shiftStartTime;
+	}
+
 	if (
 		clockInTime.isAfter(shiftStartTime) &&
 		clockInTime.isBefore(gracePeridTime)
 	) {
+		// adjust clock in time if clock is within grace period
 		return shiftStartTime;
 	}
 
