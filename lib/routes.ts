@@ -61,12 +61,8 @@ export const navs = {
 					url: "/payroll/deductions/cash-advances",
 				},
 				{
-					title: "SSS",
-					url: "/payroll/deductions/sss",
-				},
-				{
-					title: "Pag-IBIG",
-					url: "/payroll/deductions/pag-ibig",
+					title: "Payroll Deductions",
+					url: "/payroll/deductions/payroll-deductions",
 				},
 			],
 		},

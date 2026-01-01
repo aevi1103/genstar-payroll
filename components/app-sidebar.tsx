@@ -1,7 +1,6 @@
 "use client";
 
 import type * as React from "react";
-import { Gauge, ShieldUser, SquareTerminal } from "lucide-react";
 import { Nav, type NavMainItem } from "@/components/nav";
 import { NavUser } from "@/components/nav-user";
 import {
