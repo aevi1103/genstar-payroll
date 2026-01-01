@@ -15,7 +15,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { CustomCellRendererProps } from "ag-grid-react";
 import { toast } from "sonner";
-import type { PayrollDataSource } from "@/hooks/use-payroll-history-query";
+import { Spinner } from "@/components/ui/spinner";
+import { useState } from "react";
+import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
 
 export const DeletePayrollBtn = ({
 	params,
@@ -25,8 +27,9 @@ export const DeletePayrollBtn = ({
 	isAdmin: boolean;
 }) => {
 	const queryClient = useQueryClient();
+	const [open, setOpen] = useState(false);
 
-	const deleteMutation = useMutation({
+	const { mutateAsync, isPending } = useMutation({
 		mutationFn: async (id: string) => {
 			const response = await fetch("/api/payroll/history", {
 				method: "DELETE",
@@ -46,15 +49,16 @@ export const DeletePayrollBtn = ({
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["payroll-history"] });
 			toast.success("Payroll record deleted successfully");
+			setOpen(false);
 		},
 		onError: (error) => {
 			toast.error(error.message || "Failed to delete payroll record");
 		},
 	});
 
-	const handleDelete = () => {
+	const handleDelete = async () => {
 		if (params.data?.id) {
-			deleteMutation.mutate(params.data.id.toString());
+			await mutateAsync(params.data.id.toString());
 		}
 	};
 
@@ -69,17 +73,18 @@ export const DeletePayrollBtn = ({
 	}
 
 	return (
-		<AlertDialog>
-			<AlertDialogTrigger asChild>
-				<Button
-					variant="ghost"
-					size="icon"
-					className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
-					disabled={deleteMutation.isPending}
-				>
-					<Trash2Icon className="h-4 w-4" />
-				</Button>
-			</AlertDialogTrigger>
+		<AlertDialog open={open} onOpenChange={setOpen}>
+			<Button
+				variant="ghost"
+				size="icon"
+				className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+				disabled={isPending}
+				onClick={() => {
+					setOpen(true);
+				}}
+			>
+				<Trash2Icon className="h-4 w-4" />
+			</Button>
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>Delete Payroll Record</AlertDialogTitle>
@@ -93,8 +98,16 @@ export const DeletePayrollBtn = ({
 					<AlertDialogAction
 						onClick={handleDelete}
 						className="bg-destructive hover:bg-destructive/90"
+						disabled={isPending}
 					>
-						Delete
+						{isPending ? (
+							<div className="flex gap-2">
+								<Spinner />
+								Deleting..
+							</div>
+						) : (
+							"Delete"
+						)}
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

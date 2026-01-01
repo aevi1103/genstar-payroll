@@ -4,6 +4,8 @@ import { prisma } from "@/prisma/client";
 import dayjs from "dayjs";
 import { getSessionWithRole } from "@/lib/session";
 import { serializeData } from "@/lib/utils";
+import { getUserWeeklyPayroll } from "@/lib/db/get-user-weekly-payroll";
+import { getWeekDateRange } from "@/lib/get-week-date-range";
 
 export async function POST(request: Request) {
 	const { session, role } = await getSessionWithRole();
@@ -38,6 +40,7 @@ export async function POST(request: Request) {
 			);
 		}
 
+		// no need to adjust clock in time for manual entries
 		const clockIn = dayjs(body.clockInTime);
 		const clockOut = body.clockOutTime ? dayjs(body.clockOutTime) : null;
 
@@ -49,7 +52,7 @@ export async function POST(request: Request) {
 			);
 		}
 
-		const date = clockIn.startOf("day").toDate();
+		const date = clockIn.startOf("day").endOf("day").toDate();
 		date.setUTCHours(0, 0, 0, 0);
 
 		const clockOutDate = clockOut ? clockOut.startOf("day").toDate() : null;
@@ -58,13 +61,13 @@ export async function POST(request: Request) {
 			clockOutDate.setUTCHours(0, 0, 0, 0);
 		}
 
-		const weekStart = clockIn
-			.startOf("week")
-			.add(1, "day")
-			.startOf("day")
-			.toDate();
+		const { weekStart, weekEnd } = getWeekDateRange(clockIn);
 
-		const weekEnd = clockIn.endOf("week").startOf("day").toDate();
+		const userWeeklyPayroll = await getUserWeeklyPayroll({
+			userId: body.userId,
+			weekStart,
+			weekEnd,
+		});
 
 		const gpsLocationClockIn =
 			body.clockInLatitude && body.clockInLongitude
@@ -82,8 +85,6 @@ export async function POST(request: Request) {
 				clock_in_date: date,
 			},
 		});
-
-		console.log("Existing record:", existingRecord);
 
 		if (existingRecord) {
 			const res = await prisma.payroll.update({
@@ -120,9 +121,11 @@ export async function POST(request: Request) {
 				gps_location_clock_out: body.clockOutTime
 					? gpsLocationClockOut
 					: undefined,
-				week_start: weekStart,
-				week_end: weekEnd,
+				user_weekly_payroll: {
+					connect: { id: userWeeklyPayroll.id },
+				},
 				is_manual: true,
+				created_by: session.user.email || "system",
 			},
 		});
 

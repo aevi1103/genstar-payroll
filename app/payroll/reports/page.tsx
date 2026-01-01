@@ -1,9 +1,9 @@
-import React from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import dayjs from "dayjs";
 import { PayrollReportFilterForm } from "@/features/weekly-history/payroll-report-filter-form";
 import { WeeklyPayrollHistory } from "@/features/weekly-history/weekly-payroll-history";
+import { getPayrollSettings } from "./actions";
 
 export const metadata: Metadata = {
 	title: "Payroll Reports",
@@ -15,6 +15,7 @@ type PageProps = {
 
 export default async function Page({ searchParams }: PageProps) {
 	const params = await searchParams;
+	const payrollSettings = await getPayrollSettings();
 
 	if (!params.weekStartDate || !params.weekEndDate) {
 		const weekStart = dayjs()
@@ -34,7 +35,7 @@ export default async function Page({ searchParams }: PageProps) {
 	return (
 		<div className="h-full flex flex-col gap-2">
 			<PayrollReportFilterForm />
-			<WeeklyPayrollHistory />
+			<WeeklyPayrollHistory settings={payrollSettings} />
 		</div>
 	);
 }

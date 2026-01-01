@@ -2,7 +2,7 @@ import type { CustomCellRendererProps } from "ag-grid-react";
 import { memo } from "react";
 import { useLocationDialogStore } from "@/lib/stores/location-dialog-store";
 import { MapPin } from "lucide-react";
-import type { PayrollDataSource } from "@/hooks/use-payroll-history-query";
+import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
 
 export const GpsLocationBtn = memo(
 	({

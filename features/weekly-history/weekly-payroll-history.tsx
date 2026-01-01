@@ -10,8 +10,13 @@ import type { ColDef, ColGroupDef } from "ag-grid-community";
 import { TableWrapper } from "@/components/table-wrapper";
 import { AgGridReact } from "ag-grid-react";
 import { formatPesoCurrency } from "@/lib/utils";
+import type { PayrollSettingsResponse } from "@/app/payroll/reports/actions";
 
-export const WeeklyPayrollHistory = () => {
+export const WeeklyPayrollHistory = ({
+	settings,
+}: {
+	settings: PayrollSettingsResponse;
+}) => {
 	const searchParams = useSearchParams();
 	const startDate = searchParams.get("weekStartDate");
 	const endDate = searchParams.get("weekEndDate");
@@ -21,9 +26,12 @@ export const WeeklyPayrollHistory = () => {
 		weekEndDate: endDate || undefined,
 	});
 
-	const { data: weeklySummaryData } = useWeeklySummary(data || []);
+	const { data: weeklySummaryData } = useWeeklySummary({
+		data: data || [],
+		settings,
+	});
 
-	console.log({ data, weeklySummaryData, isLoading });
+	console.log({ data, weeklySummaryData, isLoading, settings });
 
 	const [colDefs] = useState<
 		(ColDef<WeeklySummaryDataSource> | ColGroupDef<WeeklySummaryDataSource>)[]
@@ -31,23 +39,30 @@ export const WeeklyPayrollHistory = () => {
 		{
 			field: "name",
 			headerName: "Employee Name",
-			width: 200,
+			initialWidth: 200,
+			initialPinned: "left",
 		},
 		{
-			field: "weekStart",
-			headerName: "Week Starting",
-			width: 150,
+			headerName: "Week Period",
+			children: [
+				{
+					field: "weekStart",
+					headerName: "From",
+					initialWidth: 130,
+				},
+				{
+					field: "weekEnd",
+					headerName: "To",
+					initialWidth: 130,
+				},
+			],
 		},
-		{
-			field: "weekEnd",
-			headerName: "Week Ending",
-			width: 150,
-		},
+
 		{
 			field: "salaryPerDay",
 			headerName: "Salary Per Day",
 			valueFormatter: (params) => formatPesoCurrency(params.value),
-			width: 150,
+			initialWidth: 150,
 		},
 		{
 			field: "salaryPerHour",
@@ -55,9 +70,101 @@ export const WeeklyPayrollHistory = () => {
 			valueFormatter: (params) => formatPesoCurrency(params.value),
 		},
 		{
-			field: "totalHoursWorked",
-			headerName: "Total Hours Worked",
-			valueFormatter: (params) => params.value.toFixed(2),
+			headerName: "Working Hours",
+			children: [
+				{
+					headerName: "Working Days",
+					children: [
+						{
+							field: "regularDaysWorked",
+							headerName: "REG.",
+							valueFormatter: (params) => params.value.toFixed(0),
+						},
+						{
+							field: "totalRegularHours",
+							headerName: "Hrs.",
+							valueFormatter: (params) => params.value.toFixed(2),
+						},
+						{
+							field: "late",
+							headerName: "Late",
+							valueFormatter: (params) => params.value.toFixed(2),
+						},
+						{
+							colId: "totalHours",
+							headerName: "Total Hrs.",
+							initialWidth: 150,
+							valueGetter: (params) => {
+								const totalRegularHours = params.data?.totalRegularHours || 0;
+								const lateHours = params.data?.late || 0;
+								return totalRegularHours - lateHours;
+							},
+							valueFormatter: (params) => params.value.toFixed(2),
+						},
+					],
+				},
+				{
+					headerName: "Overtime",
+					children: [
+						{
+							field: "totalRegularOvertime",
+							headerName: "REG. OT Hrs.",
+							initialWidth: 150,
+							valueFormatter: (params) => params.value.toFixed(2),
+						},
+						{
+							field: "regulatOtMultiplier",
+							headerName: "Reg. OT %",
+							initialWidth: 120,
+							valueFormatter: (params) => params.value.toFixed(2),
+						},
+						{
+							field: "sundayHours",
+							headerName: "SUN. OT Hrs.",
+							initialWidth: 150,
+							valueFormatter: (params) => params.value.toFixed(2),
+						},
+						{
+							field: "sundayMultiplier",
+							headerName: "Sun. OT %",
+							initialWidth: 120,
+							valueFormatter: (params) => params.value.toFixed(2),
+						},
+					],
+				},
+			],
+		},
+		{
+			headerName: "Details Payments",
+			children: [
+				{
+					headerName: "Regular Pay",
+					children: [
+						{
+							field: "regularHoursPay",
+							headerName: "Reg. Day Pay",
+							initialWidth: 170,
+							valueFormatter: (params) => formatPesoCurrency(params.value),
+						},
+						{
+							field: "overtimePay",
+							initialWidth: 170,
+							headerName: "Reg. OT Pay",
+						},
+					],
+				},
+				{
+					headerName: "Holiday",
+					children: [
+						{
+							field: "sundayPay",
+							headerName: "Sun. OT Pay",
+							initialWidth: 170,
+							valueFormatter: (params) => formatPesoCurrency(params.value),
+						},
+					],
+				},
+			],
 		},
 	]);
 
@@ -69,6 +176,7 @@ export const WeeklyPayrollHistory = () => {
 				getRowId={(params) => params?.data?.recordKey}
 				defaultColDef={{
 					filter: true,
+					initialWidth: 100,
 				}}
 			/>
 		</TableWrapper>

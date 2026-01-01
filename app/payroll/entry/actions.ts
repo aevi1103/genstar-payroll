@@ -5,6 +5,9 @@ import { getSessionWithRole } from "@/lib/session";
 import { prisma } from "@/prisma/client";
 import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear";
+import { getWeekDateRange } from "@/lib/get-week-date-range";
+import { getUserWeeklyPayroll } from "@/lib/db/get-user-weekly-payroll";
+import { adjustClockInTime } from "@/lib/adjust-clock-in-time";
 
 dayjs.extend(weekOfYear);
 
@@ -22,11 +25,19 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 			: null;
 
 	const now = dayjs();
-	const today = now.startOf("day").toDate();
+	// adjust clock in time if using QR code clock in
+	const clockInTime = await adjustClockInTime(now);
+
+	const today = clockInTime.endOf("day").toDate();
 	today.setUTCHours(0, 0, 0, 0);
 
-	const weekStart = now.startOf("week").add(1, "day").startOf("day").toDate();
-	const weekEnd = now.endOf("week").startOf("day").toDate();
+	const { weekStart, weekEnd } = getWeekDateRange(clockInTime);
+
+	const userWeeklyPayroll = await getUserWeeklyPayroll({
+		userId: session.user.id,
+		weekStart,
+		weekEnd,
+	});
 
 	const record = await prisma.payroll.findFirst({
 		where: {
@@ -46,7 +57,7 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 	if (record?.clock_in_date && !record.clock_out_date) {
 		// Prevent clocking out within 1 minute of clocking in
 		const clockInTime = dayjs(record.clock_in_time);
-		const timeDiffInMinutes = now.diff(clockInTime, "minute");
+		const timeDiffInMinutes = clockInTime.diff(clockInTime, "minute");
 
 		if (timeDiffInMinutes < 1) {
 			redirect(
@@ -75,12 +86,11 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 	await prisma.payroll.create({
 		data: {
 			user_id: session.user.id,
-			clock_in_time: now.toDate(),
+			clock_in_time: clockInTime.toDate(),
 			clock_in_date: today,
 			created_at: now.toDate(),
 			modified_at: new Date(),
-			week_start: weekStart,
-			week_end: weekEnd,
+			weekly_payroll_id: userWeeklyPayroll.id,
 			gps_location: gpsLocation,
 			created_by: session.user.email || "system",
 		},

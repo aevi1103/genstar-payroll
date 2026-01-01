@@ -1,12 +1,21 @@
-import type { PayrollDataSource } from "@/hooks/use-payroll-history-query";
+import type { PayrollSettingsResponse } from "@/app/payroll/reports/actions";
+import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
 import { shortDateFormat } from "@/lib/utils";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 
-export const mapWeeklySummaryData = (data: PayrollDataSource[]) => {
+interface UseWeeklySummaryProps {
+	data: PayrollDataSource[];
+	settings: PayrollSettingsResponse;
+}
+
+export const mapWeeklySummaryData = ({
+	data,
+	settings,
+}: UseWeeklySummaryProps) => {
 	const groupByWeek = Object.groupBy(data, (record) => {
-		const weekStart = dayjs(record.week_start).format(shortDateFormat);
-		const weekEnd = dayjs(record.week_end).format(shortDateFormat);
+		const weekStart = dayjs(record.weekStart).format(shortDateFormat);
+		const weekEnd = dayjs(record.weekEnd).format(shortDateFormat);
 		const empId = record.user_id;
 		const recordKey = `${weekStart}-${weekEnd}-${empId}`;
 		return recordKey;
@@ -16,19 +25,42 @@ export const mapWeeklySummaryData = (data: PayrollDataSource[]) => {
 		.map(([recordKey, records]) => {
 			const [weekStart, weekEnd, userId] = recordKey.split("-");
 
-			const totalHoursWorked = records?.reduce(
-				(acc, record) => acc + (record.hoursWorked || 0),
-				0,
-			);
+			const totalRegularHours =
+				records?.reduce(
+					(acc, record) => acc + (record.regularHoursWorked || 0),
+					0,
+				) || 0;
 
-			const totalAmountEarned = records?.reduce(
-				(acc, record) => acc + (record.amountEarned || 0),
-				0,
-			);
+			const totalRegularOvertime =
+				records?.reduce(
+					(acc, record) => acc + (record.overtimeHoursWorked || 0),
+					0,
+				) || 0;
+
+			const sundayHours =
+				records?.reduce(
+					(acc, record) => acc + (record.sundayHoursWorked || 0),
+					0,
+				) || 0;
 
 			const [firstRecord] = records || [];
 			const salaryPerDay = firstRecord?.salaryPerDay || 0;
 			const salaryPerHour = salaryPerDay ? Number(salaryPerDay) / 8 : 0;
+
+			const regularOtMultiplier =
+				settings.data?.regular_ot_rate_percent || 1.25;
+			const sundayMultiplier = settings.data?.weekend_ot_rate || 1.3;
+
+			const regularHoursPay = totalRegularHours * salaryPerHour;
+
+			const overtimePay =
+				totalRegularOvertime * (salaryPerHour * regularOtMultiplier);
+
+			const sundayPay = sundayHours * (salaryPerHour * sundayMultiplier);
+
+			const totalPay = regularHoursPay + overtimePay + sundayPay;
+
+			const regularDaysWorked = totalRegularHours / 8;
 
 			const firstName = firstRecord?.firstName || "";
 			const lastName = firstRecord?.lastName || "";
@@ -44,9 +76,18 @@ export const mapWeeklySummaryData = (data: PayrollDataSource[]) => {
 				lastName,
 				salaryPerDay,
 				salaryPerHour,
-				totalHoursWorked,
-				totalAmountEarned,
+				totalRegularHours,
+				totalRegularOvertime,
+				sundayHours,
+				regularHoursPay,
+				overtimePay,
+				sundayPay,
+				totalPay,
+				regulatOtMultiplier: regularOtMultiplier,
+				sundayMultiplier,
+				regularDaysWorked,
 				details: records,
+				late: 0,
 			};
 		})
 		.sort(
@@ -61,8 +102,8 @@ export type WeeklySummaryDataSource = ReturnType<
 	typeof mapWeeklySummaryData
 >[number];
 
-export const useWeeklySummary = (data: PayrollDataSource[]) => {
-	const dataSource = useMemo(() => mapWeeklySummaryData(data), [data]);
+export const useWeeklySummary = (params: UseWeeklySummaryProps) => {
+	const dataSource = useMemo(() => mapWeeklySummaryData(params), [params]);
 
 	console.log({ dataSource });
 

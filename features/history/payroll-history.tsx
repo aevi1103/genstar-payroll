@@ -14,13 +14,9 @@ import { GpsLocationBtn } from "./gps-location-btn";
 import { ClockOutTime } from "./clock-out-time";
 import { DeletePayrollBtn } from "./delete-payroll-btn";
 import { ClockInTime } from "./clock-in-time";
-import {
-	type PayrollDataSource,
-	usePayrollHistoryQuery,
-} from "@/hooks/use-payroll-history-query";
-// import utc from "dayjs/plugin/utc";
+import { usePayrollHistoryQuery } from "@/hooks/use-payroll-history-query";
+import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
 
-// dayjs.extend(utc);
 dayjs.extend(duration);
 
 export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
@@ -88,17 +84,8 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 			},
 		},
 		{
-			colId: "weekRange",
+			field: "weekRange",
 			headerName: "Payroll Week",
-			valueGetter: (params) => {
-				if (!params.data) {
-					return "N/A";
-				}
-
-				const startOdWeek = dayjs(params.data.week_start);
-				const endOfWeek = dayjs(params.data.week_end);
-				return `${startOdWeek.format(shortDateFormat)} - ${endOfWeek.format(shortDateFormat)}`;
-			},
 		},
 		{
 			field: "clock_in_time",
@@ -258,6 +245,10 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 				{
 					field: "modified_by",
 					headerName: "Modified By",
+				},
+				{
+					field: "id",
+					headerName: "Payroll ID",
 				},
 			],
 		},

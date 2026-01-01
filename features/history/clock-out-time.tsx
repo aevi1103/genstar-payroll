@@ -2,7 +2,7 @@ import type { CustomCellRendererProps } from "ag-grid-react";
 import { Button } from "../../components/ui/button";
 import { LogOut, Pencil } from "lucide-react";
 import { useManualPayrollDialogStore } from "@/lib/stores/manual-payroll-dialog-store";
-import type { PayrollDataSource } from "@/hooks/use-payroll-history-query";
+import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
 
 export const ClockOutTime = ({
 	params,

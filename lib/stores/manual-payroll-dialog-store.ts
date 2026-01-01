@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { PayrollDataSource } from "@/hooks/use-payroll-history-query";
+import type { PayrollDataSource } from "../map-payroll-datasource";
 interface ManualPayrollDialogState {
 	isOpen: boolean;
 	openDialog: () => void;

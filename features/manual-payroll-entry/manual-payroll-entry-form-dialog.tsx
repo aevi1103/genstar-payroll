@@ -47,6 +47,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { shortDateFormat } from "@/lib/utils";
+import Link from "next/link";
 
 // Helper to format date to ISO string for API
 function formatDateToISOString(date: Date, timeInput: string): string {
@@ -257,10 +258,26 @@ export function ManualPayrollEntryFormDialog() {
 					<DialogTitle>
 						{payrollEntryData ? "Edit Payroll Entry" : "Create Payroll Entry"}
 					</DialogTitle>
-					<DialogDescription>
-						{payrollEntryData
-							? "Edit an existing payroll entry for an employee."
-							: "Create a payroll entry for an employee."}
+					<DialogDescription className="space-y-2">
+						<p>
+							{payrollEntryData
+								? "Edit an existing payroll entry for an employee."
+								: "Create a payroll entry for an employee."}
+						</p>
+
+						<p>
+							Manual payroll entries should be used sparingly and only for
+							exceptional cases. Regular clock-ins and clock-outs should be done
+							through the{" "}
+							<Link
+								className="text-blue-500 underline"
+								href={"/payroll/qrcode"}
+							>
+								QR code
+							</Link>{" "}
+							system to ensure accurate time tracking, and will automatically
+							adjust time for late clock-ins.
+						</p>
 					</DialogDescription>
 				</DialogHeader>
 
@@ -345,6 +362,7 @@ export function ManualPayrollEntryFormDialog() {
 												setClockInDate(date);
 												setClockInOpen(false);
 											}}
+											disabled={(date) => date > new Date()}
 										/>
 									</PopoverContent>
 								</Popover>

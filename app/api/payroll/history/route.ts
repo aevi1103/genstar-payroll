@@ -29,9 +29,13 @@ export const getPayrollHistory = async (params: PayrollHistoryParams) => {
 
 		qry = {
 			...qry,
-			week_start: {
-				gte: weekStart,
-				lte: weekEnd,
+			user_weekly_payroll: {
+				week_start: {
+					gte: weekStart,
+				},
+				week_end: {
+					lte: weekEnd,
+				},
 			},
 		};
 	}
@@ -60,6 +64,7 @@ export const getPayrollHistory = async (params: PayrollHistoryParams) => {
 					},
 				},
 			},
+			user_weekly_payroll: true,
 		},
 	});
 };
