@@ -1,7 +1,7 @@
 "use client";
 import { useIsClient } from "@uidotdev/usehooks";
 import React, { useState } from "react";
-import { QRCode } from "../ui/shadcn-io/qr-code";
+import { QRCode } from "../../components/ui/shadcn-io/qr-code";
 
 export const ClockInOutQrCode = () => {
 	const isClient = useIsClient();
@@ -17,5 +17,10 @@ export const ClockInOutQrCode = () => {
 
 	if (!url) return null;
 
-	return <QRCode className="size-1/2 " data={url} />;
+	return (
+		<QRCode
+			className="w-full px-6 sm:size-10/12 md:size-1/2 md:px-0"
+			data={url}
+		/>
+	);
 };

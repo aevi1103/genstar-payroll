@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import type { SessionWithRole } from "@/lib/session";
+import Link from "next/link";
 
 const navs = {
 	navMain: [
@@ -81,14 +82,16 @@ export function AppSidebar({ session, ...props }: AppSidebarProps) {
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarHeader>
 				<div className="flex items-center gap-2 px-2 py-2">
-					<Image
-						src={logoSrc}
-						alt="GenStar Payroll"
-						width={180}
-						height={50}
-						className="mx-auto h-auto w-1/2 sm:w-2/3 lg:w-full"
-						priority
-					/>
+					<Link href={"/"}>
+						<Image
+							src={logoSrc}
+							alt="GenStar Payroll"
+							width={180}
+							height={50}
+							className="mx-auto h-auto w-1/2 sm:w-2/3 lg:w-full cursor-pointer"
+							priority
+						/>
+					</Link>
 				</div>
 			</SidebarHeader>
 			<SidebarContent>

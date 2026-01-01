@@ -1,8 +1,8 @@
-import { PayrollMessageDialog } from "@/components/payroll/payroll-message-dialog";
+import { PayrollMessageDialog } from "@/features/history/payroll-message-dialog";
 
-import { PayrollHistory } from "@/components/payroll/payroll-history";
-import { ManualPayrollEntryFormDialog } from "@/components/payroll/manual-payroll-entry-form-dialog";
-import { ManualPayrollButton } from "@/components/payroll/manual-payroll-button";
+import { PayrollHistory } from "@/features/history/payroll-history";
+import { ManualPayrollEntryFormDialog } from "@/features/manual-payroll-entry/manual-payroll-entry-form-dialog";
+import { ManualPayrollButton } from "@/features/history/manual-payroll-button";
 import type { Metadata } from "next";
 import { getSessionWithRole } from "@/lib/session";
 
@@ -28,7 +28,7 @@ export default async function ProtectedPage({
 	return (
 		<div className="flex h-full w-full flex-col gap-3">
 			<div className="flex flex-col h-full gap-3">
-				<div className="flex items-center justify-between">
+				<div className="flex items-center justify-between flex-wrap gap-2">
 					<p className="text-muted-foreground mt-2">
 						{isAdmin
 							? "View and manage clock-in and clock-out history for all employees below."

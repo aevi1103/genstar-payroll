@@ -2,7 +2,7 @@ import React from "react";
 import { getPayrollSettings } from "./actions";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
-import { SettingsForm } from "@/components/payroll/settings-form";
+import { SettingsForm } from "@/features/payroll-settings/settings-form";
 
 export default async function Page() {
 	const data = await getPayrollSettings();

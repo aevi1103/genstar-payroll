@@ -2,12 +2,12 @@
 import type { ColDef, ColGroupDef } from "ag-grid-community";
 import { useState } from "react";
 import { AgGridReact, type CustomCellRendererProps } from "ag-grid-react";
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "../../components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
 import { HistoryLoader } from "./history-loader";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import { TableWrapper } from "../table-wrapper";
+import { TableWrapper } from "../../components/table-wrapper";
 import { shortDateFormat, formatCurrency } from "@/lib/utils";
 import { UserLocationDialog } from "./user-location-dialog";
 import { GpsLocationBtn } from "./gps-location-btn";

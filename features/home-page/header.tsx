@@ -13,7 +13,7 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 } from "@/components/ui/drawer";
-import { Logo } from "./logo";
+import { Logo } from "../../components/logo";
 
 interface HeaderProps {
 	user: User | null;

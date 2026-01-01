@@ -1,5 +1,5 @@
 import type { CustomCellRendererProps } from "ag-grid-react";
-import { Button } from "../ui/button";
+import { Button } from "../../components/ui/button";
 import { LogOut, Pencil } from "lucide-react";
 import { useManualPayrollDialogStore } from "@/lib/stores/manual-payroll-dialog-store";
 import type { PayrollDataSource } from "@/hooks/use-payroll-history-query";

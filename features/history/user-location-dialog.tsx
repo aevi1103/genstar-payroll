@@ -9,7 +9,7 @@ import {
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from "../ui/dialog";
+} from "../../components/ui/dialog";
 
 export const UserLocationDialog = () => {
 	const { isOpen, latitude, longitude, closeDialog } = useLocationDialogStore();

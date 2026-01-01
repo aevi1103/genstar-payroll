@@ -2,7 +2,7 @@ import React from "react";
 import { getUsers } from "./actions";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
-import { UsersTable } from "@/components/payroll/users-table";
+import { UsersTable } from "@/features/payroll-settings/users-table";
 
 export default async function Page() {
 	const users = await getUsers();

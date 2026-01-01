@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { TableWrapper } from "../table-wrapper";
+import { TableWrapper } from "../../components/table-wrapper";
 import type { User, Users } from "@/app/payroll/settings/user/profile/actions";
 import { upsertUserData } from "@/app/payroll/settings/user/profile/actions";
 import type {

@@ -1,8 +1,8 @@
-import { Header } from "@/components/header";
-import { AboutSection } from "@/components/about";
-import { VisionSection } from "@/components/vision";
-import { ServicesSection } from "@/components/services";
-import { ContactForm } from "@/components/contact-form";
+import { Header } from "@/features/home-page/header";
+import { AboutSection } from "@/features/home-page/about";
+import { VisionSection } from "@/features/home-page/vision";
+import { ServicesSection } from "@/features/home-page/services";
+import { ContactForm } from "@/features/home-page/contact-form";
 import { createClient } from "@/lib/supabase/server";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
