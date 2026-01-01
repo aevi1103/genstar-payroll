@@ -8,7 +8,7 @@ import { HistoryLoader } from "./history-loader";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { TableWrapper } from "../../components/table-wrapper";
-import { shortDateFormat, formatCurrency } from "@/lib/utils";
+import { shortDateFormat, formatPesoCurrency } from "@/lib/utils";
 import { UserLocationDialog } from "./user-location-dialog";
 import { GpsLocationBtn } from "./gps-location-btn";
 import { ClockOutTime } from "./clock-out-time";
@@ -163,21 +163,21 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 					headerName: "Amount Earned",
 					initialWidth: 170,
 					valueFormatter: (params) =>
-						formatCurrency(params.value as number | null),
+						formatPesoCurrency(params.value as number | null),
 				},
 				{
 					field: "salaryPerDay",
 					headerName: "Salary / Day",
 					initialWidth: 170,
 					valueFormatter: (params) =>
-						formatCurrency(params.value as number | null),
+						formatPesoCurrency(params.value as number | null),
 				},
 				{
 					field: "salaryPerHour",
 					initialWidth: 170,
 					headerName: "Amount / Hour",
 					valueFormatter: (params) =>
-						formatCurrency(params.value as number | null),
+						formatPesoCurrency(params.value as number | null),
 				},
 			],
 		},

@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export const shortDateFormat = "MM/DD/YYYY";
 export const longDateFormat = "MM/DD/YYYY hh:mm A";
 
-export const formatCurrency = (value: number | null) => {
+export const formatPesoCurrency = (value: number | null) => {
 	if (value === null || value === undefined) {
 		return "";
 	}

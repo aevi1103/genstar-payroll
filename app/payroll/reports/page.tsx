@@ -2,7 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import dayjs from "dayjs";
-import { PayrollReportFilterForm } from "@/features/reports/payroll-report-filter-form";
+import { PayrollReportFilterForm } from "@/features/weekly-history/payroll-report-filter-form";
+import { WeeklyPayrollHistory } from "@/features/weekly-history/weekly-payroll-history";
 
 export const metadata: Metadata = {
 	title: "Payroll Reports",
@@ -32,9 +33,8 @@ export default async function Page({ searchParams }: PageProps) {
 
 	return (
 		<div className="h-full flex flex-col gap-2">
-			<div>
-				<PayrollReportFilterForm />
-			</div>
+			<PayrollReportFilterForm />
+			<WeeklyPayrollHistory />
 		</div>
 	);
 }

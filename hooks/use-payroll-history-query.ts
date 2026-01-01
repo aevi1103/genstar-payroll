@@ -17,8 +17,17 @@ const mapDataSource = (data: PayrollRecord[]) => {
 			? salaryPerHour * Number(hoursWorked || 0)
 			: null;
 
+		const email = record.users?.email || "";
+		const fname = record.users?.user_profiles?.[0]?.first_name || "";
+		const lname = record.users?.user_profiles?.[0]?.last_name || "";
+		const fullName = `${fname} ${lname}`.trim();
+
 		return {
 			...record,
+			email,
+			firstName: fname,
+			lastName: lname,
+			fullName,
 			salaryPerDay,
 			salaryPerHour,
 			hoursWorked,

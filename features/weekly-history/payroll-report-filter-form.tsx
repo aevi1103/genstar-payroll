@@ -24,7 +24,8 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import type { DateRange } from "react-day-picker";
+import { usePayrollHistoryQuery } from "@/hooks/use-payroll-history-query";
+import { Spinner } from "@/components/ui/spinner";
 
 const filterSchema = z.object({
 	dateRange: z
@@ -44,6 +45,11 @@ export const PayrollReportFilterForm = () => {
 	const searchParams = useSearchParams();
 	const startDate = searchParams.get("weekStartDate");
 	const endDate = searchParams.get("weekEndDate");
+
+	const { isLoading } = usePayrollHistoryQuery({
+		weekStartDate: startDate || undefined,
+		weekEndDate: endDate || undefined,
+	});
 
 	const [weekStartOpen, setWeekStartOpen] = useState(false);
 
@@ -142,7 +148,16 @@ export const PayrollReportFilterForm = () => {
 					)}
 				/>
 
-				<Button type="submit">Apply Filters</Button>
+				<Button type="submit" disabled={isLoading}>
+					{isLoading ? (
+						<div className="flex gap-2">
+							<Spinner />
+							Loading...
+						</div>
+					) : (
+						"Apply Filters"
+					)}
+				</Button>
 			</form>
 		</Form>
 	);
