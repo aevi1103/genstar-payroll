@@ -9,9 +9,11 @@ import {
 
 const pageTitleMap: Record<string, string> = {
 	"/payroll": "Hours",
-	"/payroll/reports": "Payroll Reports",
-	"/payroll/qrcode": "QR Code",
+	"/payroll/13monthpay": "13th Month Pay",
+	"/payroll/deductions/cash-advances": "Cash Advances",
 	"/payroll/entry": "Payroll Entry",
+	"/payroll/qrcode": "QR Code",
+	"/payroll/reports": "Payroll Reports",
 	"/payroll/settings": "Settings",
 	"/payroll/settings/payroll": "Payroll Settings",
 	"/payroll/settings/user/profile": "User Profile",

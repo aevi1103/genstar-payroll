@@ -18,7 +18,7 @@ export const formatPesoCurrency = (value: number | null) => {
 	}).format(value);
 };
 
-export const serializeData = (data: unknown): unknown => {
+export const serializeData = <T>(data: T): T => {
 	return JSON.parse(
 		JSON.stringify(data, (_, value) =>
 			typeof value === "bigint" ? value.toString() : value,

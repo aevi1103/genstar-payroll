@@ -565,6 +565,7 @@ model cash_advances {
   is_paid      Boolean   @default(false)
   created_by   String    @db.VarChar
   modified_by  String?   @db.VarChar
+  paid_amount  Float?    @db.Real
   users        users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
