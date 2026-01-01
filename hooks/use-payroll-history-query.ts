@@ -29,7 +29,7 @@ export const usePayrollHistoryQuery = ({
 			const url = `/api/payroll/history?${searchParams.toString()}`;
 
 			const data: PayrollRecord[] = await fetch(url).then((res) => res.json());
-			return mapPayrollDataSource(data);
+			return data;
 		},
 		refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes
 	});

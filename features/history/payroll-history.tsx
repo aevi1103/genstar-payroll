@@ -8,7 +8,7 @@ import { HistoryLoader } from "./history-loader";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { TableWrapper } from "../../components/table-wrapper";
-import { shortDateFormat, formatPesoCurrency } from "@/lib/utils";
+import { formatPesoCurrency } from "@/lib/utils";
 import { UserLocationDialog } from "./user-location-dialog";
 import { GpsLocationBtn } from "./gps-location-btn";
 import { ClockOutTime } from "./clock-out-time";
@@ -16,13 +16,28 @@ import { DeletePayrollBtn } from "./delete-payroll-btn";
 import { ClockInTime } from "./clock-in-time";
 import { usePayrollHistoryQuery } from "@/hooks/use-payroll-history-query";
 import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
+import { useMapPayrollDatasource } from "@/hooks/use-map-payroll-datasource";
+import type { PayrollSettings } from "@/lib/db/get-payroll-settings";
+import { hoursToTime } from "@/lib/convert-hours-to-duration";
 
 dayjs.extend(duration);
 
-export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
-	const { data, error, isLoading } = usePayrollHistoryQuery({
+export const PayrollHistory = ({
+	isAdmin,
+	settings,
+}: { isAdmin: boolean; settings: PayrollSettings }) => {
+	const {
+		data: originalData,
+		error,
+		isLoading,
+	} = usePayrollHistoryQuery({
 		weekStartDate: undefined,
 		weekEndDate: undefined,
+	});
+
+	const { data } = useMapPayrollDatasource({
+		data: originalData || [],
+		settings,
 	});
 
 	const [colDefs] = useState<
@@ -119,30 +134,13 @@ export const PayrollHistory = ({ isAdmin }: { isAdmin: boolean }) => {
 						params.value ? params.value.toFixed(2) : "0.00",
 				},
 				{
-					colId: "elapsedTime",
+					colId: "hoursWorked",
 					headerName: "Elapsed Time",
 					initialWidth: 150,
-					valueGetter: (params) => {
-						const clockIn = params.data?.clock_in_time;
-						const clockOut = params.data?.clock_out_time;
-						if (clockIn && clockOut) {
-							const duration = dayjs.duration(
-								dayjs(clockOut).diff(dayjs(clockIn)),
-							);
-							const hours = Math.floor(duration.asHours());
-							const minutes = duration.minutes();
-							return `${hours}h ${minutes}m`;
-						}
-
-						const now = dayjs();
-						if (clockIn && !clockOut) {
-							const duration = dayjs.duration(now.diff(dayjs(clockIn)));
-							const hours = Math.floor(duration.asHours());
-							const minutes = duration.minutes();
-							return `${hours}h ${minutes}m`;
-						}
-
-						return "Active";
+					valueFormatter: (params) => {
+						const hours = params.data?.hoursWorked || 0;
+						const durationObj = hoursToTime(hours);
+						return durationObj.formatted;
 					},
 				},
 				{

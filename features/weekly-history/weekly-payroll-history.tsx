@@ -11,6 +11,7 @@ import { TableWrapper } from "@/components/table-wrapper";
 import { AgGridReact } from "ag-grid-react";
 import { formatPesoCurrency } from "@/lib/utils";
 import type { PayrollSettingsResponse } from "@/app/payroll/reports/actions";
+import { useMapPayrollDatasource } from "@/hooks/use-map-payroll-datasource";
 
 export const WeeklyPayrollHistory = ({
 	settings,
@@ -21,9 +22,14 @@ export const WeeklyPayrollHistory = ({
 	const startDate = searchParams.get("weekStartDate");
 	const endDate = searchParams.get("weekEndDate");
 
-	const { data, isLoading } = usePayrollHistoryQuery({
+	const { data: originalData, isLoading } = usePayrollHistoryQuery({
 		weekStartDate: startDate || undefined,
 		weekEndDate: endDate || undefined,
+	});
+
+	const { data } = useMapPayrollDatasource({
+		data: originalData || [],
+		settings: settings.data,
 	});
 
 	const { data: weeklySummaryData } = useWeeklySummary({

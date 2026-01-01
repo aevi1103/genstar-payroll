@@ -1,8 +1,8 @@
 import dayjs, { type Dayjs } from "dayjs";
-import { getPayrollSettings } from "./db/get-payroll-settings";
+import { getPayrollSettingsData } from "./db/get-payroll-settings";
 
 export const adjustClockInTime = async (clockInTime: Dayjs) => {
-	const settings = await getPayrollSettings();
+	const settings = await getPayrollSettingsData();
 
 	const shiftStartTime = dayjs(clockInTime)
 		.set("hour", 8)

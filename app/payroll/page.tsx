@@ -5,6 +5,7 @@ import { ManualPayrollEntryFormDialog } from "@/features/manual-payroll-entry/ma
 import { ManualPayrollButton } from "@/features/history/manual-payroll-button";
 import type { Metadata } from "next";
 import { getSessionWithRole } from "@/lib/session";
+import { getPayrollSettingsData } from "@/lib/db/get-payroll-settings";
 
 export const metadata: Metadata = {
 	title: "Payroll Hours",
@@ -25,6 +26,8 @@ export default async function ProtectedPage({
 	const message = typeof messageParam === "string" ? messageParam : undefined;
 	const error = typeof errorParam === "string" ? errorParam : undefined;
 
+	const settings = await getPayrollSettingsData();
+
 	return (
 		<div className="flex h-full w-full flex-col gap-3">
 			<div className="flex flex-col h-full gap-3">
@@ -38,7 +41,7 @@ export default async function ProtectedPage({
 				</div>
 
 				<div className="flex-1">
-					<PayrollHistory isAdmin={isAdmin} />
+					<PayrollHistory isAdmin={isAdmin} settings={settings} />
 				</div>
 
 				<PayrollMessageDialog message={message} error={error} />

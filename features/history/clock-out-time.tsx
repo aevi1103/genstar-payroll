@@ -19,7 +19,7 @@ export const ClockOutTime = ({
 
 	if (params.data?.clock_out_time) {
 		return (
-			<div className="flex gap-2 justify-between items-center">
+			<div className="flex gap-2 justify-between items-center w-full">
 				<span>{new Date(params.data.clock_out_time).toLocaleString()}</span>
 				{isAdmin && (
 					<Button

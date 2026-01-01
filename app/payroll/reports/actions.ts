@@ -1,9 +1,9 @@
-import { prisma } from "@/prisma/client";
+import { getPayrollSettingsData } from "@/lib/db/get-payroll-settings";
 import type { Prisma } from "@prisma/client";
 
 export const getPayrollSettings = async () => {
 	try {
-		const data = await prisma.payroll_settings.findFirst();
+		const data = await getPayrollSettingsData();
 		return {
 			success: true,
 			data,

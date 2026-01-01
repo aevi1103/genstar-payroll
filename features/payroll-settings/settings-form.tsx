@@ -37,6 +37,11 @@ export const SettingsForm = ({
 			regular_ot_rate_percent:
 				initialData?.regular_ot_rate_percent || undefined,
 			weekend_ot_rate: initialData?.weekend_ot_rate || undefined,
+			late_grace_period_minutes: initialData?.late_grace_period_minutes ?? 5,
+			late_deduction_minutes: initialData?.late_deduction_minutes ?? 30,
+			break_hours: initialData?.break_hours ?? 1,
+			apply_break_deduction_after_hour:
+				initialData?.apply_break_deduction_after_hour ?? 4,
 		},
 	});
 
@@ -158,6 +163,132 @@ export const SettingsForm = ({
 							<FormDescription>
 								Overtime rate multiplier for weekend work (e.g., 1.3 = 130% of
 								regular rate)
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="late_grace_period_minutes"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								Late Grace Period (Minutes){" "}
+								<span className="text-red-500">*</span>
+							</FormLabel>
+							<FormControl>
+								<Input
+									type="number"
+									placeholder="5"
+									{...field}
+									value={field.value ?? ""}
+									onChange={(e) =>
+										field.onChange(
+											e.target.value
+												? Number.parseInt(e.target.value, 10)
+												: undefined,
+										)
+									}
+								/>
+							</FormControl>
+							<FormDescription>
+								Grace period in minutes before late deduction applies
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="late_deduction_minutes"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								Late Deduction (Minutes) <span className="text-red-500">*</span>
+							</FormLabel>
+							<FormControl>
+								<Input
+									type="number"
+									placeholder="30"
+									{...field}
+									value={field.value ?? ""}
+									onChange={(e) =>
+										field.onChange(
+											e.target.value
+												? Number.parseInt(e.target.value, 10)
+												: undefined,
+										)
+									}
+								/>
+							</FormControl>
+							<FormDescription>
+								Minutes to deduct for being late (after grace period)
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="break_hours"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								Break Hours <span className="text-red-500">*</span>
+							</FormLabel>
+							<FormControl>
+								<Input
+									type="number"
+									placeholder="1"
+									{...field}
+									value={field.value ?? ""}
+									onChange={(e) =>
+										field.onChange(
+											e.target.value
+												? Number.parseInt(e.target.value, 10)
+												: undefined,
+										)
+									}
+								/>
+							</FormControl>
+							<FormDescription>
+								Daily break hours to deduct from total hours
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="apply_break_deduction_after_hour"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								Apply Break Deduction After (Hours){" "}
+								<span className="text-red-500">*</span>
+							</FormLabel>
+							<FormControl>
+								<Input
+									type="number"
+									placeholder="4"
+									{...field}
+									value={field.value ?? ""}
+									onChange={(e) =>
+										field.onChange(
+											e.target.value
+												? Number.parseInt(e.target.value, 10)
+												: undefined,
+										)
+									}
+								/>
+							</FormControl>
+							<FormDescription>
+								Only apply break deduction if worked hours exceed this threshold
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
