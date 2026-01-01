@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { z } from "zod";
 
 import {
@@ -64,7 +64,7 @@ export const PaymentDialog = ({
 	type PaymentFormData = z.infer<typeof paymentSchema>;
 
 	const form = useForm<PaymentFormData>({
-		resolver: zodResolver(paymentSchema),
+		resolver: standardSchemaResolver(paymentSchema),
 		defaultValues: {
 			amount: remainingBalance,
 		},
