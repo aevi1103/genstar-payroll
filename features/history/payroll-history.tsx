@@ -19,6 +19,7 @@ import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
 import { useMapPayrollDatasource } from "@/hooks/use-map-payroll-datasource";
 import type { PayrollSettings } from "@/lib/db/get-payroll-settings";
 import { hoursToTime } from "@/lib/convert-hours-to-duration";
+import { Badge } from "@/components/ui/badge";
 
 dayjs.extend(duration);
 
@@ -86,15 +87,28 @@ export const PayrollHistory = ({
 				}
 				return "Not Started";
 			},
-			cellClass: (params) => {
+			// cellClass: (params) => {
+			// 	const status = params.value;
+			// 	if (status === "Completed") {
+			// 		return "bg-green-400 text-white font-medium";
+			// 	}
+			// 	if (status === "In Progress") {
+			// 		return "bg-yellow-400 text-white font-medium";
+			// 	}
+			// 	return "bg-gray-400 text-white font-medium";
+			// },
+			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
 				const status = params.value;
+
 				if (status === "Completed") {
-					return "text-green-600 font-medium";
+					return <Badge variant={"default"}>Completed</Badge>;
 				}
+
 				if (status === "In Progress") {
-					return "text-yellow-600 font-medium";
+					return <Badge variant={"secondary"}>In Progress</Badge>;
 				}
-				return "text-gray-600 font-medium";
+
+				return <Badge variant={"secondary"}>Not Started</Badge>;
 			},
 		},
 		{

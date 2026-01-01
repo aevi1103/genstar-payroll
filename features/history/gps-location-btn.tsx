@@ -35,14 +35,12 @@ export const GpsLocationBtn = memo(
 		return (
 			<button
 				type="button"
-				className="text-blue-600 hover:text-blue-800 underline cursor-pointer text-xs flex items-center gap-1"
+				className="text-blue-600 hover:text-blue-800 cursor-pointer text-xs flex items-center gap-1"
 				onClick={() => {
 					openDialog(lat, lng);
 				}}
 			>
-				<span className="text-xs!">
-					<MapPin />
-				</span>
+				<MapPin className="size-4" />
 				View Location
 			</button>
 		);
