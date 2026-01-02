@@ -38,9 +38,7 @@ export default async function PayrollDeductionsPage() {
 				/>
 			</div>
 
-			<div className="flex-1">
-				<PayrollDeductionsTable deductions={deductions} />
-			</div>
+			<PayrollDeductionsTable deductions={deductions} />
 		</div>
 	);
 }

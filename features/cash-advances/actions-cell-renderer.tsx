@@ -27,6 +27,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export const ActionsCellRenderer = (
 	props: CustomCellRendererProps<CashAdvanceRecord>,
@@ -85,12 +86,12 @@ export const ActionsCellRenderer = (
 	};
 
 	return (
-		<div className="flex gap-2 justify-between w-full">
+		<div className="flex gap-2 w-full">
 			{!props.data?.is_paid ? (
 				<PaymentDialog cashAdvance={props.data}>
-					<Button size="sm" variant="outline" className="flex-1">
-						<Check className="mr-2 h-4 w-4" />
-						Record Payment
+					<Button size="sm" variant={"default"} className="flex-1">
+						<Check />
+						Pay
 					</Button>
 				</PaymentDialog>
 			) : (
@@ -118,7 +119,11 @@ export const ActionsCellRenderer = (
 					employeeName={props.data?.name || ""}
 				>
 					<TooltipTrigger asChild>
-						<Button size="sm" variant="ghost" className="cursor-pointer">
+						<Button
+							size="sm"
+							variant={"outline"}
+							className="cursor-pointer flex-1"
+						>
 							<FileText className="h-4 w-4" />
 						</Button>
 					</TooltipTrigger>
@@ -132,9 +137,9 @@ export const ActionsCellRenderer = (
 				<AlertDialogTrigger asChild>
 					<Button
 						size="icon"
-						variant="ghost"
+						variant="outline"
 						disabled={isDeleteLoading}
-						className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+						className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10 flex-1"
 					>
 						{isDeleteLoading ? (
 							<Loader2 className="h-4 w-4 animate-spin" />

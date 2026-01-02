@@ -38,10 +38,7 @@ export default async function CashAdvancesPage() {
 			</div>
 
 			<TotalUnpaidBalance cashAdvances={cashAdvances} />
-
-			<div className="flex-1">
-				<CashAdvancesTable cashAdvances={cashAdvances} />
-			</div>
+			<CashAdvancesTable cashAdvances={cashAdvances} />
 		</div>
 	);
 }

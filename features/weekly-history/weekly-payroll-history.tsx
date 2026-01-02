@@ -13,12 +13,15 @@ import { formatPesoCurrency } from "@/lib/utils";
 import type { PayrollSettingsResponse } from "@/app/payroll/reports/actions";
 import { useMapPayrollDatasource } from "@/hooks/use-map-payroll-datasource";
 import { useWeeklyPayrollHistoryStore } from "@/lib/stores/use-weekly-payroll-history-store";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 export const WeeklyPayrollHistory = ({
 	settings,
 }: {
 	settings: PayrollSettingsResponse;
 }) => {
+	const isMobile = useMediaQuery("(max-width: 768px)");
+
 	const openSheet = useWeeklyPayrollHistoryStore((state) => state.openSheet);
 	const setRecord = useWeeklyPayrollHistoryStore((state) => state.setRecord);
 
@@ -50,7 +53,7 @@ export const WeeklyPayrollHistory = ({
 			field: "name",
 			headerName: "Employee Name",
 			initialWidth: 200,
-			initialPinned: "left",
+			initialPinned: isMobile ? undefined : "left",
 		},
 		{
 			headerName: "Week Period",
@@ -179,22 +182,24 @@ export const WeeklyPayrollHistory = ({
 	]);
 
 	return (
-		<TableWrapper>
-			<AgGridReact
-				columnDefs={colDefs}
-				rowData={weeklySummaryData || []}
-				getRowId={(params) => params?.data?.recordKey}
-				defaultColDef={{
-					filter: true,
-					initialWidth: 100,
-				}}
-				onRowClicked={(event) => {
-					if (event.data) {
-						setRecord(event.data);
-						openSheet();
-					}
-				}}
-			/>
-		</TableWrapper>
+		<div className="h-[90dvh] lg:flex-1">
+			<TableWrapper>
+				<AgGridReact
+					columnDefs={colDefs}
+					rowData={weeklySummaryData || []}
+					getRowId={(params) => params?.data?.recordKey}
+					defaultColDef={{
+						filter: true,
+						initialWidth: 100,
+					}}
+					onRowClicked={(event) => {
+						if (event.data) {
+							setRecord(event.data);
+							openSheet();
+						}
+					}}
+				/>
+			</TableWrapper>
+		</div>
 	);
 };

@@ -29,7 +29,7 @@ export const ClockOutTime = ({
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<Button
-								variant={"ghost"}
+								variant={"link"}
 								size={"icon"}
 								className="cursor-pointer"
 								onClick={() => {
@@ -37,7 +37,7 @@ export const ClockOutTime = ({
 									openDialog();
 								}}
 							>
-								<Pencil />
+								<Pencil className="text-blue-500 hover:text-blue-600" />
 							</Button>
 						</TooltipTrigger>
 						<TooltipContent>

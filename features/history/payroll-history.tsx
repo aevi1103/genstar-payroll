@@ -76,7 +76,11 @@ export const PayrollHistory = ({
 			valueGetter: (params) => {
 				const profile = params.data?.users?.user_profiles?.[0];
 				if (!profile) return params.data?.users?.email || "N/A";
+
 				const firstName = profile.first_name || "";
+
+				if (!firstName) return params.data?.users?.email || "N/A";
+
 				const middleName = profile.middle_name
 					? ` ${profile.middle_name.charAt(0)}.`
 					: "";
@@ -310,7 +314,7 @@ export const PayrollHistory = ({
 					gridRef.current?.api.setGridOption("quickFilterText", e.target.value);
 				}}
 			/>
-			<div className="flex-1">
+			<div className="h-[90dvh] lg:flex-1">
 				<TableWrapper>
 					<AgGridReact
 						ref={gridRef}

@@ -16,9 +16,12 @@ import {
 	Briefcase,
 	DollarSign,
 	TrendingUp,
+	ClockCheck,
+	UserCheck,
 } from "lucide-react";
 import { formatPesoCurrency } from "@/lib/utils";
 import dayjs from "dayjs";
+import { Button } from "@/components/ui/button";
 
 export const WeeklyRecordSheet = () => {
 	const open = useWeeklyPayrollHistoryStore((state) => state.isSheetOpen);
@@ -57,6 +60,11 @@ export const WeeklyRecordSheet = () => {
 				</SheetHeader>
 
 				<div className="m-6 mt-2 space-y-6">
+					<Button size={"lg"} className="w-full cursor-pointer">
+						<UserCheck />
+						Mark as Paid
+					</Button>
+
 					{/* Employee Information */}
 					<div className="space-y-3">
 						<div className="flex items-center gap-2">

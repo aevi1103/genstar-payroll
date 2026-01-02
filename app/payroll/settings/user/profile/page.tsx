@@ -29,7 +29,7 @@ export default async function Page() {
 					information.
 				</p>
 			</div>
-			<div className="flex-1">
+			<div className="h-[90dvh] lg:flex-1">
 				<UsersTable data={users.data || []} />
 			</div>
 

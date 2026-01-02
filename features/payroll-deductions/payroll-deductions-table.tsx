@@ -179,19 +179,21 @@ export const PayrollDeductionsTable = ({
 	}
 
 	return (
-		<TableWrapper>
-			<AgGridReact
-				columnDefs={colDefs}
-				rowData={deductions}
-				getRowId={(params) => params.data?.id?.toString() || ""}
-				defaultColDef={{
-					filter: true,
-					sortable: true,
-					resizable: true,
-				}}
-				onCellValueChanged={handleCellValueChanged}
-				stopEditingWhenCellsLoseFocus
-			/>
-		</TableWrapper>
+		<div className="h-[90dvh] lg:flex-1">
+			<TableWrapper>
+				<AgGridReact
+					columnDefs={colDefs}
+					rowData={deductions}
+					getRowId={(params) => params.data?.id?.toString() || ""}
+					defaultColDef={{
+						filter: true,
+						sortable: true,
+						resizable: true,
+					}}
+					onCellValueChanged={handleCellValueChanged}
+					stopEditingWhenCellsLoseFocus
+				/>
+			</TableWrapper>
+		</div>
 	);
 };

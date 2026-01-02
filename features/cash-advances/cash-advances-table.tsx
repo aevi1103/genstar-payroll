@@ -12,12 +12,15 @@ import type {
 } from "@/lib/db/get-cash-advances";
 import { StatusCellRenderer } from "./status-cell-renderer";
 import { ActionsCellRenderer } from "./actions-cell-renderer";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 type CashAdvancesTableProps = {
 	cashAdvances: CashAdvances;
 };
 
 export const CashAdvancesTable = ({ cashAdvances }: CashAdvancesTableProps) => {
+	const isMobile = useMediaQuery("(max-width: 768px)");
+
 	const [colDefs] = useState<ColDef<CashAdvanceRecord>[]>([
 		{
 			field: "name",
@@ -81,11 +84,11 @@ export const CashAdvancesTable = ({ cashAdvances }: CashAdvancesTableProps) => {
 		{
 			headerName: "Actions",
 			cellClass: "!h-full !items-center !flex",
-			pinned: "right",
+			pinned: isMobile ? undefined : "right",
 			cellRenderer: ActionsCellRenderer,
 			sortable: false,
 			filter: false,
-			width: 300,
+			// width: 300,
 		},
 	]);
 
@@ -98,17 +101,19 @@ export const CashAdvancesTable = ({ cashAdvances }: CashAdvancesTableProps) => {
 	}
 
 	return (
-		<TableWrapper>
-			<AgGridReact
-				columnDefs={colDefs}
-				rowData={cashAdvances}
-				getRowId={(params) => params.data?.id?.toString() || ""}
-				defaultColDef={{
-					filter: true,
-					sortable: true,
-					resizable: true,
-				}}
-			/>
-		</TableWrapper>
+		<div className="h-[90dvh] lg:flex-1">
+			<TableWrapper>
+				<AgGridReact
+					columnDefs={colDefs}
+					rowData={cashAdvances}
+					getRowId={(params) => params.data?.id?.toString() || ""}
+					defaultColDef={{
+						filter: true,
+						sortable: true,
+						resizable: true,
+					}}
+				/>
+			</TableWrapper>
+		</div>
 	);
 };
