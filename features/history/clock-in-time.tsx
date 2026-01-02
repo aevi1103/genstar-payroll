@@ -3,6 +3,12 @@ import { Button } from "../../components/ui/button";
 import { Pencil } from "lucide-react";
 import { useManualPayrollDialogStore } from "@/lib/stores/manual-payroll-dialog-store";
 import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const ClockInTime = ({
 	params,
@@ -24,17 +30,24 @@ export const ClockInTime = ({
 	return (
 		<div className="flex gap-1 items-center">
 			{isAdmin && (
-				<Button
-					variant={"ghost"}
-					size={"icon"}
-					className="cursor-pointer"
-					onClick={() => {
-						setPayrollEntryData(params.data);
-						openDialog();
-					}}
-				>
-					<Pencil />
-				</Button>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<Button
+							variant={"ghost"}
+							size={"icon"}
+							className="cursor-pointer"
+							onClick={() => {
+								setPayrollEntryData(params.data);
+								openDialog();
+							}}
+						>
+							<Pencil />
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent>
+						<p>Click to edit hours</p>
+					</TooltipContent>
+				</Tooltip>
 			)}
 
 			<span>{new Date(params.data.clock_in_time).toLocaleString()}</span>

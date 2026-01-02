@@ -20,6 +20,7 @@ import { useMapPayrollDatasource } from "@/hooks/use-map-payroll-datasource";
 import type { PayrollSettings } from "@/lib/db/get-payroll-settings";
 import { hoursToTime } from "@/lib/convert-hours-to-duration";
 import { Badge } from "@/components/ui/badge";
+import { formatDistanceToNow } from "date-fns";
 
 dayjs.extend(duration);
 
@@ -235,14 +236,18 @@ export const PayrollHistory = ({
 					field: "created_at",
 					headerName: "Created At",
 					valueFormatter: (params) => {
-						return new Date(params.value).toLocaleString();
+						return params.value
+							? formatDistanceToNow(new Date(params.value), { addSuffix: true })
+							: "";
 					},
 				},
 				{
 					field: "modified_at",
 					headerName: "Modified At",
 					valueFormatter: (params) => {
-						return params.value ? new Date(params.value).toLocaleString() : "";
+						return params.value
+							? formatDistanceToNow(new Date(params.value), { addSuffix: true })
+							: "";
 					},
 				},
 				{
