@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import { getWeekDateRange } from "@/lib/get-week-date-range";
 import { getUserWeeklyPayroll } from "@/lib/db/get-user-weekly-payroll";
-import { adjustClockInTime } from "@/lib/adjust-clock-in-time";
+// import { adjustClockInTime } from "@/lib/adjust-clock-in-time";
 import { isActiveEmployee } from "@/lib/db/is-active-employee";
 
 dayjs.extend(weekOfYear);
@@ -32,7 +32,7 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 
 	const now = dayjs();
 	// adjust clock in time if using QR code clock in
-	const clockInTime = await adjustClockInTime(now);
+	const clockInTime = now;
 
 	const today = clockInTime.endOf("day").toDate();
 	today.setUTCHours(0, 0, 0, 0);
