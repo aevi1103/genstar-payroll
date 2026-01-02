@@ -4,11 +4,12 @@ import { getPayrollSettingsData } from "./db/get-payroll-settings";
 export const adjustClockInTime = async (clockInTime: Dayjs) => {
 	const settings = await getPayrollSettingsData();
 
-	const shiftStartTime = dayjs(clockInTime)
-		.set("hour", 8)
-		.set("minute", 0)
-		.set("second", 0)
-		.set("millisecond", 0);
+	const shiftStartTime = clockInTime
+		.clone()
+		.hour(8)
+		.minute(0)
+		.second(0)
+		.millisecond(0);
 
 	const shiftStartGracePeriod = settings?.late_grace_period_minutes || 5;
 	const gracePeridTime = shiftStartTime.add(shiftStartGracePeriod, "minute");
