@@ -17,9 +17,10 @@ import { cn } from "@/lib/utils";
 type Props = {
 	message?: string;
 	error?: string;
+	time?: string;
 };
 
-export function PayrollMessageDialog({ message, error }: Props) {
+export function PayrollMessageDialog({ message, error, time }: Props) {
 	const router = useRouter();
 
 	const [isOpen, setIsOpen] = useState(false);
@@ -100,7 +101,7 @@ export function PayrollMessageDialog({ message, error }: Props) {
 							"lg:text-lg",
 						)}
 					>
-						{description}
+						{description} {time ? `at ${new Date(time).toLocaleString()}` : ""}
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>

@@ -87,7 +87,7 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 		});
 
 		redirect(
-			`/payroll?message=${encodeURIComponent(`Clocked out successfully at ${now.format("HH:mm:ss")}`)}`,
+			`/payroll?message=${encodeURIComponent("Clocked out successfully")}&time=${now.toISOString()}`,
 		);
 	}
 
@@ -105,6 +105,6 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 	});
 
 	redirect(
-		`/payroll?message=${encodeURIComponent(`Clocked in successfully at ${now.format("HH:mm:ss")}`)}`,
+		`/payroll?message=${encodeURIComponent("Clocked in successfully")}&time=${now.toISOString()}`,
 	);
 }

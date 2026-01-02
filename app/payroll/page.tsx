@@ -26,6 +26,7 @@ export default async function ProtectedPage({
 
 	const messageParam = (await searchParams)?.message;
 	const errorParam = (await searchParams)?.error;
+	const timeParam = (await searchParams)?.time as string | undefined;
 
 	const message = typeof messageParam === "string" ? messageParam : undefined;
 	const error = typeof errorParam === "string" ? errorParam : undefined;
@@ -57,7 +58,7 @@ export default async function ProtectedPage({
 				</div>
 			</div>
 
-			<PayrollMessageDialog message={message} error={error} />
+			<PayrollMessageDialog message={message} error={error} time={timeParam} />
 			<ManualPayrollEntryFormDialog />
 			<UserLocationDialog />
 			<PayrollRecordSheet />
