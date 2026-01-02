@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { useSearchParams } from "next/navigation";
+import { uePayrollHistoryStore } from "@/lib/stores/use-payroll-history-store";
 
 dayjs.extend(duration);
 
@@ -32,6 +33,9 @@ export const PayrollHistory = ({
 	const params = useSearchParams();
 	const weekStart = params.get("weekStartDate");
 	const weekEnd = params.get("weekEndDate");
+
+	const openSheet = uePayrollHistoryStore((state) => state.openSheet);
+	const setRecord = uePayrollHistoryStore((state) => state.setRecord);
 
 	const {
 		data: originalData,
@@ -95,16 +99,7 @@ export const PayrollHistory = ({
 				}
 				return "Not Started";
 			},
-			// cellClass: (params) => {
-			// 	const status = params.value;
-			// 	if (status === "Completed") {
-			// 		return "bg-green-400 text-white font-medium";
-			// 	}
-			// 	if (status === "In Progress") {
-			// 		return "bg-yellow-400 text-white font-medium";
-			// 	}
-			// 	return "bg-gray-400 text-white font-medium";
-			// },
+
 			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
 				const status = params.value;
 
@@ -314,6 +309,14 @@ export const PayrollHistory = ({
 						getRowId={(params) => params?.data?.id?.toString() || ""}
 						defaultColDef={{
 							filter: true,
+						}}
+						onRowClicked={(params) => {
+							if (!params.data) {
+								return;
+							}
+
+							setRecord(params.data);
+							openSheet();
 						}}
 					/>
 				</TableWrapper>

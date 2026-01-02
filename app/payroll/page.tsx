@@ -9,6 +9,7 @@ import { getPayrollSettingsData } from "@/lib/db/get-payroll-settings";
 import { HoursHistoryReloadBtn } from "@/features/history/hours-history-reload-btn";
 import { UserLocationDialog } from "@/features/history/user-location-dialog";
 import { WeeklyNavFilter } from "@/features/history/weekly-nav-filter";
+import { PayrollRecordSheet } from "@/features/history/record-sheet";
 
 export const metadata: Metadata = {
 	title: "Payroll Hours",
@@ -60,6 +61,7 @@ export default async function ProtectedPage({
 
 			<ManualPayrollEntryFormDialog />
 			<UserLocationDialog />
+			<PayrollRecordSheet />
 		</div>
 	);
 }
