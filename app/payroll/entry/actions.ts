@@ -106,6 +106,6 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 	});
 
 	redirect(
-		`/payroll?message=${encodeURIComponent(`${message}, Clocked in successfully`)}&time=${now.toISOString()}`,
+		`/payroll?message=${encodeURIComponent(message ? `${message}, Clocked in successfully` : "Clocked in successfully")}&time=${now.toISOString()}`,
 	);
 }
