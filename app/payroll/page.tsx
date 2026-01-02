@@ -6,6 +6,9 @@ import { ManualPayrollButton } from "@/features/history/manual-payroll-button";
 import type { Metadata } from "next";
 import { getSessionWithRole } from "@/lib/session";
 import { getPayrollSettingsData } from "@/lib/db/get-payroll-settings";
+import { HoursHistoryReloadBtn } from "@/features/history/hours-history-reload-btn";
+import { UserLocationDialog } from "@/features/history/user-location-dialog";
+import { WeeklyNavFilter } from "@/features/history/weekly-nav-filter";
 
 export const metadata: Metadata = {
 	title: "Payroll Hours",
@@ -37,7 +40,15 @@ export default async function ProtectedPage({
 							? "View and manage clock-in and clock-out history for all employees below."
 							: "View your clock-in and clock-out history below."}
 					</p>
-					{isAdmin && <ManualPayrollButton />}
+
+					<div className="flex gap-4">
+						<WeeklyNavFilter />
+
+						<div className="flex gap-1">
+							{isAdmin && <ManualPayrollButton />}
+							<HoursHistoryReloadBtn />
+						</div>
+					</div>
 				</div>
 
 				<div className="flex-1">
@@ -48,6 +59,7 @@ export default async function ProtectedPage({
 			</div>
 
 			<ManualPayrollEntryFormDialog />
+			<UserLocationDialog />
 		</div>
 	);
 }

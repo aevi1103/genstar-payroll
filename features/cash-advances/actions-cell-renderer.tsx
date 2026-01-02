@@ -130,7 +130,12 @@ export const ActionsCellRenderer = (
 
 			<AlertDialog>
 				<AlertDialogTrigger asChild>
-					<Button size="sm" variant="destructive" disabled={isDeleteLoading}>
+					<Button
+						size="icon"
+						variant="ghost"
+						disabled={isDeleteLoading}
+						className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+					>
 						{isDeleteLoading ? (
 							<Loader2 className="h-4 w-4 animate-spin" />
 						) : (

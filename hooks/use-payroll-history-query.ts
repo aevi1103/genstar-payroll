@@ -1,5 +1,4 @@
 import type { PayrollRecord } from "@/app/api/payroll/history/route";
-import { mapPayrollDataSource } from "@/lib/map-payroll-datasource";
 import { useQuery } from "@tanstack/react-query";
 
 export interface PayrollHistoryQueryParams {

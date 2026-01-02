@@ -23,17 +23,19 @@ export const getPayrollHistory = async (params: PayrollHistoryParams) => {
 		? {}
 		: { user_id: params.userId };
 
+	console.log("Payroll history params:", params);
+
 	if (params.weekStartDate && params.weekEndDate) {
 		const weekStart = dayjs(params.weekStartDate).startOf("day").toDate();
-		const weekEnd = dayjs(params.weekEndDate).endOf("day").toDate();
+		const weekEnd = dayjs(params.weekEndDate).startOf("day").toDate();
+
+		console.log("Filtering payroll history from", weekStart, "to", weekEnd);
 
 		qry = {
 			...qry,
 			user_weekly_payroll: {
 				week_start: {
 					gte: weekStart,
-				},
-				week_end: {
 					lte: weekEnd,
 				},
 			},
@@ -91,6 +93,10 @@ export async function GET(request: Request) {
 		const data = await getPayrollHistory({
 			userId: session.user.id,
 			isAdmin: role.toLowerCase() === "admin",
+			weekStartDate:
+				new URL(request.url).searchParams.get("weekStartDate") || undefined,
+			weekEndDate:
+				new URL(request.url).searchParams.get("weekEndDate") || undefined,
 		});
 
 		return Response.json(serializeData(data), { status: 200 });

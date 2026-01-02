@@ -2,7 +2,7 @@
 
 import { toast } from "sonner";
 import type { CustomCellRendererProps } from "ag-grid-react";
-import { Loader2, Trash2 } from "lucide-react";
+import { Loader2, Trash2, Trash2Icon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -53,17 +53,16 @@ export const ActionsCellRenderer = (
 			<AlertDialog>
 				<AlertDialogTrigger asChild>
 					<Button
-						size="sm"
-						variant="destructive"
+						variant="ghost"
+						size="icon"
+						className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
 						disabled={isDeleteLoading}
-						className="w-full cursor-pointer"
 					>
 						{isDeleteLoading ? (
 							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 						) : (
-							<Trash2 className="mr-2 h-4 w-4" />
+							<Trash2Icon className="h-4 w-4" />
 						)}
-						Delete
 					</Button>
 				</AlertDialogTrigger>
 				<AlertDialogContent>

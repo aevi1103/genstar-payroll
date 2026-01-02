@@ -4,6 +4,8 @@ import dayjs from "dayjs";
 import { PayrollReportFilterForm } from "@/features/weekly-history/payroll-report-filter-form";
 import { WeeklyPayrollHistory } from "@/features/weekly-history/weekly-payroll-history";
 import { getPayrollSettings } from "./actions";
+import { WeeklyNavFilter } from "@/features/history/weekly-nav-filter";
+import { shortDateFormat } from "@/lib/utils";
 
 export const metadata: Metadata = {
 	title: "Payroll Reports",
@@ -21,9 +23,12 @@ export default async function Page({ searchParams }: PageProps) {
 		const weekStart = dayjs()
 			.startOf("week")
 			.add(1, "day")
-			.format("YYYY-MM-DD");
+			.format(shortDateFormat);
 
-		const weekEnd = dayjs().endOf("week").startOf("day").format("YYYY-MM-DD");
+		const weekEnd = dayjs()
+			.endOf("week")
+			.startOf("day")
+			.format(shortDateFormat);
 		const searchParams = new URLSearchParams();
 		searchParams.set("weekStartDate", weekStart);
 		searchParams.set("weekEndDate", weekEnd);
@@ -34,7 +39,11 @@ export default async function Page({ searchParams }: PageProps) {
 
 	return (
 		<div className="h-full flex flex-col gap-2">
-			<PayrollReportFilterForm />
+			<div className="flex gap-4">
+				<WeeklyNavFilter btnSize={"default"} />
+				<PayrollReportFilterForm />
+			</div>
+
 			<WeeklyPayrollHistory settings={payrollSettings} />
 		</div>
 	);

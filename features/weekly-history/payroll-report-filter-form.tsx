@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Send } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -100,7 +100,7 @@ export const PayrollReportFilterForm = () => {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="flex items-end gap-4 flex-wrap "
+				className="flex items-end gap-2 flex-wrap "
 			>
 				<FormField
 					control={form.control}
@@ -155,7 +155,7 @@ export const PayrollReportFilterForm = () => {
 							Loading...
 						</div>
 					) : (
-						"Apply Filters"
+						<Send />
 					)}
 				</Button>
 			</form>

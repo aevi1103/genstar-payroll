@@ -54,6 +54,15 @@ export const PayrollDeductionsTable = ({
 
 	const [colDefs] = useState<ColDef<PayrollDeductionRecord>[]>([
 		{
+			// headerName: "Actions",
+			cellClass: "!h-full !items-center !flex",
+			pinned: "left",
+			cellRenderer: ActionsCellRenderer,
+			sortable: false,
+			filter: false,
+			width: 60,
+		},
+		{
 			field: "name",
 			headerName: "Employee",
 			minWidth: 200,
@@ -158,15 +167,6 @@ export const PayrollDeductionsTable = ({
 			field: "created_by",
 			headerName: "Created By",
 			minWidth: 150,
-		},
-		{
-			headerName: "Actions",
-			cellClass: "!h-full !items-center !flex",
-			pinned: "right",
-			cellRenderer: ActionsCellRenderer,
-			sortable: false,
-			filter: false,
-			width: 150,
 		},
 	]);
 

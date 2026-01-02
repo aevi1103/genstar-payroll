@@ -1,6 +1,6 @@
 "use client";
 import type { ColDef, ColGroupDef } from "ag-grid-community";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AgGridReact, type CustomCellRendererProps } from "ag-grid-react";
 import { Alert, AlertDescription, AlertTitle } from "../../components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { TableWrapper } from "../../components/table-wrapper";
 import { formatPesoCurrency } from "@/lib/utils";
-import { UserLocationDialog } from "./user-location-dialog";
 import { GpsLocationBtn } from "./gps-location-btn";
 import { ClockOutTime } from "./clock-out-time";
 import { DeletePayrollBtn } from "./delete-payroll-btn";
@@ -21,6 +20,8 @@ import type { PayrollSettings } from "@/lib/db/get-payroll-settings";
 import { hoursToTime } from "@/lib/convert-hours-to-duration";
 import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow } from "date-fns";
+import { Input } from "@/components/ui/input";
+import { useSearchParams } from "next/navigation";
 
 dayjs.extend(duration);
 
@@ -28,14 +29,20 @@ export const PayrollHistory = ({
 	isAdmin,
 	settings,
 }: { isAdmin: boolean; settings: PayrollSettings }) => {
+	const params = useSearchParams();
+	const weekStart = params.get("weekStartDate");
+	const weekEnd = params.get("weekEndDate");
+
 	const {
 		data: originalData,
 		error,
 		isLoading,
 	} = usePayrollHistoryQuery({
-		weekStartDate: undefined,
-		weekEndDate: undefined,
+		weekStartDate: weekStart || undefined,
+		weekEndDate: weekEnd || undefined,
 	});
+
+	const gridRef = useRef<AgGridReact<PayrollDataSource>>(null);
 
 	const { data } = useMapPayrollDatasource({
 		data: originalData || [],
@@ -291,18 +298,26 @@ export const PayrollHistory = ({
 	}
 
 	return (
-		<>
-			<UserLocationDialog />
-			<TableWrapper>
-				<AgGridReact
-					columnDefs={colDefs}
-					rowData={data || []}
-					getRowId={(params) => params?.data?.id?.toString() || ""}
-					defaultColDef={{
-						filter: true,
-					}}
-				/>
-			</TableWrapper>
-		</>
+		<div className="h-full flex flex-col gap-2">
+			<Input
+				placeholder="Search..."
+				onChange={(e) => {
+					gridRef.current?.api.setGridOption("quickFilterText", e.target.value);
+				}}
+			/>
+			<div className="flex-1">
+				<TableWrapper>
+					<AgGridReact
+						ref={gridRef}
+						columnDefs={colDefs}
+						rowData={data || []}
+						getRowId={(params) => params?.data?.id?.toString() || ""}
+						defaultColDef={{
+							filter: true,
+						}}
+					/>
+				</TableWrapper>
+			</div>
+		</div>
 	);
 };
