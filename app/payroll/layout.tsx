@@ -23,7 +23,7 @@ export default async function Layout({
 			<SidebarInset>
 				<header className="flex h-16 shrink-0 items-center justify-between gap-2 px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
 					<div className="flex items-center">
-						<SidebarTrigger className="-ml-1" />
+						<SidebarTrigger className="-ml-1 cursor-pointer!" />
 						<Separator
 							orientation="vertical"
 							className="hidden lg:block mr-2 data-[orientation=vertical]:h-4"
@@ -33,7 +33,7 @@ export default async function Layout({
 						</Breadcrumb>
 					</div>
 					<div className="flex lg:hidden">
-						<Logo width={130} height={40} />
+						<Logo width={100} height={30} />
 					</div>
 				</header>
 				<div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>

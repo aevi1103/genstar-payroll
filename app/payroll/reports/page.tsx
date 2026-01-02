@@ -39,7 +39,7 @@ export default async function Page({ searchParams }: PageProps) {
 
 	return (
 		<div className="h-full flex flex-col gap-2">
-			<div className="flex gap-4">
+			<div className="flex flex-wrap gap-4">
 				<WeeklyNavFilter btnSize={"default"} />
 				<PayrollReportFilterForm />
 			</div>

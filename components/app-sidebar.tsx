@@ -37,9 +37,9 @@ export function AppSidebar({ session, ...props }: AppSidebarProps) {
 						<Image
 							src={logoSrc}
 							alt="GenStar Payroll"
-							width={180}
+							width={150}
 							height={50}
-							className="mx-auto h-auto w-1/2 sm:w-2/3 lg:w-full cursor-pointer"
+							className="h-auto w-1/2 sm:w-2/3 lg:w-3/4 cursor-pointer"
 							priority
 						/>
 					</Link>

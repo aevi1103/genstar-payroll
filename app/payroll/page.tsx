@@ -35,16 +35,16 @@ export default async function ProtectedPage({
 		<div className="flex h-full w-full flex-col gap-3">
 			<div className="flex flex-col h-full gap-3">
 				<div className="flex items-center justify-between flex-wrap gap-2">
-					<p className="text-muted-foreground mt-2">
+					<p className="hidden md:flex text-muted-foreground mt-2">
 						{isAdmin
 							? "View and manage clock-in and clock-out history for all employees below."
 							: "View your clock-in and clock-out history below."}
 					</p>
 
-					<div className="flex gap-4">
+					<div className="flex gap-4 flex-wrap items-center">
 						<WeeklyNavFilter />
 
-						<div className="flex gap-1">
+						<div className="flex gap-1 flex-wrap">
 							{isAdmin && <ManualPayrollButton />}
 							<HoursHistoryReloadBtn />
 						</div>

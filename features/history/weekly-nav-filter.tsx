@@ -18,8 +18,6 @@ export const WeeklyNavFilter = ({
 	const weekStart = params.get("weekStartDate");
 	const weekEnd = params.get("weekEndDate");
 
-	console.log("pathWeeklyNavFilter:", path);
-
 	const onCurrentWeekClick = () => {
 		const now = dayjs();
 		const { weekStart, weekEnd } = getWeekDateRange(now);
@@ -68,7 +66,7 @@ export const WeeklyNavFilter = ({
 	};
 
 	return (
-		<div className="flex gap-1">
+		<div className="flex gap-1 flex-wrap">
 			<TooltipProvider>
 				<Tooltip>
 					<TooltipTrigger asChild>

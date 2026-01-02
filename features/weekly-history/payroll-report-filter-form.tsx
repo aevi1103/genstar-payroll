@@ -107,7 +107,7 @@ export const PayrollReportFilterForm = () => {
 					name="dateRange"
 					render={({ field }) => (
 						<div className="flex items-center gap-2">
-							<FormLabel className="whitespace-nowrap">Week Range:</FormLabel>
+							<FormLabel className="whitespace-nowrap">Period:</FormLabel>
 							<FormItem>
 								<Popover open={weekStartOpen} onOpenChange={setWeekStartOpen}>
 									<PopoverTrigger asChild>
@@ -115,7 +115,7 @@ export const PayrollReportFilterForm = () => {
 											<Button
 												variant="outline"
 												className={cn(
-													"justify-between text-left font-normal min-w-70",
+													"justify-between text-left font-normal min-w-64",
 													!field.value?.from && "text-muted-foreground",
 												)}
 											>
