@@ -8,7 +8,7 @@ export function ManualPayrollButton() {
 	const { openDialog } = useManualPayrollDialogStore();
 
 	return (
-		<Button onClick={openDialog} size="sm" className="gap-2 cursor-pointer">
+		<Button onClick={openDialog} className="gap-2 cursor-pointer">
 			<Plus className="h-4 w-4" />
 			Add Entry
 		</Button>

@@ -10,7 +10,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { type ComponentProps } from "react";
 
 export const WeeklyNavFilter = ({
-	btnSize = "sm",
+	btnSize = "default",
 }: { btnSize?: ComponentProps<typeof Button>["size"] }) => {
 	const params = useSearchParams();
 	const router = useRouter();
@@ -99,6 +99,7 @@ export const WeeklyNavFilter = ({
 								onClick={onCurrentWeekClick}
 								className="cursor-pointer"
 							>
+								<ArrowDown />
 								Current Week
 							</Button>
 						</TooltipTrigger>

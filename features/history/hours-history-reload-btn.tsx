@@ -14,7 +14,6 @@ export const HoursHistoryReloadBtn = () => {
 	return (
 		<Button
 			disabled={isFetching}
-			size="sm"
 			variant="outline"
 			onClick={() => {
 				refetch();
