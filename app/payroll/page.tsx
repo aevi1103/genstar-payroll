@@ -55,10 +55,9 @@ export default async function ProtectedPage({
 				<div className="flex-1">
 					<PayrollHistory isAdmin={isAdmin} settings={settings} />
 				</div>
-
-				<PayrollMessageDialog message={message} error={error} />
 			</div>
 
+			<PayrollMessageDialog message={message} error={error} />
 			<ManualPayrollEntryFormDialog />
 			<UserLocationDialog />
 			<PayrollRecordSheet />

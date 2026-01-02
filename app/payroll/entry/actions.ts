@@ -86,7 +86,9 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 			},
 		});
 
-		redirect("/payroll?message=Clocked out successfully");
+		redirect(
+			`/payroll?message=${encodeURIComponent(`Clocked out successfully at ${now.format("HH:mm:ss")}`)}`,
+		);
 	}
 
 	await prisma.payroll.create({
@@ -102,5 +104,7 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 		},
 	});
 
-	redirect("/payroll?message=Clocked in successfully");
+	redirect(
+		`/payroll?message=${encodeURIComponent(`Clocked in successfully at ${now.format("HH:mm:ss")}`)}`,
+	);
 }
