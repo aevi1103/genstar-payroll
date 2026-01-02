@@ -485,7 +485,6 @@ model payroll {
   modified_by            String?             @db.VarChar
   created_by             String?             @db.VarChar
   weekly_payroll_id      BigInt
-  is_paid                Boolean?            @default(false)
   users                  users?              @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_weekly_payroll    user_weekly_payroll @relation(fields: [weekly_payroll_id], references: [id], onDelete: Cascade)
 
@@ -494,18 +493,19 @@ model payroll {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model payroll_settings {
-  id                               BigInt    @id @default(autoincrement())
-  created_at                       DateTime  @default(now()) @db.Timestamptz(6)
-  modified_at                      DateTime? @db.Timestamptz(6)
-  working_day_hours_per_week       Int       @db.SmallInt
-  regular_ot_rate_percent          Float     @default(1.25) @db.Real
-  weekend_ot_rate                  Float     @default(1.3) @db.Real
-  created_by                       String    @db.VarChar
-  modified_by                      String?   @db.VarChar
-  late_grace_period_minutes        Int       @default(5) @db.SmallInt
-  late_deduction_minutes           Int       @default(30) @db.SmallInt
-  break_hours                      Int       @default(1) @db.SmallInt
-  apply_break_deduction_after_hour Int       @default(4) @db.SmallInt
+  id                                    BigInt    @id @default(autoincrement())
+  created_at                            DateTime  @default(now()) @db.Timestamptz(6)
+  modified_at                           DateTime? @db.Timestamptz(6)
+  working_day_hours_per_week            Int       @db.SmallInt
+  regular_ot_rate_percent               Float     @default(1.25) @db.Real
+  weekend_ot_rate                       Float     @default(1.3) @db.Real
+  created_by                            String    @db.VarChar
+  modified_by                           String?   @db.VarChar
+  late_grace_period_minutes             Int       @default(5) @db.SmallInt
+  late_deduction_minutes                Int       @default(30) @db.SmallInt
+  break_hours                           Int       @default(1) @db.SmallInt
+  apply_break_deduction_after_hour      Int       @default(4) @db.SmallInt
+  cash_advance_weekly_deduction_percent Float?    @default(10) @db.Real
 
   @@schema("public")
 }
@@ -574,13 +574,18 @@ model cash_advances {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model user_weekly_payroll {
-  id         BigInt    @id(map: "user_payroll_pkey") @default(autoincrement())
-  created_at DateTime  @default(now()) @db.Timestamptz(6)
-  user_id    String    @default(dbgenerated("auth.uid()")) @db.Uuid
-  week_start DateTime  @db.Timestamptz(6)
-  week_end   DateTime  @db.Timestamptz(6)
-  payroll    payroll[]
-  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id          BigInt    @id(map: "user_payroll_pkey") @default(autoincrement())
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  user_id     String    @default(dbgenerated("auth.uid()")) @db.Uuid
+  week_start  DateTime  @db.Timestamptz(6)
+  week_end    DateTime  @db.Timestamptz(6)
+  is_paid     Boolean   @default(false)
+  modified_at DateTime? @db.Timestamptz(6)
+  created_by  String?   @db.VarChar
+  modified_by String?   @db.VarChar
+  notes       String?   @db.VarChar
+  payroll     payroll[]
+  users       users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
