@@ -16,6 +16,10 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 	const startOfDay = dayjs(clockInTime).startOf("day");
 
 	if (clockInTime.isBefore(shiftStartTime) && clockInTime.isAfter(startOfDay)) {
+		console.log("Adjusting clock in time to shift start time", {
+			originalClockInTime: clockInTime.toISOString(),
+			adjustedClockInTime: shiftStartTime.toISOString(),
+		});
 		// if clock in is before shift start time but after start of day, set to shift start time
 		return shiftStartTime;
 	}
@@ -24,6 +28,10 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 		clockInTime.isAfter(shiftStartTime) &&
 		clockInTime.isBefore(gracePeridTime)
 	) {
+		console.log("Adjusting clock in time to shift start time", {
+			originalClockInTime: clockInTime.toISOString(),
+			adjustedClockInTime: shiftStartTime.toISOString(),
+		});
 		// adjust clock in time if clock is within grace period
 		return shiftStartTime;
 	}
@@ -39,8 +47,16 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 		clockInTime.isAfter(gracePeridTime) &&
 		clockInTime.isBefore(lateDeductionTime)
 	) {
+		console.log("Adjusting clock in time to 9:00 AM", {
+			originalClockInTime: clockInTime.toISOString(),
+			adjustedClockInTime: shiftStartTime.add(1, "hour").toISOString(),
+		});
 		return shiftStartTime.add(1, "hour");
 	}
+
+	console.log("No adjustment to clock in time needed", {
+		clockInTime: clockInTime.toISOString(),
+	});
 
 	// otherwise return original clock in time
 	return clockInTime;
