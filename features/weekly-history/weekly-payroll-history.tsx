@@ -12,12 +12,16 @@ import { AgGridReact } from "ag-grid-react";
 import { formatPesoCurrency } from "@/lib/utils";
 import type { PayrollSettingsResponse } from "@/app/payroll/reports/actions";
 import { useMapPayrollDatasource } from "@/hooks/use-map-payroll-datasource";
+import { useWeeklyPayrollHistoryStore } from "@/lib/stores/use-weekly-payroll-history-store";
 
 export const WeeklyPayrollHistory = ({
 	settings,
 }: {
 	settings: PayrollSettingsResponse;
 }) => {
+	const openSheet = useWeeklyPayrollHistoryStore((state) => state.openSheet);
+	const setRecord = useWeeklyPayrollHistoryStore((state) => state.setRecord);
+
 	const searchParams = useSearchParams();
 	const startDate = searchParams.get("weekStartDate");
 	const endDate = searchParams.get("weekEndDate");
@@ -183,6 +187,12 @@ export const WeeklyPayrollHistory = ({
 				defaultColDef={{
 					filter: true,
 					initialWidth: 100,
+				}}
+				onRowClicked={(event) => {
+					if (event.data) {
+						setRecord(event.data);
+						openSheet();
+					}
 				}}
 			/>
 		</TableWrapper>

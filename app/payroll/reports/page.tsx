@@ -6,6 +6,7 @@ import { WeeklyPayrollHistory } from "@/features/weekly-history/weekly-payroll-h
 import { getPayrollSettings } from "./actions";
 import { WeeklyNavFilter } from "@/features/history/weekly-nav-filter";
 import { shortDateFormat } from "@/lib/utils";
+import { WeeklyRecordSheet } from "@/features/weekly-history/weekly-record-sheet";
 
 export const metadata: Metadata = {
 	title: "Payroll Reports",
@@ -45,6 +46,7 @@ export default async function Page({ searchParams }: PageProps) {
 			</div>
 
 			<WeeklyPayrollHistory settings={payrollSettings} />
+			<WeeklyRecordSheet />
 		</div>
 	);
 }
