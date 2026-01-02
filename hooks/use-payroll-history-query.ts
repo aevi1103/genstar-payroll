@@ -1,5 +1,6 @@
 import type { PayrollRecord } from "@/app/api/payroll/history/route";
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 
 export interface PayrollHistoryQueryParams {
 	weekStartDate?: string;
@@ -21,8 +22,14 @@ export const usePayrollHistoryQuery = ({
 		queryFn: async () => {
 			const searchParams = new URLSearchParams();
 			if (weekStartDate && weekEndDate) {
-				searchParams.append("weekStartDate", weekStartDate);
-				searchParams.append("weekEndDate", weekEndDate);
+				searchParams.append(
+					"weekStartDate",
+					dayjs(weekStartDate).startOf("day").toISOString(),
+				);
+				searchParams.append(
+					"weekEndDate",
+					dayjs(weekEndDate).endOf("day").toISOString(),
+				);
 			}
 
 			const url = `/api/payroll/history?${searchParams.toString()}`;
