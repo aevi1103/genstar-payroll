@@ -490,6 +490,7 @@ model payroll {
   modified_by            String?             @db.VarChar
   created_by             String?             @db.VarChar
   weekly_payroll_id      BigInt
+  original_clock_in_time DateTime?           @db.Timestamptz(6)
   users                  users?              @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_weekly_payroll    user_weekly_payroll @relation(fields: [weekly_payroll_id], references: [id], onDelete: Cascade)
 

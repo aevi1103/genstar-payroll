@@ -1,7 +1,7 @@
 "use client";
 import { usePayrollHistoryQuery } from "@/hooks/use-payroll-history-query";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
 	useWeeklySummary,
 	type WeeklySummaryDataSource,
@@ -13,7 +13,7 @@ import { formatPesoCurrency } from "@/lib/utils";
 import type { PayrollSettingsResponse } from "@/app/payroll/reports/actions";
 import { useMapPayrollDatasource } from "@/hooks/use-map-payroll-datasource";
 import { useWeeklyPayrollHistoryStore } from "@/lib/stores/use-weekly-payroll-history-store";
-import { useMediaQuery } from "@uidotdev/usehooks";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export const WeeklyPayrollHistory = ({
 	settings,
