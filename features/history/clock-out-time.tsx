@@ -19,11 +19,10 @@ export const ClockOutTime = ({
 
 	if (params.data?.clock_out_time) {
 		return (
-			<div className="flex gap-2 justify-between items-center w-full">
-				<span>{new Date(params.data.clock_out_time).toLocaleString()}</span>
+			<div className="flex gap-1 items-center w-full">
 				{isAdmin && (
 					<Button
-						variant={"link"}
+						variant={"ghost"}
 						size={"icon"}
 						className="cursor-pointer"
 						onClick={() => {
@@ -34,6 +33,8 @@ export const ClockOutTime = ({
 						<Pencil />
 					</Button>
 				)}
+
+				<span>{new Date(params.data.clock_out_time).toLocaleString()}</span>
 			</div>
 		);
 	}

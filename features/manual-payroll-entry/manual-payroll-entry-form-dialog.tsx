@@ -257,25 +257,19 @@ export function ManualPayrollEntryFormDialog() {
 						{payrollEntryData ? "Edit Payroll Entry" : "Create Payroll Entry"}
 					</DialogTitle>
 					<DialogDescription className="space-y-2">
-						<p>
+						<span className="block">
 							{payrollEntryData
 								? "Edit an existing payroll entry for an employee."
 								: "Create a payroll entry for an employee."}
-						</p>
+						</span>
 
-						<p>
-							Manual payroll entries should be used sparingly and only for
-							exceptional cases. Regular clock-ins and clock-outs should be done
-							through the{" "}
-							<Link
-								className="text-blue-500 underline"
-								href={"/payroll/qrcode"}
-							>
-								QR code
+						<span>
+							Manual entries are for exceptions only. Use the{" "}
+							<Link className="text-blue-500 underline" href="/payroll/qrcode">
+								QR code system
 							</Link>{" "}
-							system to ensure accurate time tracking, and will automatically
-							adjust time for late and early clock-ins clock-ins
-						</p>
+							for regular clock-ins to ensure accurate tracking.
+						</span>
 					</DialogDescription>
 				</DialogHeader>
 

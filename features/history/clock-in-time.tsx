@@ -22,11 +22,10 @@ export const ClockInTime = ({
 	}
 
 	return (
-		<div className="flex gap-2 justify-between items-center">
-			<span>{new Date(params.data.clock_in_time).toLocaleString()}</span>
+		<div className="flex gap-1 items-center">
 			{isAdmin && (
 				<Button
-					variant={"link"}
+					variant={"ghost"}
 					size={"icon"}
 					className="cursor-pointer"
 					onClick={() => {
@@ -37,6 +36,8 @@ export const ClockInTime = ({
 					<Pencil />
 				</Button>
 			)}
+
+			<span>{new Date(params.data.clock_in_time).toLocaleString()}</span>
 		</div>
 	);
 };
