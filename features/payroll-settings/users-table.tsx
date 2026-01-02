@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { TableWrapper } from "../../components/table-wrapper";
 import type { User, Users } from "@/app/payroll/settings/user/profile/actions";
 import { upsertUserData } from "@/app/payroll/settings/user/profile/actions";
@@ -12,13 +12,35 @@ import type {
 import { AgGridReact } from "ag-grid-react";
 import { usePhoneFormatter } from "@/hooks/use-phone-formatter";
 import { toast } from "sonner";
+import { useUserProfileStore } from "@/lib/stores/use-user-profile-store";
 
 export const UsersTable = ({ data }: { data: Users }) => {
 	const { formatPhone } = usePhoneFormatter();
+	const openSheet = useUserProfileStore((state) => state.openSheet);
+	const setUser = useUserProfileStore((state) => state.setUser);
 	const [colDefs] = useState<(ColDef<User> | ColGroupDef<User>)[]>([
 		{
 			field: "email",
 			headerName: "Email",
+			initialWidth: 230,
+			tooltipValueGetter: () => "Click to view profile",
+			cellClass: "text-blue-600 cursor-pointer font-semibold hover:underline",
+			onCellClicked: (params) => {
+				setUser(params.data);
+				openSheet();
+			},
+		},
+		{
+			field: "profile.active",
+			headerName: "Active",
+			editable: true,
+			initialWidth: 100,
+			cellRenderer: "agCheckboxCellRenderer",
+
+			cellEditor: "agCheckboxCellEditor",
+			valueGetter: (params) => params.data?.profile?.active ?? false,
+			tooltipValueGetter: () =>
+				"Click to toggle, this will allow/disallow user login",
 		},
 		{
 			field: "role.role",
@@ -44,6 +66,7 @@ export const UsersTable = ({ data }: { data: Users }) => {
 			},
 			tooltipValueGetter: () => "Double click to edit",
 		},
+
 		{
 			headerName: "Profile Info",
 			children: [
@@ -81,6 +104,47 @@ export const UsersTable = ({ data }: { data: Users }) => {
 					cellEditorParams: {
 						maxLength: 200,
 					},
+					tooltipValueGetter: () => "Double click to edit",
+				},
+				{
+					field: "profile.employment_role",
+					headerName: "Employment Role",
+					editable: true,
+					tooltipValueGetter: () => "Double click to edit",
+				},
+			],
+		},
+		{
+			headerName: "Emergency Contact",
+			children: [
+				{
+					field: "profile.emergency_contact_person",
+					headerName: "Contact Person",
+					editable: true,
+					tooltipValueGetter: () => "Double click to edit",
+				},
+				{
+					field: "profile.emergency_contact_number",
+					headerName: "Contact Number",
+					editable: true,
+					valueFormatter: (params) => formatPhone(params.value),
+					tooltipValueGetter: () => "Double click to edit",
+				},
+				{
+					field: "profile.emergency_contact_address",
+					headerName: "Contact Address",
+					editable: true,
+					cellEditor: "agLargeTextCellEditor",
+					cellEditorPopup: true,
+					cellEditorParams: {
+						maxLength: 200,
+					},
+					tooltipValueGetter: () => "Double click to edit",
+				},
+				{
+					field: "profile.emergency_concat_relationship",
+					headerName: "Relationship",
+					editable: true,
 					tooltipValueGetter: () => "Double click to edit",
 				},
 			],
@@ -121,6 +185,7 @@ export const UsersTable = ({ data }: { data: Users }) => {
 				getRowId={(params) => params?.data?.id?.toString() || ""}
 				defaultColDef={{
 					filter: true,
+					initialWidth: 120,
 				}}
 				onCellValueChanged={handleCellValueChanged}
 			/>

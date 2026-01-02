@@ -83,6 +83,16 @@ export const PayrollHistory = ({
 				const lastName = profile.last_name || "";
 				return `${lastName}, ${firstName}${middleName}`;
 			},
+			cellClass: "cursor-pointer text-blue-600 font-semibold hover:underline",
+			tooltipValueGetter: () => "View Details",
+			onCellClicked: (params) => {
+				if (!params.data) {
+					return;
+				}
+
+				setRecord(params.data);
+				openSheet();
+			},
 		},
 		{
 			colId: "status",
@@ -309,14 +319,6 @@ export const PayrollHistory = ({
 						getRowId={(params) => params?.data?.id?.toString() || ""}
 						defaultColDef={{
 							filter: true,
-						}}
-						onRowClicked={(params) => {
-							if (!params.data) {
-								return;
-							}
-
-							setRecord(params.data);
-							openSheet();
 						}}
 					/>
 				</TableWrapper>

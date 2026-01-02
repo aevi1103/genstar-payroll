@@ -16,7 +16,7 @@ const pageTitleMap: Record<string, string> = {
 	"/payroll/reports": "Payroll Reports",
 	"/payroll/settings": "Settings",
 	"/payroll/settings/payroll": "Payroll Settings",
-	"/payroll/settings/user/profile": "User Profile",
+	"/payroll/settings/user/profile": "User Management",
 	"/dashboard": "Dashboard",
 	"/account": "Account",
 	"/admin/users": "Users Management",

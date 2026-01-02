@@ -37,7 +37,7 @@ export const navs = {
 					url: "/payroll/qrcode",
 				},
 				{
-					title: "User Profile",
+					title: "User Management",
 					isAdmin: true,
 					url: "/payroll/settings/user/profile",
 				},

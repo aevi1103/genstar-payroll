@@ -22,6 +22,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 export const SettingsForm = ({
 	initialData,
@@ -42,6 +43,8 @@ export const SettingsForm = ({
 			break_hours: initialData?.break_hours ?? 1,
 			apply_break_deduction_after_hour:
 				initialData?.apply_break_deduction_after_hour ?? 4,
+			cash_advance_weekly_deduction_percent:
+				initialData?.cash_advance_weekly_deduction_percent ?? 10,
 		},
 	});
 
@@ -69,235 +72,311 @@ export const SettingsForm = ({
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-				<FormField
-					control={form.control}
-					name="working_day_hours_per_week"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								Working Hours Per Week <span className="text-red-500">*</span>
-							</FormLabel>
-							<FormControl>
-								<Input
-									type="number"
-									placeholder="48"
-									{...field}
-									value={field.value ?? ""}
-									onChange={(e) =>
-										field.onChange(
-											e.target.value
-												? Number.parseInt(e.target.value, 10)
-												: undefined,
-										)
-									}
-								/>
-							</FormControl>
-							<FormDescription>
-								Standard working hours per week for employees
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+				{/* Working Hours & Overtime Section */}
+				<div className="space-y-4">
+					<div>
+						<h3 className="text-lg font-semibold">Working Hours & Overtime</h3>
+						<p className="text-sm text-muted-foreground">
+							Configure standard working hours and overtime rate multipliers
+						</p>
+					</div>
 
-				<FormField
-					control={form.control}
-					name="regular_ot_rate_percent"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								Regular OT Rate Multiplier{" "}
-								<span className="text-red-500">*</span>
-							</FormLabel>
-							<FormControl>
-								<Input
-									type="number"
-									step="0.01"
-									placeholder="1.25"
-									{...field}
-									value={field.value ?? ""}
-									onChange={(e) =>
-										field.onChange(
-											e.target.value
-												? Number.parseFloat(e.target.value)
-												: undefined,
-										)
-									}
-								/>
-							</FormControl>
-							<FormDescription>
-								Overtime rate multiplier for regular overtime (e.g., 1.25 = 125%
-								of regular rate)
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+					<div className="grid gap-6 md:grid-cols-3">
+						<FormField
+							control={form.control}
+							name="working_day_hours_per_week"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										Working Hours Per Week{" "}
+										<span className="text-red-500">*</span>
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="number"
+											placeholder="48"
+											{...field}
+											value={field.value ?? ""}
+											onChange={(e) =>
+												field.onChange(
+													e.target.value
+														? Number.parseInt(e.target.value, 10)
+														: undefined,
+												)
+											}
+										/>
+									</FormControl>
+									<FormDescription>Standard weekly hours</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-				<FormField
-					control={form.control}
-					name="weekend_ot_rate"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								Weekend OT Rate Multiplier{" "}
-								<span className="text-red-500">*</span>
-							</FormLabel>
-							<FormControl>
-								<Input
-									type="number"
-									step="0.01"
-									placeholder="1.3"
-									{...field}
-									value={field.value ?? ""}
-									onChange={(e) =>
-										field.onChange(
-											e.target.value
-												? Number.parseFloat(e.target.value)
-												: undefined,
-										)
-									}
-								/>
-							</FormControl>
-							<FormDescription>
-								Overtime rate multiplier for weekend work (e.g., 1.3 = 130% of
-								regular rate)
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+						<FormField
+							control={form.control}
+							name="regular_ot_rate_percent"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										Regular OT Multiplier{" "}
+										<span className="text-red-500">*</span>
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="number"
+											step="0.01"
+											placeholder="1.25"
+											{...field}
+											value={field.value ?? ""}
+											onChange={(e) =>
+												field.onChange(
+													e.target.value
+														? Number.parseFloat(e.target.value)
+														: undefined,
+												)
+											}
+										/>
+									</FormControl>
+									<FormDescription>e.g., 1.25 = 125%</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-				<FormField
-					control={form.control}
-					name="late_grace_period_minutes"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								Late Grace Period (Minutes){" "}
-								<span className="text-red-500">*</span>
-							</FormLabel>
-							<FormControl>
-								<Input
-									type="number"
-									placeholder="5"
-									{...field}
-									value={field.value ?? ""}
-									onChange={(e) =>
-										field.onChange(
-											e.target.value
-												? Number.parseInt(e.target.value, 10)
-												: undefined,
-										)
-									}
-								/>
-							</FormControl>
-							<FormDescription>
-								Grace period in minutes before late deduction applies
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+						<FormField
+							control={form.control}
+							name="weekend_ot_rate"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										Weekend OT Multiplier{" "}
+										<span className="text-red-500">*</span>
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="number"
+											step="0.01"
+											placeholder="1.3"
+											{...field}
+											value={field.value ?? ""}
+											onChange={(e) =>
+												field.onChange(
+													e.target.value
+														? Number.parseFloat(e.target.value)
+														: undefined,
+												)
+											}
+										/>
+									</FormControl>
+									<FormDescription>e.g., 1.3 = 130%</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+				</div>
 
-				<FormField
-					control={form.control}
-					name="late_deduction_minutes"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								Late Deduction (Minutes) <span className="text-red-500">*</span>
-							</FormLabel>
-							<FormControl>
-								<Input
-									type="number"
-									placeholder="30"
-									{...field}
-									value={field.value ?? ""}
-									onChange={(e) =>
-										field.onChange(
-											e.target.value
-												? Number.parseInt(e.target.value, 10)
-												: undefined,
-										)
-									}
-								/>
-							</FormControl>
-							<FormDescription>
-								Minutes to deduct for being late (after grace period)
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+				<Separator />
 
-				<FormField
-					control={form.control}
-					name="break_hours"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								Break Hours <span className="text-red-500">*</span>
-							</FormLabel>
-							<FormControl>
-								<Input
-									type="number"
-									placeholder="1"
-									{...field}
-									value={field.value ?? ""}
-									onChange={(e) =>
-										field.onChange(
-											e.target.value
-												? Number.parseInt(e.target.value, 10)
-												: undefined,
-										)
-									}
-								/>
-							</FormControl>
-							<FormDescription>
-								Daily break hours to deduct from total hours
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+				{/* Late Penalties Section */}
+				<div className="space-y-4">
+					<div>
+						<h3 className="text-lg font-semibold">
+							Late Penalties & Grace Period
+						</h3>
+						<p className="text-sm text-muted-foreground">
+							Configure late arrival penalties and grace period settings
+						</p>
+					</div>
 
-				<FormField
-					control={form.control}
-					name="apply_break_deduction_after_hour"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								Apply Break Deduction After (Hours){" "}
-								<span className="text-red-500">*</span>
-							</FormLabel>
-							<FormControl>
-								<Input
-									type="number"
-									placeholder="4"
-									{...field}
-									value={field.value ?? ""}
-									onChange={(e) =>
-										field.onChange(
-											e.target.value
-												? Number.parseInt(e.target.value, 10)
-												: undefined,
-										)
-									}
-								/>
-							</FormControl>
-							<FormDescription>
-								Only apply break deduction if worked hours exceed this threshold
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+					<div className="grid gap-6 md:grid-cols-2">
+						<FormField
+							control={form.control}
+							name="late_grace_period_minutes"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										Grace Period (Minutes){" "}
+										<span className="text-red-500">*</span>
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="number"
+											placeholder="5"
+											{...field}
+											value={field.value ?? ""}
+											onChange={(e) =>
+												field.onChange(
+													e.target.value
+														? Number.parseInt(e.target.value, 10)
+														: undefined,
+												)
+											}
+										/>
+									</FormControl>
+									<FormDescription>
+										Minutes before deduction applies
+									</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-				<Button type="submit" disabled={isLoading}>
-					{isLoading ? "Saving..." : "Save Settings"}
-				</Button>
+						<FormField
+							control={form.control}
+							name="late_deduction_minutes"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										Deduction Duration (Minutes){" "}
+										<span className="text-red-500">*</span>
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="number"
+											placeholder="30"
+											{...field}
+											value={field.value ?? ""}
+											onChange={(e) =>
+												field.onChange(
+													e.target.value
+														? Number.parseInt(e.target.value, 10)
+														: undefined,
+												)
+											}
+										/>
+									</FormControl>
+									<FormDescription>Minutes to deduct when late</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+				</div>
+
+				<Separator />
+
+				{/* Break Management Section */}
+				<div className="space-y-4">
+					<div>
+						<h3 className="text-lg font-semibold">Break Management</h3>
+						<p className="text-sm text-muted-foreground">
+							Configure daily break deduction rules
+						</p>
+					</div>
+
+					<div className="grid gap-6 md:grid-cols-2">
+						<FormField
+							control={form.control}
+							name="break_hours"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										Daily Break Hours <span className="text-red-500">*</span>
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="number"
+											placeholder="1"
+											{...field}
+											value={field.value ?? ""}
+											onChange={(e) =>
+												field.onChange(
+													e.target.value
+														? Number.parseInt(e.target.value, 10)
+														: undefined,
+												)
+											}
+										/>
+									</FormControl>
+									<FormDescription>Hours to deduct daily</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name="apply_break_deduction_after_hour"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										Apply After (Hours) <span className="text-red-500">*</span>
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="number"
+											placeholder="4"
+											{...field}
+											value={field.value ?? ""}
+											onChange={(e) =>
+												field.onChange(
+													e.target.value
+														? Number.parseInt(e.target.value, 10)
+														: undefined,
+												)
+											}
+										/>
+									</FormControl>
+									<FormDescription>Minimum hours threshold</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+				</div>
+
+				<Separator />
+
+				{/* Cash Advance Section */}
+				<div className="space-y-4">
+					<div>
+						<h3 className="text-lg font-semibold">Cash Advance Settings</h3>
+						<p className="text-sm text-muted-foreground">
+							Configure cash advance deduction rules
+						</p>
+					</div>
+
+					<FormField
+						control={form.control}
+						name="cash_advance_weekly_deduction_percent"
+						render={({ field }) => (
+							<FormItem className="max-w-xs">
+								<FormLabel>Weekly Deduction (%)</FormLabel>
+								<FormControl>
+									<Input
+										type="number"
+										step="0.01"
+										min="0"
+										max="100"
+										placeholder="10"
+										{...field}
+										value={field.value ?? ""}
+										onChange={(e) =>
+											field.onChange(
+												e.target.value
+													? Number.parseFloat(e.target.value)
+													: undefined,
+											)
+										}
+									/>
+								</FormControl>
+								<FormDescription>
+									Percentage of weekly payroll to deduct (0-100%)
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
+
+				{/* Submit Button */}
+				<div className="pt-4">
+					<Button type="submit" disabled={isLoading} size="lg">
+						{isLoading ? "Saving..." : "Save Settings"}
+					</Button>
+				</div>
 			</form>
 		</Form>
 	);

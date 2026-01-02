@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/prisma/client";
+import { isActiveEmployee } from "../db/is-active-employee";
 
 export async function updateSession(request: NextRequest) {
 	let supabaseResponse = NextResponse.next({
@@ -48,6 +49,7 @@ export async function updateSession(request: NextRequest) {
 	const pathname = request.nextUrl.pathname;
 	const isAuthRoute =
 		pathname.startsWith("/login") || pathname.startsWith("/auth");
+
 	const isPublicRoute = pathname === "/" || isAuthRoute;
 	const isPayrollRoute = pathname.startsWith("/payroll");
 
@@ -72,6 +74,19 @@ export async function updateSession(request: NextRequest) {
 				const url = request.nextUrl.clone();
 				url.pathname = "/";
 				url.searchParams.set("message", "no role assigned to user");
+				return NextResponse.redirect(url);
+			}
+
+			const isActive = await isActiveEmployee(user.sub);
+
+			if (!isActive) {
+				// Inactive employee, redirect to home with message
+				const url = request.nextUrl.clone();
+				url.pathname = "/";
+				url.searchParams.set(
+					"message",
+					"your account is marked as inactive. please contact admin",
+				);
 				return NextResponse.redirect(url);
 			}
 		} catch (error) {

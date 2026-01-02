@@ -6,17 +6,20 @@ import { getSessionWithRole } from "@/lib/session";
 import { serializeData } from "@/lib/utils";
 import { getUserWeeklyPayroll } from "@/lib/db/get-user-weekly-payroll";
 import { getWeekDateRange } from "@/lib/get-week-date-range";
+import { isActiveEmployee } from "@/lib/db/is-active-employee";
 
 export async function POST(request: Request) {
-	const { session, role } = await getSessionWithRole();
+	const { session } = await getSessionWithRole();
 
 	if (!session) {
 		return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 	}
 
-	if (role?.toLowerCase() !== "admin") {
+	const isActive = await isActiveEmployee(session.user.id);
+
+	if (!isActive) {
 		return NextResponse.json(
-			{ error: "Forbidden - insufficient permissions" },
+			{ error: "Forbidden - inactive employee" },
 			{ status: 403 },
 		);
 	}

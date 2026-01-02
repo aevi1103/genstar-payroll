@@ -1,7 +1,9 @@
+import { isActiveEmployee } from "@/lib/db/is-active-employee";
 import { getSessionWithRole } from "@/lib/session";
 import { prisma } from "@/prisma/client";
 import type { Prisma } from "@prisma/client";
 import dayjs from "dayjs";
+import { NextResponse } from "next/server";
 
 const serializeData = (data: unknown): unknown => {
 	return JSON.parse(
@@ -80,12 +82,14 @@ export async function GET(request: Request) {
 		const { session, role } = await getSessionWithRole();
 
 		if (!session) {
-			return Response.json({ error: "Unauthorized" }, { status: 401 });
+			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 		}
 
-		if (!role) {
-			return Response.json(
-				{ error: "Forbidden - insufficient permissions" },
+		const isActive = await isActiveEmployee(session.user.id);
+
+		if (!isActive) {
+			return NextResponse.json(
+				{ error: "Forbidden - inactive employee" },
 				{ status: 403 },
 			);
 		}

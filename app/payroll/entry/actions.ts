@@ -8,15 +8,21 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 import { getWeekDateRange } from "@/lib/get-week-date-range";
 import { getUserWeeklyPayroll } from "@/lib/db/get-user-weekly-payroll";
 import { adjustClockInTime } from "@/lib/adjust-clock-in-time";
+import { isActiveEmployee } from "@/lib/db/is-active-employee";
 
 dayjs.extend(weekOfYear);
 
 // Server action that toggles a user's clock-in/clock-out state for today.
 export async function clockInOut(latitude?: number, longitude?: number) {
-	const { session, role } = await getSessionWithRole();
+	const { session } = await getSessionWithRole();
 
-	if (!session || !role) {
+	if (!session) {
 		redirect("/auth/login");
+	}
+
+	const isActive = await isActiveEmployee(session.user.id);
+	if (!isActive) {
+		redirect(`/?error=${encodeURIComponent("Forbidden - inactive employee")}`);
 	}
 
 	const gpsLocation =

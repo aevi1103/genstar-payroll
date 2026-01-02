@@ -27,6 +27,11 @@ export const payrollSettingsSchema = z.object({
 		.number()
 		.int("Hours threshold must be a whole number")
 		.positive("Hours threshold must be greater than 0"),
+	cash_advance_weekly_deduction_percent: z
+		.number()
+		.min(0, "Deduction percentage cannot be negative")
+		.max(100, "Deduction percentage cannot exceed 100")
+		.optional(),
 });
 
 export type PayrollSettingsFormData = z.infer<typeof payrollSettingsSchema>;

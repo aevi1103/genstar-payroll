@@ -56,10 +56,6 @@ export const PayrollRecordSheet = () => {
 		return date ? dayjs(date).format("MMM DD, YYYY") : "N/A";
 	};
 
-	const formatTime = (date: Date | string | null | undefined) => {
-		return date ? dayjs(date).format("h:mm A") : "N/A";
-	};
-
 	return (
 		<Sheet
 			open={open}

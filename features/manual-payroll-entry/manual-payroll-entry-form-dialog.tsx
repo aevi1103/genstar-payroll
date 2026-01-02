@@ -42,12 +42,12 @@ import {
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { format } from "date-fns";
-import type { Users } from "@/app/api/payroll/users/route";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { shortDateFormat } from "@/lib/utils";
 import Link from "next/link";
+import type { Users } from "@/lib/db/get-active-employees";
 
 // Helper to format date to ISO string for API
 function formatDateToISOString(date: Date, timeInput: string): string {
@@ -313,9 +313,7 @@ export function ManualPayrollEntryFormDialog() {
 											) : (usersData?.length || 0) > 0 ? (
 												usersData?.map((user) => (
 													<SelectItem key={user.id} value={user.id}>
-														{user.first_name && user.last_name
-															? `${user.first_name} ${user.last_name} (${user.email})`
-															: user.email}
+														{user.fullName}
 													</SelectItem>
 												))
 											) : (
