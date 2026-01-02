@@ -33,7 +33,7 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 
 	const now = dayjs();
 	// adjust clock in time if using QR code clock in
-	const clockInTime = await adjustClockInTime(now);
+	const { time: clockInTime, adjusted, message } = await adjustClockInTime(now);
 
 	const today = clockInTime.endOf("day").toDate();
 	today.setUTCHours(0, 0, 0, 0);
@@ -106,6 +106,6 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 	});
 
 	redirect(
-		`/payroll?message=${encodeURIComponent("Clocked in successfully")}&time=${now.toISOString()}`,
+		`/payroll?message=${encodeURIComponent(`${message}, Clocked in successfully`)}&time=${now.toISOString()}`,
 	);
 }

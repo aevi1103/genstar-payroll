@@ -22,7 +22,12 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 			adjustedClockInTime: shiftStartTime.toISOString(),
 		});
 		// if clock in is before shift start time but after start of day, set to shift start time
-		return shiftStartTime;
+		return {
+			time: shiftStartTime,
+			adjusted: true,
+			message:
+				"Clock-in time adjusted to shift start time due to early clock-in.",
+		};
 	}
 
 	if (
@@ -34,7 +39,12 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 			adjustedClockInTime: shiftStartTime.toISOString(),
 		});
 		// adjust clock in time if clock is within grace period
-		return shiftStartTime;
+		return {
+			time: shiftStartTime,
+			adjusted: true,
+			message:
+				"Clock-in time adjusted to shift start time within grace period.",
+		};
 	}
 
 	const lateDeductionThreshold = settings?.late_grace_period_minutes || 30;
@@ -52,7 +62,12 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 			originalClockInTime: clockInTime.toISOString(),
 			adjustedClockInTime: shiftStartTime.add(1, "hour").toISOString(),
 		});
-		return shiftStartTime.add(1, "hour");
+		return {
+			time: shiftStartTime.add(1, "hour"),
+			adjusted: true,
+			message:
+				"Clock-in time adjusted to 9:00 AM due to late clock-in beyond grace period.",
+		};
 	}
 
 	console.log("No adjustment to clock in time needed", {
@@ -60,5 +75,9 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 	});
 
 	// otherwise return original clock in time
-	return clockInTime;
+	return {
+		time: clockInTime,
+		adjusted: false,
+		message: undefined,
+	};
 };
