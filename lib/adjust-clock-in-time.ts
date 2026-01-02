@@ -1,11 +1,17 @@
 import dayjs, { type Dayjs } from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import { getPayrollSettingsData } from "./db/get-payroll-settings";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const adjustClockInTime = async (clockInTime: Dayjs) => {
 	const settings = await getPayrollSettingsData();
 
 	const shiftStartTime = clockInTime
 		.clone()
+		.tz("Asia/Manila")
 		.hour(8)
 		.minute(0)
 		.second(0)
@@ -14,7 +20,7 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 	const shiftStartGracePeriod = settings?.late_grace_period_minutes || 5;
 	const gracePeridTime = shiftStartTime.add(shiftStartGracePeriod, "minute");
 
-	const startOfDay = dayjs(clockInTime).startOf("day");
+	const startOfDay = dayjs(clockInTime).tz("Asia/Manila").startOf("day");
 
 	if (clockInTime.isBefore(shiftStartTime) && clockInTime.isAfter(startOfDay)) {
 		console.log("Adjusting clock in time to shift start time", {
