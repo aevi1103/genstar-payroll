@@ -1,11 +1,13 @@
 import { prisma } from "@/prisma/client";
 import type { Prisma } from "@prisma/client";
 
-export async function getCashAdvances() {
+export async function getCashAdvances(unpaidOnly?: boolean) {
 	const cashAdvancesRaw = await prisma.cash_advances.findMany({
+		where: unpaidOnly ? { is_paid: false } : {},
 		select: {
 			id: true,
 			cash_advance: true,
+			user_id: true,
 			is_paid: true,
 			paid_amount: true,
 			created_at: true,

@@ -346,20 +346,22 @@ export const SettingsForm = ({
 								<FormLabel>Weekly Deduction (%)</FormLabel>
 								<FormControl>
 									<Input
-										type="number"
-										step="0.01"
-										min="0"
-										max="100"
+										type="text"
+										inputMode="numeric"
 										placeholder="10"
 										{...field}
 										value={field.value ?? ""}
-										onChange={(e) =>
-											field.onChange(
-												e.target.value
-													? Number.parseFloat(e.target.value)
-													: undefined,
-											)
-										}
+										onChange={(e) => {
+											const value = e.target.value.trim();
+											if (value === "") {
+												field.onChange(undefined);
+											} else {
+												const parsed = Number.parseFloat(value);
+												if (!Number.isNaN(parsed)) {
+													field.onChange(parsed);
+												}
+											}
+										}}
 									/>
 								</FormControl>
 								<FormDescription>

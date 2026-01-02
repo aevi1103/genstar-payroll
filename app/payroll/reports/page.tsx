@@ -7,6 +7,8 @@ import { getPayrollSettings } from "./actions";
 import { WeeklyNavFilter } from "@/features/history/weekly-nav-filter";
 import { shortDateFormat } from "@/lib/utils";
 import { WeeklyRecordSheet } from "@/features/weekly-history/weekly-record-sheet";
+import { getCashAdvances } from "@/lib/db/get-cash-advances";
+import { getPayrollDeductions } from "@/lib/db/get-payroll-deductions";
 
 export const metadata: Metadata = {
 	title: "Payroll Reports",
@@ -19,6 +21,7 @@ type PageProps = {
 export default async function Page({ searchParams }: PageProps) {
 	const params = await searchParams;
 	const payrollSettings = await getPayrollSettings();
+	const cashAdvances = await getCashAdvances(true);
 
 	if (!params.weekStartDate || !params.weekEndDate) {
 		const weekStart = dayjs()
@@ -38,6 +41,11 @@ export default async function Page({ searchParams }: PageProps) {
 		redirect(`/payroll/reports?${qryString}`);
 	}
 
+	const fromYear = dayjs(params.weekStartDate).year();
+	const toYear = dayjs(params.weekEndDate).year();
+
+	const payrollDeductions = await getPayrollDeductions(fromYear, toYear);
+
 	return (
 		<div className="h-full flex flex-col gap-2">
 			<div className="flex flex-wrap gap-4">
@@ -45,7 +53,11 @@ export default async function Page({ searchParams }: PageProps) {
 				<PayrollReportFilterForm />
 			</div>
 
-			<WeeklyPayrollHistory settings={payrollSettings} />
+			<WeeklyPayrollHistory
+				settings={payrollSettings}
+				cashAdvances={cashAdvances}
+				payrollDeductions={payrollDeductions}
+			/>
 			<WeeklyRecordSheet />
 		</div>
 	);

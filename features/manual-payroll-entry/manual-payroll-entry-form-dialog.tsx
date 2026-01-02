@@ -195,12 +195,6 @@ export function ManualPayrollEntryFormDialog() {
 		if (clockOutDate && data.clockOutTime) {
 			clockOutISO = formatDateToISOString(clockOutDate, data.clockOutTime);
 
-			console.log("Clock In ISO:", {
-				data,
-				clockOutDate,
-				clockOutISO,
-			});
-
 			// Validate that clock out is after clock in
 			if (new Date(clockOutISO) <= new Date(clockInISO)) {
 				toast.error("Clock out time must be after clock in time");
@@ -239,6 +233,8 @@ export function ManualPayrollEntryFormDialog() {
 
 		closeDialog();
 		setPayrollEntryData(null);
+		setClockOutDate(undefined);
+		setClockInDate(new Date());
 	};
 
 	return (

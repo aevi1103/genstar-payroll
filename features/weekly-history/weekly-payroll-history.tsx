@@ -14,11 +14,17 @@ import type { PayrollSettingsResponse } from "@/app/payroll/reports/actions";
 import { useMapPayrollDatasource } from "@/hooks/use-map-payroll-datasource";
 import { useWeeklyPayrollHistoryStore } from "@/lib/stores/use-weekly-payroll-history-store";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import type { CashAdvances } from "@/lib/db/get-cash-advances";
+import type { PayrollDeductions } from "@/lib/db/get-payroll-deductions";
 
 export const WeeklyPayrollHistory = ({
 	settings,
+	cashAdvances,
+	payrollDeductions,
 }: {
 	settings: PayrollSettingsResponse;
+	cashAdvances: CashAdvances;
+	payrollDeductions: PayrollDeductions;
 }) => {
 	const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -42,7 +48,12 @@ export const WeeklyPayrollHistory = ({
 	const { data: weeklySummaryData } = useWeeklySummary({
 		data: data || [],
 		settings,
+		cashAdvances,
+		payrollDeductions,
 	});
+
+	const cashAdvanceDeductionRate =
+		settings.data?.cash_advance_weekly_deduction_percent || 0;
 
 	console.log({ data, weeklySummaryData, isLoading, settings });
 
@@ -178,6 +189,61 @@ export const WeeklyPayrollHistory = ({
 					],
 				},
 			],
+		},
+		{
+			headerName: "Deductions",
+			children: [
+				{
+					headerName: "Cash Advance",
+					children: [
+						{
+							field: "remainingCashAdvanceBalance.remainingBalance",
+							headerName: "Remaining",
+							headerTooltip: "Remaining Cash Advance Balance",
+							initialWidth: 130,
+							valueFormatter: (params) => formatPesoCurrency(params.value),
+						},
+						{
+							field: "remainingCashAdvanceBalance.weeklyDeductionLimit",
+							headerName: `Weekly (${cashAdvanceDeductionRate}%)`,
+							headerTooltip: "Cash Advance Weekly Deduction",
+							initialWidth: 130,
+							valueFormatter: (params) => formatPesoCurrency(params.value),
+						},
+					],
+				},
+
+				{
+					field: "deductions.sss.weekly",
+					headerName: "SSS",
+					initialWidth: 130,
+					valueFormatter: (params) => formatPesoCurrency(params.value),
+				},
+				{
+					field: "deductions.pagIbig.weekly",
+					headerName: "Pag-IBIG",
+					initialWidth: 130,
+					valueFormatter: (params) => formatPesoCurrency(params.value),
+				},
+			],
+		},
+		{
+			field: "grossSalary",
+			headerName: "Gross Salary",
+			valueFormatter: (params) => formatPesoCurrency(params.value),
+			initialWidth: 130,
+		},
+		{
+			field: "totalDeductions",
+			headerName: "Total Deductions",
+			valueFormatter: (params) => formatPesoCurrency(params.value),
+			initialWidth: 130,
+		},
+		{
+			field: "netSalary",
+			headerName: "Net Salary",
+			valueFormatter: (params) => formatPesoCurrency(params.value),
+			initialWidth: 130,
 		},
 	]);
 

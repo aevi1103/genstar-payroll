@@ -1,8 +1,17 @@
 import { prisma } from "@/prisma/client";
 import type { Prisma } from "@prisma/client";
 
-export async function getPayrollDeductions() {
+export async function getPayrollDeductions(fromYear?: number, toYear?: number) {
 	const deductionsRaw = await prisma.payroll_deductions.findMany({
+		where:
+			fromYear && toYear
+				? {
+						year: {
+							gte: fromYear,
+							lte: toYear,
+						},
+					}
+				: undefined,
 		select: {
 			id: true,
 			user_id: true,

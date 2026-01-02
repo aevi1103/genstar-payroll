@@ -307,26 +307,18 @@ export const PayrollHistory = ({
 	}
 
 	return (
-		<div className="h-full flex flex-col gap-2">
-			<Input
-				placeholder="Search..."
-				onChange={(e) => {
-					gridRef.current?.api.setGridOption("quickFilterText", e.target.value);
-				}}
-			/>
-			<div className="h-[90dvh] lg:flex-1">
-				<TableWrapper>
-					<AgGridReact
-						ref={gridRef}
-						columnDefs={colDefs}
-						rowData={data || []}
-						getRowId={(params) => params?.data?.id?.toString() || ""}
-						defaultColDef={{
-							filter: true,
-						}}
-					/>
-				</TableWrapper>
-			</div>
+		<div className="h-[90dvh] lg:flex-1">
+			<TableWrapper>
+				<AgGridReact
+					ref={gridRef}
+					columnDefs={colDefs}
+					rowData={data || []}
+					getRowId={(params) => params?.data?.id?.toString() || ""}
+					defaultColDef={{
+						filter: true,
+					}}
+				/>
+			</TableWrapper>
 		</div>
 	);
 };

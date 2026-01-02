@@ -95,6 +95,7 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 	await prisma.payroll.create({
 		data: {
 			user_id: session.user.id,
+			original_clock_in_time: now.toDate(),
 			clock_in_time: clockInTime.toDate(),
 			clock_in_date: today,
 			created_at: now.toDate(),
