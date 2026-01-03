@@ -80,14 +80,13 @@ export const ViewLogsDialog = ({
 			{
 				headerName: "Date",
 				field: "created_at",
-				flex: 1,
+				initialWidth: 200,
 				valueFormatter: (params) => format(new Date(params.value), "PPp"),
 				cellClass: "font-medium",
 			},
 			{
 				headerName: "Type",
 				field: "payment",
-				flex: 0.8,
 				cellRenderer: (params: { value: number }) => {
 					const paymentType = getPaymentType(params.value);
 					return (
@@ -100,7 +99,7 @@ export const ViewLogsDialog = ({
 			{
 				headerName: "Payment",
 				field: "payment",
-				flex: 1,
+
 				type: "rightAligned",
 				cellRenderer: (params: { value: number }) => {
 					const value = params.value;
@@ -124,7 +123,7 @@ export const ViewLogsDialog = ({
 			{
 				headerName: "Balance",
 				field: "current_balance",
-				flex: 1,
+
 				type: "rightAligned",
 				valueFormatter: (params) =>
 					`₱${params.value.toLocaleString("en-PH", {
@@ -136,12 +135,11 @@ export const ViewLogsDialog = ({
 			{
 				headerName: "Created By",
 				field: "created_by",
-				flex: 1,
 			},
 			{
 				headerName: "Time Ago",
 				field: "created_at",
-				flex: 1,
+
 				valueFormatter: (params) =>
 					formatDistanceToNow(new Date(params.value), { addSuffix: true }),
 				cellClass: "text-muted-foreground",
@@ -158,7 +156,7 @@ export const ViewLogsDialog = ({
 					</Button>
 				)}
 			</DialogTrigger>
-			<DialogContent className="max-w-[70vw]! max-h-[80vh]! flex flex-col">
+			<DialogContent className="lg:max-w-[70vw]!  flex flex-col">
 				<DialogHeader>
 					<DialogTitle>Payment Logs</DialogTitle>
 					<DialogDescription>
@@ -175,17 +173,18 @@ export const ViewLogsDialog = ({
 						<p className="text-muted-foreground">No payment logs found</p>
 					</div>
 				) : (
-					<TableWrapper>
-						<AgGridReact<PaymentLog>
-							rowData={logs}
-							columnDefs={columnDefs}
-							domLayout="autoHeight"
-							suppressCellFocus
-							defaultColDef={{
-								initialWidth: 150,
-							}}
-						/>
-					</TableWrapper>
+					<div className="h-75">
+						<TableWrapper>
+							<AgGridReact<PaymentLog>
+								rowData={logs}
+								columnDefs={columnDefs}
+								suppressCellFocus
+								defaultColDef={{
+									initialWidth: 150,
+								}}
+							/>
+						</TableWrapper>
+					</div>
 				)}
 			</DialogContent>
 		</Dialog>
