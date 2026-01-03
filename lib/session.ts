@@ -31,6 +31,8 @@ export async function getSessionWithRole(redirectOnError = true) {
 		role = "user";
 	}
 
+	const isAdmin = role.toLocaleLowerCase() === "admin";
+
 	return {
 		session,
 		user: {
@@ -43,6 +45,7 @@ export async function getSessionWithRole(redirectOnError = true) {
 				"/avatars/shadcn.jpg") as string,
 		},
 		role,
+		isAdmin,
 		error,
 	};
 }

@@ -123,6 +123,14 @@ export const mapWeeklySummaryData = ({
 					0,
 				) || 0;
 
+			const totalLateMinutes =
+				records?.reduce(
+					(acc, record) => acc + (record.lateTimeInMinutes || 0),
+					0,
+				) || 0;
+
+			const totalLateHours = totalLateMinutes / 60;
+
 			const totalRegularOvertime =
 				records?.reduce(
 					(acc, record) => acc + (record.overtimeHoursWorked || 0),
@@ -135,6 +143,7 @@ export const mapWeeklySummaryData = ({
 					0,
 				) || 0;
 
+			const regularDaysWorked = records?.length || 0;
 			const [firstRecord] = records || [];
 			const salaryPerDay = firstRecord?.salaryPerDay || 0;
 			const salaryPerHour = salaryPerDay ? Number(salaryPerDay) / 8 : 0;
@@ -142,17 +151,11 @@ export const mapWeeklySummaryData = ({
 			const regularOtMultiplier =
 				settings.data?.regular_ot_rate_percent || 1.25;
 			const sundayMultiplier = settings.data?.weekend_ot_rate || 1.3;
-
 			const regularHoursPay = totalRegularHours * salaryPerHour;
-
 			const overtimePay =
 				totalRegularOvertime * (salaryPerHour * regularOtMultiplier);
-
 			const sundayPay = sundayHours * (salaryPerHour * sundayMultiplier);
-
 			const totalPay = regularHoursPay + overtimePay + sundayPay;
-
-			const regularDaysWorked = totalRegularHours / 8;
 
 			const firstName = firstRecord?.firstName || "";
 			const lastName = firstRecord?.lastName || "";
@@ -198,7 +201,7 @@ export const mapWeeklySummaryData = ({
 				sundayMultiplier,
 				regularDaysWorked,
 				details: records,
-				late: 0,
+				late: totalLateHours,
 
 				remainingCashAdvanceBalance,
 				deductions,

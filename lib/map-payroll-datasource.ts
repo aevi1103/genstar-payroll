@@ -2,6 +2,7 @@ import type { PayrollRecord } from "@/app/api/payroll/history/route";
 import dayjs from "dayjs";
 import { shortDateFormat } from "./utils";
 import type { PayrollSettings } from "./db/get-payroll-settings";
+import { getAdjustedClockInTime } from "./get-adjusted-clock-in-time";
 
 // employee works mon-sat 8 hours a day
 const regularHoursThreshold = 8;
@@ -23,8 +24,11 @@ export const mapPayrollDataSource = ({
 				? Number(salaryPerDay) / regularHoursThreshold
 				: null;
 
+			const { clockInTime, originalClockInTime, lateTimeInMinutes, adjusted } =
+				getAdjustedClockInTime(dayjs(record.clock_in_time), settings);
+
 			let hoursWorked = dayjs(record.clock_out_time || new Date()).diff(
-				dayjs(record.clock_in_time),
+				clockInTime,
 				"hours",
 				true,
 			);
@@ -53,6 +57,8 @@ export const mapPayrollDataSource = ({
 
 			regularHoursWorked = isSunday ? 0 : regularHoursWorked;
 
+			const adjustedHoursWorked = hoursWorked - lateTimeInMinutes / 60;
+
 			const overtimeHoursWorked =
 				hoursWorked > regularHoursThreshold
 					? hoursWorked - regularHoursThreshold
@@ -78,6 +84,10 @@ export const mapPayrollDataSource = ({
 
 			return {
 				...record,
+				originalClockInTime,
+				clockInTime,
+				lateTimeInMinutes,
+				adjusted,
 				email,
 				firstName: fname,
 				lastName: lname,
@@ -85,6 +95,7 @@ export const mapPayrollDataSource = ({
 				salaryPerDay,
 				salaryPerHour,
 				hoursWorked,
+				adjustedHoursWorked,
 				regularHoursWorked,
 				overtimeHoursWorked,
 				sundayHoursWorked,

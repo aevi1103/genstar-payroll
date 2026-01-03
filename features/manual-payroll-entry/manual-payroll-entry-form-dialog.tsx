@@ -167,7 +167,10 @@ export function ManualPayrollEntryFormDialog() {
 			return response.json();
 		},
 		onSuccess: () => {
-			toast.success("Payroll entry created successfully");
+			toast.success("Success", {
+				duration: 4000,
+				description: "The payroll entry has been recorded.",
+			});
 			form.reset();
 			closeDialog();
 			// Invalidate the payroll history query to refetch data

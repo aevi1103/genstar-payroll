@@ -23,6 +23,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { useSearchParams } from "next/navigation";
 import { uePayrollHistoryStore } from "@/lib/stores/use-payroll-history-store";
+import numeral from "numeral";
 
 dayjs.extend(duration);
 
@@ -72,7 +73,7 @@ export const PayrollHistory = ({
 			field: "users.user_profiles",
 			headerName: "Employee",
 			hide: !isAdmin,
-			initialWidth: 200,
+			initialWidth: 180,
 			valueGetter: (params) => {
 				const profile = params.data?.users?.user_profiles?.[0];
 				if (!profile) return params.data?.users?.email || "N/A";
@@ -133,156 +134,70 @@ export const PayrollHistory = ({
 			headerName: "Payroll Week",
 		},
 		{
-			field: "clock_in_time",
-			headerName: "Clock In",
-			initialWidth: 230,
-			valueFormatter: (params) => {
-				return new Date(params.value).toLocaleString();
-			},
+			field: "originalClockInTime",
+			headerName: "Original Clock In",
+			initialFlex: 1,
+			minWidth: 150,
 			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
 				return <ClockInTime params={params} isAdmin={isAdmin} />;
 			},
 		},
 		{
+			field: "clockInTime",
+			headerName: "Clock In",
+			initialFlex: 1,
+			minWidth: 150,
+			valueFormatter: (params) => {
+				return new Date(params.value).toLocaleString();
+			},
+		},
+		{
 			field: "clock_out_time",
 			headerName: "Clock Out",
-			initialWidth: 200,
+			initialFlex: 1,
+			minWidth: 150,
 			cellClass: "!flex !items-center !justify-center !h-full",
 			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
 				return <ClockOutTime params={params} isAdmin={isAdmin} />;
 			},
 		},
+		{
+			field: "hoursWorked",
+			headerName: "Hours Worked",
+			initialWidth: 160,
+			valueFormatter: (params) => numeral(params.value).format("0.[00]"),
+		},
+		{
+			field: "lateTimeInMinutes",
+			headerName: "Late (mins)",
+			initialWidth: 130,
+			valueFormatter: (params) => numeral(params.value).format("0.[00]"),
+		},
+		{
+			field: "adjustedHoursWorked",
+			headerName: "Adjusted Hours",
+			initialWidth: 150,
+			valueFormatter: (params) => numeral(params.value).format("0.[00]"),
+		},
 
 		{
-			headerName: "Hours Worked",
-			children: [
-				{
-					field: "hoursWorked",
-					headerName: "Hours",
-					initialWidth: 100,
-					valueFormatter: (params) =>
-						params.value ? params.value.toFixed(2) : "0.00",
-				},
-				{
-					colId: "hoursWorked",
-					headerName: "Elapsed Time",
-					initialWidth: 150,
-					valueFormatter: (params) => {
-						const hours = params.data?.hoursWorked || 0;
-						const durationObj = hoursToTime(hours);
-						return durationObj.formatted;
-					},
-				},
-				{
-					field: "amountEarned",
-					headerName: "Amount Earned",
-					initialWidth: 170,
-					valueFormatter: (params) =>
-						formatPesoCurrency(params.value as number | null),
-				},
-				{
-					field: "salaryPerDay",
-					headerName: "Salary / Day",
-					initialWidth: 170,
-					valueFormatter: (params) =>
-						formatPesoCurrency(params.value as number | null),
-				},
-				{
-					field: "salaryPerHour",
-					initialWidth: 170,
-					headerName: "Amount / Hour",
-					valueFormatter: (params) =>
-						formatPesoCurrency(params.value as number | null),
-				},
-			],
+			colId: "hoursWorked",
+			headerName: "Elapsed Time",
+			initialWidth: 160,
+			valueFormatter: (params) => {
+				const hours = params.data?.adjustedHoursWorked || 0;
+				const durationObj = hoursToTime(hours);
+				return durationObj.formatted;
+			},
 		},
 		{
-			headerName: "Location",
-			children: [
-				{
-					field: "gps_location",
-					headerName: "Clock In",
-					cellClass: "!flex !items-center !justify-center !h-full",
-					cellRenderer: (
-						params: CustomCellRendererProps<PayrollDataSource>,
-					) => {
-						return <GpsLocationBtn params={params} type="clock_in" />;
-					},
-				},
-				{
-					field: "gps_location_clock_out",
-					headerName: "Clock Out",
-					cellClass: "!flex !items-center !justify-center !h-full",
-					cellRenderer: (
-						params: CustomCellRendererProps<PayrollDataSource>,
-					) => {
-						return <GpsLocationBtn params={params} type="clock_out" />;
-					},
-				},
-			],
-		},
-		{
-			headerName: "Date",
-			children: [
-				{
-					field: "clock_in_date",
-					initialWidth: 150,
-					headerName: "Clock In",
-					valueFormatter: (params) => {
-						return new Date(params.value).toLocaleDateString();
-					},
-				},
-				{
-					field: "clock_out_date",
-					initialWidth: 150,
-					headerName: "Clock Out",
-					valueFormatter: (params) => {
-						return params.value
-							? new Date(params.value).toLocaleDateString()
-							: "Active";
-					},
-				},
-			],
-		},
-		{
-			headerName: "Entry Info",
-			hide: !isAdmin,
-			children: [
-				{
-					field: "created_at",
-					headerName: "Created At",
-					valueFormatter: (params) => {
-						return params.value
-							? formatDistanceToNow(new Date(params.value), { addSuffix: true })
-							: "";
-					},
-				},
-				{
-					field: "modified_at",
-					headerName: "Modified At",
-					valueFormatter: (params) => {
-						return params.value
-							? formatDistanceToNow(new Date(params.value), { addSuffix: true })
-							: "";
-					},
-				},
-				{
-					field: "is_manual",
-					headerName: "Manual Entry",
-				},
-				{
-					field: "created_by",
-					headerName: "Created By",
-				},
-				{
-					field: "modified_by",
-					headerName: "Modified By",
-				},
-				{
-					field: "id",
-					headerName: "Payroll ID",
-				},
-			],
+			field: "clock_in_date",
+			headerName: "Clock In Date",
+			initialWidth: 130,
+			valueFormatter: (params) => {
+				if (!params.value) return "N/A";
+				return new Date(params.value).toLocaleDateString();
+			},
 		},
 	]);
 
@@ -316,6 +231,12 @@ export const PayrollHistory = ({
 					getRowId={(params) => params?.data?.id?.toString() || ""}
 					defaultColDef={{
 						filter: true,
+						minWidth: 100,
+					}}
+					rowSelection={{
+						mode: "singleRow",
+						checkboxes: false,
+						enableClickSelection: true,
 					}}
 				/>
 			</TableWrapper>

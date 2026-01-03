@@ -9,6 +9,7 @@ import { shortDateFormat } from "@/lib/utils";
 import { WeeklyRecordSheet } from "@/features/weekly-history/weekly-record-sheet";
 import { getCashAdvances } from "@/lib/db/get-cash-advances";
 import { getPayrollDeductions } from "@/lib/db/get-payroll-deductions";
+import { getSessionWithRole } from "@/lib/session";
 
 export const metadata: Metadata = {
 	title: "Payroll Reports",
@@ -19,6 +20,8 @@ type PageProps = {
 };
 
 export default async function Page({ searchParams }: PageProps) {
+	const { isAdmin } = await getSessionWithRole();
+
 	const params = await searchParams;
 	const payrollSettings = await getPayrollSettings();
 	const cashAdvances = await getCashAdvances(true);
@@ -58,7 +61,7 @@ export default async function Page({ searchParams }: PageProps) {
 				cashAdvances={cashAdvances}
 				payrollDeductions={payrollDeductions}
 			/>
-			<WeeklyRecordSheet />
+			<WeeklyRecordSheet isAdmin={isAdmin} />
 		</div>
 	);
 }

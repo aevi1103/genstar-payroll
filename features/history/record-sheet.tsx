@@ -10,19 +10,13 @@ import {
 import { uePayrollHistoryStore } from "@/lib/stores/use-payroll-history-store";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { formatPesoCurrency } from "@/lib/utils";
 import dayjs from "dayjs";
-import {
-	Calendar,
-	Clock,
-	MapPin,
-	User,
-	Briefcase,
-	FileText,
-} from "lucide-react";
+import { Clock, MapPin, User, FileText } from "lucide-react";
 import { GpsLocationBtn } from "./gps-location-btn";
 import type { CustomCellRendererProps } from "ag-grid-react";
 import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
+import { hoursToTime } from "@/lib/convert-hours-to-duration";
+import numeral from "numeral";
 
 export const PayrollRecordSheet = () => {
 	const open = uePayrollHistoryStore((state) => state.isSheetOpen);
@@ -49,11 +43,7 @@ export const PayrollRecordSheet = () => {
 	};
 
 	const formatDateTime = (date: Date | string | null | undefined) => {
-		return date ? dayjs(date).format("MMM DD, YYYY h:mm A") : "N/A";
-	};
-
-	const formatDate = (date: Date | string | null | undefined) => {
-		return date ? dayjs(date).format("MMM DD, YYYY") : "N/A";
+		return date ? dayjs(date).format("MMM DD, YYYY h:mm A") : "Active";
 	};
 
 	return (
@@ -71,8 +61,12 @@ export const PayrollRecordSheet = () => {
 			<SheetContent className="overflow-y-auto w-full sm:max-w-xl">
 				<SheetHeader>
 					<SheetTitle className="flex items-center gap-2">
-						<span>Payroll Record Details</span>
+						<span>{record.fullName || "N/A"}</span>
 						{getStatusBadge()}
+
+						<Badge variant={"outline"}>
+							{record.is_manual ? "Manual Entry" : "QR Code Entry"}
+						</Badge>
 					</SheetTitle>
 					<SheetDescription>
 						Detailed information about this payroll entry
@@ -94,24 +88,6 @@ export const PayrollRecordSheet = () => {
 
 					<Separator />
 
-					{/* Payroll Week */}
-					<div className="space-y-3">
-						<div className="flex items-center gap-2">
-							<Calendar className="h-4 w-4 text-muted-foreground" />
-							<h3 className="font-semibold">Payroll Period</h3>
-						</div>
-						<div className="space-y-2 pl-6">
-							<DetailRow label="Week Range" value={record.weekRange || "N/A"} />
-							<DetailRow
-								label="Week Start"
-								value={formatDate(record.weekStart)}
-							/>
-							<DetailRow label="Week End" value={formatDate(record.weekEnd)} />
-						</div>
-					</div>
-
-					<Separator />
-
 					{/* Time Information */}
 					<div className="space-y-3">
 						<div className="flex items-center gap-2">
@@ -119,73 +95,39 @@ export const PayrollRecordSheet = () => {
 							<h3 className="font-semibold">Time Information</h3>
 						</div>
 						<div className="space-y-2 pl-6">
+							<DetailRow label="Week Range" value={record.weekRange || "N/A"} />
+
 							<DetailRow
-								label="Clock In"
-								value={formatDateTime(record.clock_in_time)}
+								label="Original Clock In"
+								value={formatDateTime(record.originalClockInTime.toDate())}
 							/>
 							<DetailRow
-								label="Clock In Date"
-								value={formatDate(record.clock_in_date)}
+								label="Clock In"
+								value={formatDateTime(record.clockInTime.toDate())}
 							/>
 							<DetailRow
 								label="Clock Out"
 								value={formatDateTime(record.clock_out_time)}
 							/>
+
 							<DetailRow
-								label="Clock Out Date"
-								value={formatDate(record.clock_out_date)}
+								label="Hours Worked"
+								value={numeral(record.hoursWorked).format("0.[00]")}
 							/>
+
+							<DetailRow
+								label="Late (mins)"
+								value={`${numeral(record.lateTimeInMinutes || 0).format("0.[00]")} mins`}
+							/>
+
+							<DetailRow
+								label="Adjusted Hours Worked"
+								value={`${numeral(record.adjustedHoursWorked).format("0.[00]")} hrs. (${hoursToTime(record.adjustedHoursWorked || 0).formatted})`}
+							/>
+
 							<DetailRow
 								label="Is Sunday"
 								value={record.isSunday ? "Yes" : "No"}
-							/>
-						</div>
-					</div>
-
-					<Separator />
-
-					{/* Hours & Earnings */}
-					<div className="space-y-3">
-						<div className="flex items-center gap-2">
-							<Briefcase className="h-4 w-4 text-muted-foreground" />
-							<h3 className="font-semibold">Hours & Earnings</h3>
-						</div>
-						<div className="space-y-2 pl-6">
-							<DetailRow
-								label="Hours Worked"
-								value={record.hoursWorked?.toFixed(2) || "0.00"}
-							/>
-							<DetailRow
-								label="Regular Hours"
-								value={record.regularHoursWorked?.toFixed(2) || "0.00"}
-							/>
-							<DetailRow
-								label="Overtime Hours"
-								value={record.overtimeHoursWorked?.toFixed(2) || "0.00"}
-							/>
-							<DetailRow
-								label="Sunday Hours"
-								value={record.sundayHoursWorked?.toFixed(2) || "0.00"}
-							/>
-							<DetailRow
-								label="Break Hours"
-								value={record.breakHours?.toFixed(2) || "0.00"}
-							/>
-							<Separator className="my-2" />
-							<DetailRow
-								label="Salary Per Day"
-								value={formatPesoCurrency(record.salaryPerDay || 0)}
-								highlight
-							/>
-							<DetailRow
-								label="Salary Per Hour"
-								value={formatPesoCurrency(record.salaryPerHour || 0)}
-								highlight
-							/>
-							<DetailRow
-								label="Amount Earned"
-								value={formatPesoCurrency(record.amountEarned || 0)}
-								highlight
 							/>
 						</div>
 					</div>
@@ -235,6 +177,7 @@ export const PayrollRecordSheet = () => {
 								label="Manual Entry"
 								value={record.is_manual ? "Yes" : "No"}
 							/>
+
 							<DetailRow
 								label="Created At"
 								value={formatDateTime(record.created_at)}

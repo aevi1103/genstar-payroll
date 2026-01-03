@@ -55,8 +55,8 @@ export async function POST(request: Request) {
 			);
 		}
 
-		const date = clockIn.startOf("day").endOf("day").toDate();
-		date.setUTCHours(0, 0, 0, 0);
+		const clockInDate = clockIn.startOf("day").toDate();
+		clockInDate.setUTCHours(0, 0, 0, 0);
 
 		const clockOutDate = clockOut ? clockOut.startOf("day").toDate() : null;
 
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
 		const existingRecord = await prisma.payroll.findFirst({
 			where: {
 				user_id: body.userId,
-				clock_in_date: date,
+				clock_in_date: clockInDate,
 			},
 		});
 
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
 				},
 				data: {
 					clock_in_time: clockIn.toDate(),
-					clock_in_date: date,
+					clock_in_date: clockInDate,
 					clock_out_time: body.clockOutTime ? clockOut?.toDate() : null,
 					clock_out_date: body.clockOutTime ? clockOutDate : null,
 					gps_location: gpsLocationClockIn,
@@ -117,7 +117,8 @@ export async function POST(request: Request) {
 					connect: { id: body.userId },
 				},
 				clock_in_time: clockIn.toDate(),
-				clock_in_date: date,
+				original_clock_in_time: clockIn.toDate(),
+				clock_in_date: clockInDate,
 				clock_out_time: body.clockOutTime ? clockOut?.toDate() : undefined,
 				clock_out_date: body.clockOutTime ? clockOutDate : undefined,
 				gps_location: gpsLocationClockIn,

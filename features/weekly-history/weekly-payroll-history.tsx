@@ -16,6 +16,7 @@ import { useWeeklyPayrollHistoryStore } from "@/lib/stores/use-weekly-payroll-hi
 import { useMediaQuery } from "@/hooks/use-media-query";
 import type { CashAdvances } from "@/lib/db/get-cash-advances";
 import type { PayrollDeductions } from "@/lib/db/get-payroll-deductions";
+import numeral from "numeral";
 
 export const WeeklyPayrollHistory = ({
 	settings,
@@ -102,17 +103,20 @@ export const WeeklyPayrollHistory = ({
 						{
 							field: "regularDaysWorked",
 							headerName: "REG.",
-							valueFormatter: (params) => params.value.toFixed(0),
+							valueFormatter: (params) =>
+								numeral(params.value).format("0.[00]"),
 						},
 						{
 							field: "totalRegularHours",
 							headerName: "Hrs.",
-							valueFormatter: (params) => params.value.toFixed(2),
+							valueFormatter: (params) =>
+								numeral(params.value).format("0.[00]"),
 						},
 						{
 							field: "late",
 							headerName: "Late",
-							valueFormatter: (params) => params.value.toFixed(2),
+							valueFormatter: (params) =>
+								numeral(params.value).format("0.[00]"),
 						},
 						{
 							colId: "totalHours",
@@ -123,7 +127,8 @@ export const WeeklyPayrollHistory = ({
 								const lateHours = params.data?.late || 0;
 								return totalRegularHours - lateHours;
 							},
-							valueFormatter: (params) => params.value.toFixed(2),
+							valueFormatter: (params) =>
+								numeral(params.value).format("0.[00]"),
 						},
 					],
 				},
@@ -134,25 +139,29 @@ export const WeeklyPayrollHistory = ({
 							field: "totalRegularOvertime",
 							headerName: "REG. OT Hrs.",
 							initialWidth: 150,
-							valueFormatter: (params) => params.value.toFixed(2),
+							valueFormatter: (params) =>
+								numeral(params.value).format("0.[00]"),
 						},
 						{
 							field: "regulatOtMultiplier",
 							headerName: "Reg. OT %",
 							initialWidth: 120,
-							valueFormatter: (params) => params.value.toFixed(2),
+							valueFormatter: (params) =>
+								numeral(params.value).format("0.[00]"),
 						},
 						{
 							field: "sundayHours",
 							headerName: "SUN. OT Hrs.",
 							initialWidth: 150,
-							valueFormatter: (params) => params.value.toFixed(2),
+							valueFormatter: (params) =>
+								numeral(params.value).format("0.[00]"),
 						},
 						{
 							field: "sundayMultiplier",
 							headerName: "Sun. OT %",
 							initialWidth: 120,
-							valueFormatter: (params) => params.value.toFixed(2),
+							valueFormatter: (params) =>
+								numeral(params.value).format("0.[00]"),
 						},
 					],
 				},
@@ -174,6 +183,7 @@ export const WeeklyPayrollHistory = ({
 							field: "overtimePay",
 							initialWidth: 170,
 							headerName: "Reg. OT Pay",
+							valueFormatter: (params) => formatPesoCurrency(params.value),
 						},
 					],
 				},

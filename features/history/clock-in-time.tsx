@@ -23,7 +23,7 @@ export const ClockInTime = ({
 
 	const openDialog = useManualPayrollDialogStore((state) => state.openDialog);
 
-	if (!params.data?.clock_in_time) {
+	if (!params.data?.originalClockInTime) {
 		return null;
 	}
 
@@ -50,7 +50,9 @@ export const ClockInTime = ({
 				</Tooltip>
 			)}
 
-			<span>{new Date(params.data.clock_in_time).toLocaleString()}</span>
+			<span>
+				{new Date(params.data.originalClockInTime.toDate()).toLocaleString()}
+			</span>
 		</div>
 	);
 };

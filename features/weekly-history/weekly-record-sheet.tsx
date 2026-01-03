@@ -24,7 +24,13 @@ import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-export const WeeklyRecordSheet = () => {
+const dateFormat = "MMM DD, YYYY";
+
+export const WeeklyRecordSheet = ({
+	isAdmin,
+}: {
+	isAdmin: boolean;
+}) => {
 	const open = useWeeklyPayrollHistoryStore((state) => state.isSheetOpen);
 	const openSheet = useWeeklyPayrollHistoryStore((state) => state.openSheet);
 	const closeSheet = useWeeklyPayrollHistoryStore((state) => state.closeSheet);
@@ -33,8 +39,12 @@ export const WeeklyRecordSheet = () => {
 
 	if (!record) return null;
 
+	const weekPeriod = `${dayjs(record.weekStart).format(dateFormat)} - ${dayjs(
+		record.weekEnd,
+	).format(dateFormat)}`;
+
 	const formatDate = (date: string | null | undefined) => {
-		return date ? dayjs(date).format("MMM DD, YYYY") : "N/A";
+		return date ? dayjs(date).format(dateFormat) : "N/A";
 	};
 
 	return (
@@ -52,17 +62,15 @@ export const WeeklyRecordSheet = () => {
 			<SheetContent className="overflow-y-auto w-full sm:max-w-xl">
 				<SheetHeader>
 					<SheetTitle className="flex items-center gap-2">
-						<span>Weekly Payroll Summary</span>
-						<Badge variant="default">Week Summary</Badge>
+						<span>{record.name}</span>
+						<Badge variant="default">{weekPeriod}</Badge>
 					</SheetTitle>
 					<SheetDescription>
 						Detailed weekly payroll summary for the employee
 					</SheetDescription>
 				</SheetHeader>
 
-				<div className="m-6 mt-2 space-y-6">
-					{" "}
-					{/* Salary Summary */}
+				<div className="m-6 mt-0 space-y-6">
 					<Card
 						className="bg-linear-to-br from-gray-50 to-gray-50
 					 dark:from-blue-950 dark:to-indigo-950
@@ -71,17 +79,13 @@ export const WeeklyRecordSheet = () => {
 					>
 						<div className="space-y-4">
 							<div className="flex items-center gap-2 mb-4">
-								<h3 className="font-bold text-lg text-blue-900 dark:text-blue-100">
-									Salary Summary
-								</h3>
+								<h3 className="font-bold text-lg">Salary Summary</h3>
 							</div>
 
 							<div className="space-y-3">
 								<div className="flex justify-between items-center">
-									<span className="text-sm text-blue-700 dark:text-blue-300">
-										Gross Salary
-									</span>
-									<span className="text-xl font-bold text-blue-900 dark:text-blue-100">
+									<span className="text-sm ">Gross Salary</span>
+									<span className="text-xl font-bold">
 										{formatPesoCurrency(record.grossSalary)}
 									</span>
 								</div>
@@ -110,10 +114,29 @@ export const WeeklyRecordSheet = () => {
 							</div>
 						</div>
 					</Card>
-					<Button size={"lg"} className="w-full cursor-pointer">
-						<UserCheck />
-						Mark as Paid
-					</Button>
+
+					{isAdmin && (
+						<Button size={"lg"} className="w-full cursor-pointer">
+							<UserCheck />
+							Mark as Paid
+						</Button>
+					)}
+
+					<div className="space-y-3">
+						<div className="flex items-center gap-2">
+							<Calendar className="h-4 w-4 text-muted-foreground" />
+							<h3 className="font-semibold text-sm">Days Worked</h3>
+						</div>
+						<div className="space-y-2 pl-6">
+							<DetailRow
+								label="Number of Entries"
+								value={record.details?.length || 0}
+							/>
+						</div>
+					</div>
+
+					<Separator />
+
 					{/* Employee Information */}
 					<div className="space-y-3">
 						<div className="flex items-center gap-2">
@@ -288,18 +311,6 @@ export const WeeklyRecordSheet = () => {
 									)}
 								/>
 							</div>
-						</div>
-					</div>
-					<div className="space-y-3">
-						<div className="flex items-center gap-2">
-							<Calendar className="h-4 w-4 text-muted-foreground" />
-							<h3 className="font-semibold text-sm">Daily Records</h3>
-						</div>
-						<div className="space-y-2 pl-6">
-							<DetailRow
-								label="Number of Entries"
-								value={record.details?.length || 0}
-							/>
 						</div>
 					</div>
 				</div>

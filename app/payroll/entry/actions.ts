@@ -9,7 +9,6 @@ import { getWeekDateRange } from "@/lib/get-week-date-range";
 import { getUserWeeklyPayroll } from "@/lib/db/get-user-weekly-payroll";
 // import { adjustClockInTime } from "@/lib/adjust-clock-in-time";
 import { isActiveEmployee } from "@/lib/db/is-active-employee";
-import { adjustClockInTime } from "@/lib/adjust-clock-in-time";
 
 dayjs.extend(weekOfYear);
 
@@ -33,9 +32,9 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 
 	const now = dayjs();
 	// adjust clock in time if using QR code clock in
-	const { time: clockInTime, message } = await adjustClockInTime(now);
-
-	const today = clockInTime.endOf("day").toDate();
+	// const { time: clockInTime, message } = await adjustClockInTime(now);
+	const clockInTime = now;
+	const today = clockInTime.startOf("day").toDate();
 	today.setUTCHours(0, 0, 0, 0);
 
 	const { weekStart, weekEnd } = getWeekDateRange(clockInTime);
@@ -107,6 +106,6 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 	});
 
 	redirect(
-		`/payroll?message=${encodeURIComponent(message ? `${message}, Clocked in successfully` : "Clocked in successfully")}&time=${now.toISOString()}`,
+		`/payroll?message=${encodeURIComponent("Clocked in successfully")}&time=${now.toISOString()}`,
 	);
 }
