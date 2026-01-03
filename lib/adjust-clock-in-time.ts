@@ -6,12 +6,14 @@ import { getPayrollSettingsData } from "./db/get-payroll-settings";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+const TZ = "Asia/Manila";
+
 export const adjustClockInTime = async (clockInTime: Dayjs) => {
 	const settings = await getPayrollSettingsData();
 
 	const shiftStartTime = clockInTime
 		.clone()
-		.tz("Asia/Manila")
+		.tz(TZ)
 		.hour(8)
 		.minute(0)
 		.second(0)
@@ -19,14 +21,9 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 
 	const shiftStartGracePeriod = settings?.late_grace_period_minutes || 5;
 	const gracePeridTime = shiftStartTime.add(shiftStartGracePeriod, "minute");
-
-	const startOfDay = dayjs(clockInTime).tz("Asia/Manila").startOf("day");
+	const startOfDay = dayjs(clockInTime).tz(TZ).startOf("day");
 
 	if (clockInTime.isBefore(shiftStartTime) && clockInTime.isAfter(startOfDay)) {
-		console.log("Adjusting clock in time to shift start time", {
-			originalClockInTime: clockInTime.toISOString(),
-			adjustedClockInTime: shiftStartTime.toISOString(),
-		});
 		// if clock in is before shift start time but after start of day, set to shift start time
 		return {
 			time: shiftStartTime,
@@ -37,13 +34,10 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 	}
 
 	if (
-		clockInTime.isAfter(shiftStartTime) &&
-		clockInTime.isBefore(gracePeridTime)
+		(clockInTime.isAfter(shiftStartTime) &&
+			clockInTime.isBefore(gracePeridTime)) ||
+		clockInTime.isSame(gracePeridTime)
 	) {
-		console.log("Adjusting clock in time to shift start time", {
-			originalClockInTime: clockInTime.toISOString(),
-			adjustedClockInTime: shiftStartTime.toISOString(),
-		});
 		// adjust clock in time if clock is within grace period
 		return {
 			time: shiftStartTime,
@@ -53,7 +47,7 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 		};
 	}
 
-	const lateDeductionThreshold = settings?.late_grace_period_minutes || 30;
+	const lateDeductionThreshold = settings?.late_deduction_minutes || 30;
 	const lateDeductionTime = shiftStartTime.add(
 		lateDeductionThreshold,
 		"minute",
@@ -61,13 +55,10 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 
 	// if clock in is within grace period to late deduction, set to 9:00 AM
 	if (
-		clockInTime.isAfter(gracePeridTime) &&
-		clockInTime.isBefore(lateDeductionTime)
+		(clockInTime.isAfter(gracePeridTime) &&
+			clockInTime.isBefore(lateDeductionTime)) ||
+		clockInTime.isSame(lateDeductionTime)
 	) {
-		console.log("Adjusting clock in time to 9:00 AM", {
-			originalClockInTime: clockInTime.toISOString(),
-			adjustedClockInTime: shiftStartTime.add(1, "hour").toISOString(),
-		});
 		return {
 			time: shiftStartTime.add(1, "hour"),
 			adjusted: true,
@@ -75,10 +66,6 @@ export const adjustClockInTime = async (clockInTime: Dayjs) => {
 				"Clock-in time adjusted to 9:00 AM due to late clock-in beyond grace period.",
 		};
 	}
-
-	console.log("No adjustment to clock in time needed", {
-		clockInTime: clockInTime.toISOString(),
-	});
 
 	// otherwise return original clock in time
 	return {
