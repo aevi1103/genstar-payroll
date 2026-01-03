@@ -43,6 +43,7 @@ export async function clockInOut(latitude?: number, longitude?: number) {
 		userId: session.user.id,
 		weekStart,
 		weekEnd,
+		session,
 	});
 
 	const record = await prisma.payroll.findFirst({

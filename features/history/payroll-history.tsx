@@ -19,8 +19,6 @@ import { useMapPayrollDatasource } from "@/hooks/use-map-payroll-datasource";
 import type { PayrollSettings } from "@/lib/db/get-payroll-settings";
 import { hoursToTime } from "@/lib/convert-hours-to-duration";
 import { Badge } from "@/components/ui/badge";
-import { formatDistanceToNow } from "date-fns";
-import { Input } from "@/components/ui/input";
 import { useSearchParams } from "next/navigation";
 import { uePayrollHistoryStore } from "@/lib/stores/use-payroll-history-store";
 import numeral from "numeral";
@@ -123,7 +121,7 @@ export const PayrollHistory = ({
 				}
 
 				if (status === "In Progress") {
-					return <Badge variant={"secondary"}>In Progress</Badge>;
+					return <Badge variant={"destructive"}>In Progress</Badge>;
 				}
 
 				return <Badge variant={"secondary"}>Not Started</Badge>;
@@ -136,7 +134,7 @@ export const PayrollHistory = ({
 		{
 			field: "originalClockInTime",
 			headerName: "Original Clock In",
-			initialFlex: 1,
+			initialWidth: 230,
 			minWidth: 150,
 			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
 				return <ClockInTime params={params} isAdmin={isAdmin} />;
@@ -145,7 +143,7 @@ export const PayrollHistory = ({
 		{
 			field: "clockInTime",
 			headerName: "Clock In",
-			initialFlex: 1,
+			initialWidth: 210,
 			minWidth: 150,
 			valueFormatter: (params) => {
 				return new Date(params.value).toLocaleString();
@@ -154,7 +152,7 @@ export const PayrollHistory = ({
 		{
 			field: "clock_out_time",
 			headerName: "Clock Out",
-			initialFlex: 1,
+			initialWidth: 230,
 			minWidth: 150,
 			cellClass: "!flex !items-center !justify-center !h-full",
 			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
@@ -166,18 +164,21 @@ export const PayrollHistory = ({
 			headerName: "Hours Worked",
 			initialWidth: 160,
 			valueFormatter: (params) => numeral(params.value).format("0.[00]"),
+			cellClass: (params) => (params.value === 0 ? "text-gray-300" : ""),
 		},
 		{
 			field: "lateTimeInMinutes",
 			headerName: "Late (mins)",
 			initialWidth: 130,
 			valueFormatter: (params) => numeral(params.value).format("0.[00]"),
+			cellClass: (params) => (params.value === 0 ? "text-gray-300" : ""),
 		},
 		{
 			field: "adjustedHoursWorked",
 			headerName: "Adjusted Hours",
 			initialWidth: 150,
 			valueFormatter: (params) => numeral(params.value).format("0.[00]"),
+			cellClass: (params) => (params.value === 0 ? "text-gray-300" : ""),
 		},
 
 		{
@@ -189,6 +190,8 @@ export const PayrollHistory = ({
 				const durationObj = hoursToTime(hours);
 				return durationObj.formatted;
 			},
+			cellClass: (params) =>
+				params.data?.adjustedHoursWorked === 0 ? "text-gray-300" : "",
 		},
 		{
 			field: "clock_in_date",

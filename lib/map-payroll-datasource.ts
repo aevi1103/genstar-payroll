@@ -19,6 +19,8 @@ export const mapPayrollDataSource = ({
 }: MapPayrollDataSourceProps) => {
 	const ds =
 		data?.map((record) => {
+			const isActive = !record.clock_out_time;
+
 			const salaryPerDay = record.users?.employee_salary?.[0]?.salary_per_day;
 			const salaryPerHour = salaryPerDay
 				? Number(salaryPerDay) / regularHoursThreshold
@@ -27,11 +29,13 @@ export const mapPayrollDataSource = ({
 			const { clockInTime, originalClockInTime, lateTimeInMinutes, adjusted } =
 				getAdjustedClockInTime(dayjs(record.clock_in_time), settings);
 
-			let hoursWorked = dayjs(record.clock_out_time || new Date()).diff(
-				clockInTime,
-				"hours",
-				true,
-			);
+			let hoursWorked = isActive
+				? 0
+				: dayjs(record.clock_out_time || new Date()).diff(
+						clockInTime,
+						"hours",
+						true,
+					);
 
 			const applyBreakHoursThreshold =
 				settings?.apply_break_deduction_after_hour || 4;
@@ -82,6 +86,9 @@ export const mapPayrollDataSource = ({
 					? `${dayjs(weekStart).format(shortDateFormat)} - ${dayjs(weekEnd).format(shortDateFormat)}`
 					: "";
 
+			const isPaid = record.user_weekly_payroll?.is_paid || false;
+			const paidAt = record.user_weekly_payroll?.paid_at || null;
+
 			return {
 				...record,
 				originalClockInTime,
@@ -107,6 +114,9 @@ export const mapPayrollDataSource = ({
 				weekEnd,
 				weekRange,
 				breakHours,
+				isPaid,
+				paidAt,
+				userWeeklyId: record.user_weekly_payroll.id,
 				is_manual: record.is_manual || false,
 			};
 		}) || [];

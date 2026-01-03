@@ -7,13 +7,15 @@ export interface PayrollHistoryQueryParams {
 	weekEndDate?: string;
 }
 
+export const PAYROL_HISTORY_KEY = "payroll-history";
+
 export const usePayrollHistoryQuery = ({
 	weekStartDate,
 	weekEndDate,
 }: PayrollHistoryQueryParams) => {
 	return useQuery({
 		queryKey: [
-			"payroll-history",
+			PAYROL_HISTORY_KEY,
 			{
 				weekStartDate,
 				weekEndDate,

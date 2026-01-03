@@ -35,7 +35,7 @@ export async function createCashAdvance(
 			session.user.user_metadata?.full_name || session.user.email || "Admin";
 
 		// Create cash advance record with initial payment log
-		const newCashAdvance = await prisma.cash_advances.create({
+		await prisma.cash_advances.create({
 			data: {
 				user_id: validatedData.user_id,
 				cash_advance: validatedData.cash_advance,

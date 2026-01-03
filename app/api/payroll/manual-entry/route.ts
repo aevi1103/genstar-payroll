@@ -70,6 +70,7 @@ export async function POST(request: Request) {
 			userId: body.userId,
 			weekStart,
 			weekEnd,
+			session,
 		});
 
 		const gpsLocationClockIn =

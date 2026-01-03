@@ -590,6 +590,7 @@ model user_weekly_payroll {
   created_by  String?   @db.VarChar
   modified_by String?   @db.VarChar
   notes       String?   @db.VarChar
+  paid_at     DateTime? @db.Timestamptz(6)
   payroll     payroll[]
   users       users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 

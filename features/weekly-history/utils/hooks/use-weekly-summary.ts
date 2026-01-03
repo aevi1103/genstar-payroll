@@ -111,11 +111,12 @@ export const mapWeeklySummaryData = ({
 		return recordKey;
 	});
 
-	console.log({ cashAdvances, payrollDeductions });
-
 	const dataSource = Object.entries(groupByWeek)
 		.map(([recordKey, records]) => {
 			const [weekStart, weekEnd, userId] = recordKey.split(separator);
+
+			const numberOfActiveRecords =
+				records?.filter((record) => !record.clock_out_time).length || 0;
 
 			const totalRegularHours =
 				records?.reduce(
@@ -180,8 +181,14 @@ export const mapWeeklySummaryData = ({
 				deductions.pagIbig.weekly;
 			const netSalary = grossSalary - totalDeductions;
 
+			const isPaid = firstRecord?.isPaid || false;
+			const userWeeklyId = firstRecord?.userWeeklyId || 0;
+			const paidAt = firstRecord?.paidAt || null;
+
 			return {
 				recordKey,
+				numberOfActiveRecords,
+
 				weekStart,
 				weekEnd,
 				userId,
@@ -209,6 +216,10 @@ export const mapWeeklySummaryData = ({
 				grossSalary,
 				totalDeductions,
 				netSalary,
+
+				isPaid,
+				paidAt,
+				userWeeklyId: BigInt(userWeeklyId),
 			};
 		})
 		.sort(
