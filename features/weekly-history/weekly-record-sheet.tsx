@@ -19,8 +19,9 @@ import {
 	UserCheck,
 	AlertCircle,
 	CircleX,
+	Mail,
 } from "lucide-react";
-import { cn, formatPesoCurrency } from "@/lib/utils";
+import { cn, formatPesoCurrency, serializeData } from "@/lib/utils";
 import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -53,19 +54,33 @@ export const WeeklyRecordSheet = ({
 
 	const queryClient = useQueryClient();
 
-	const { mutateAsync: sendEmail } = useMutation({
+	const { mutateAsync: sendEmail, isPending: isSendingEmail } = useMutation({
 		mutationFn: async () => {
 			if (!record) {
 				throw new Error("No record selected");
 			}
 
-			const response = await fetch("/api/email/test", {
+			const response = await fetch("/api/payroll/send", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
+				body: JSON.stringify(serializeData(record)),
 			});
-			console.log("Email send response:", response);
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(errorData.error || "Failed to send email");
+			}
+		},
+		onSuccess: () => {
+			toast.success("Pay slip email sent successfully");
+		},
+		onError: (error) => {
+			console.error("Error sending pay slip email:", error);
+			toast.error(
+				error instanceof Error ? error.message : "An unexpected error occurred",
+			);
 		},
 	});
 
@@ -228,7 +243,22 @@ export const WeeklyRecordSheet = ({
 							</Button>
 						)}
 
-					<Button onClick={() => sendEmail()}>Send Pay Slip via Email</Button>
+					<Button
+						className="w-full cursor-pointer"
+						disabled={isSendingEmail}
+						onClick={() => sendEmail()}
+					>
+						{isSendingEmail ? (
+							<>
+								<Spinner /> Sending...
+							</>
+						) : (
+							<>
+								<Mail />
+								Send Pay Slip Email
+							</>
+						)}
+					</Button>
 
 					{record.numberOfActiveRecords > 0 && (
 						<>
@@ -379,6 +409,7 @@ export const WeeklyRecordSheet = ({
 						</div>
 					</div>
 					<Separator />
+
 					{/* Earnings Breakdown */}
 					<div className="space-y-3">
 						<div className="flex items-center gap-2">
@@ -400,13 +431,14 @@ export const WeeklyRecordSheet = ({
 							/>
 							<Separator className="my-2" />
 							<DetailRow
-								label="Total Pay"
+								label="Gross Salary"
 								value={formatPesoCurrency(record.paymentInfo.grossSalary)}
 								highlight
 							/>
 						</div>
 					</div>
 					<Separator />
+
 					{/* Deductions Breakdown */}
 					<div className="space-y-3">
 						<div className="flex items-center gap-2">
