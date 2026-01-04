@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import "animate.css";
 import { BackgroundBeams } from "@/components/ui/shadcn-io/background-beams";
+import TypingText from "@/components/ui/shadcn-io/typing-text";
 
 export default async function Home({
 	searchParams,
@@ -39,9 +40,22 @@ export default async function Home({
 
 			<section className="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16 md:flex-row md:items-center md:py-24 animate__animated animate__slideInUp animate__slow">
 				<div className="flex-1 space-y-6 animate__animated animate__fadeInLeft animate__slower">
-					<h1 className="text-4xl font-semibold leading-tight tracking-tight text-emerald-950 md:text-5xl">
+					{/* <h1 className="text-4xl font-semibold leading-tight tracking-tight text-emerald-950 md:text-5xl">
 						Premium print solutions that move your brand forward.
-					</h1>
+					</h1> */}
+
+					<TypingText
+						text={["Premium print solutions that move your brand forward."]}
+						typingSpeed={75}
+						pauseDuration={1500}
+						showCursor={true}
+						cursorCharacter="|"
+						className="text-4xl font-semibold leading-tight tracking-tight text-emerald-950 md:text-5xl"
+						textColors={["#059669", "#047857", "#065f46"]}
+						variableSpeed={{ min: 50, max: 120 }}
+						initialDelay={1000}
+					/>
+
 					<p className="max-w-2xl text-lg text-emerald-900/80">
 						High-quality offset, digital, and large-format printing with
 						meticulous color management, fast turnarounds, and a team that
