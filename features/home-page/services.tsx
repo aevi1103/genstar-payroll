@@ -25,10 +25,7 @@ export const COMPANY_INFO = {
 	ownerManager: "Mr. Renato D. Reformina",
 	residenceAddress:
 		"B6 L27 Pine St. Hillcrest Townhomes, North Olympus Subd., Zabarte Road, Novaliches, Quezon City",
-	emails: [
-		"genstarprints@yahoo.com",
-		process.env.GENSTAR_EMAIL || "genstarprints@gmail.com",
-	],
+	emails: ["genstarprints@yahoo.com", "genstarprints@gmail.com"],
 };
 
 export const BUSINESS_DETAILS = {
@@ -130,57 +127,67 @@ export function ServicesSection(): React.ReactElement {
 			</div>
 
 			{/* Hero Card */}
-			<div className="mb-10 sm:mb-12 overflow-hidden rounded-lg sm:rounded-2xl bg-gradient-to-br from-emerald-900 to-emerald-950 p-6 sm:p-8 md:p-12 text-white shadow-lg">
-				<div className="grid gap-8 md:grid-cols-2">
-					<div>
-						<h3 className="text-2xl font-bold">Genstar Printing Services</h3>
-						<p className="mt-2 text-emerald-100">
-							Your trusted partner since 2007
-						</p>
-						<div className="mt-8 space-y-6">
-							<div>
-								<p className="text-sm font-semibold uppercase tracking-wide text-emerald-200">
-									Location
-								</p>
-								<div className="mt-2 space-y-1">
-									{COMPANY_INFO.addressLines.map((line) => (
-										<p key={line} className="text-emerald-50">
-											{line}
-										</p>
-									))}
-								</div>
-							</div>
-							<div>
-								<p className="text-sm font-semibold uppercase tracking-wide text-emerald-200">
-									Leadership
-								</p>
-								<p className="mt-2 text-emerald-50 font-medium">
-									{COMPANY_INFO.ownerManager}
-								</p>
+			<div className="mb-10 sm:mb-12 overflow-hidden rounded-lg sm:rounded-2xl bg-gradient-to-br from-emerald-900 to-emerald-950 p-6 sm:p-8 text-white shadow-lg">
+				<div className="grid gap-6 sm:gap-8 md:grid-cols-2">
+					<div className="space-y-6">
+						<div>
+							<h3 className="text-xl sm:text-2xl font-bold">
+								Genstar Printing Services
+							</h3>
+							<p className="mt-2 text-sm sm:text-base text-emerald-100">
+								Your trusted partner since 2007
+							</p>
+						</div>
+						<div>
+							<p className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-emerald-200">
+								Location
+							</p>
+							<div className="mt-2 space-y-1">
+								{COMPANY_INFO.addressLines.map((line) => (
+									<p
+										key={line}
+										className="text-sm sm:text-base text-emerald-50"
+									>
+										{line}
+									</p>
+								))}
 							</div>
 						</div>
-					</div>
-					<div className="flex flex-col justify-between">
 						<div>
-							<p className="text-sm font-semibold uppercase tracking-wide text-emerald-200">
+							<p className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-emerald-200">
+								Owner
+							</p>
+							<p className="mt-2 text-sm sm:text-base text-emerald-50 font-medium">
+								{COMPANY_INFO.ownerManager}
+							</p>
+						</div>
+					</div>
+
+					<div className="space-y-6">
+						<div>
+							<p className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-emerald-200">
 								Contact Us
 							</p>
-							<ul className="mt-2 space-y-2">
+							<ul className="mt-2 space-y-3">
 								{COMPANY_INFO.phones.slice(0, 2).map((p) => (
 									<li key={`${p.label}-${p.value}`} className="text-emerald-50">
 										<span className="block text-xs text-emerald-200">
 											{p.label}
 										</span>
-										<span className="font-medium">{p.value}</span>
+										<span className="text-sm sm:text-base font-medium">
+											{p.value}
+										</span>
 									</li>
 								))}
 							</ul>
 						</div>
 						<div>
-							<p className="text-sm font-semibold uppercase tracking-wide text-emerald-200">
+							<p className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-emerald-200">
 								Email
 							</p>
-							<p className="mt-2 text-emerald-50">{COMPANY_INFO.emails[0]}</p>
+							<p className="mt-2 text-sm sm:text-base text-emerald-50">
+								{COMPANY_INFO.emails[0]}
+							</p>
 						</div>
 					</div>
 				</div>
