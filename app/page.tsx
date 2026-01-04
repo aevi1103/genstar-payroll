@@ -127,16 +127,28 @@ export default async function Home({
 				</div>
 			</section>
 
-		<section id="services" className="scroll-mt-20 animate__animated animate__fadeIn animate__slow">
+			<section
+				id="services"
+				className="scroll-mt-20 animate__animated animate__fadeIn animate__slow"
+			>
 				<ServicesSection />
 			</section>
-			<section id="vision" className="scroll-mt-20 animate__animated animate__slideInUp animate__slow">
+			<section
+				id="vision"
+				className="scroll-mt-20 animate__animated animate__slideInUp animate__slow"
+			>
 				<VisionSection />
 			</section>
-			<section id="about" className="scroll-mt-20 animate__animated animate__fadeInUp animate__slow">
+			<section
+				id="about"
+				className="scroll-mt-20 animate__animated animate__fadeInUp animate__slow"
+			>
 				<AboutSection />
 			</section>
-			<section id="contact" className="scroll-mt-20 animate__animated animate__slideInUp animate__slow">
+			<section
+				id="contact"
+				className="scroll-mt-20 animate__animated animate__slideInUp animate__slow"
+			>
 				<ContactForm />
 			</section>
 		</main>
