@@ -70,7 +70,7 @@ export function Header({ user }: HeaderProps) {
 								href="/auth/login"
 								className="rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-800 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-md"
 							>
-								Employee signin
+								Employee Login
 							</Link>
 						)}
 					</div>
@@ -149,7 +149,7 @@ export function Header({ user }: HeaderProps) {
 											onClick={() => setOpen(false)}
 											className="rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-800 shadow-sm"
 										>
-											Employee signin
+											Employee Login
 										</Link>
 									)}
 								</div>
