@@ -38,7 +38,7 @@ export function Header({ user }: HeaderProps) {
 						Vision
 					</Link>
 					<Link href="#about" className="hover:text-emerald-900">
-						About
+						About Us
 					</Link>
 					<Link href="#contact" className="hover:text-emerald-900">
 						Contact

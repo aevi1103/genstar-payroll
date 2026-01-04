@@ -346,14 +346,8 @@ export default async function Home({
 					</div>
 				</section>
 
-				<section className="relative z-10 mx-auto max-w-6xl px-6 py-20 md:py-28 animate__animated animate__fadeInUp animate__slow">
+				<section className="relative z-10 mx-auto max-w-6xl px-6 py-10 animate__animated animate__fadeInUp animate__slow">
 					<div className="mb-12 space-y-4">
-						<div className="inline-flex items-center gap-2 rounded-full bg-emerald-100/80 px-4 py-2 backdrop-blur-sm">
-							<span className="h-2 w-2 rounded-full bg-emerald-600" />
-							<span className="text-sm font-semibold text-emerald-700">
-								Our Capabilities
-							</span>
-						</div>
 						<div>
 							<h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-950 leading-tight">
 								Complete Printing Solutions

@@ -64,10 +64,7 @@ export function ContactForm(): React.ReactElement {
 	};
 
 	return (
-		<section
-			id="contact"
-			className="relative z-10 mx-auto max-w-6xl px-4 lg:py-16 sm:px-6 md:pb-24"
-		>
+		<section className="relative z-10 mx-auto max-w-6xl px-4 lg:py-16 sm:px-6 md:pb-24">
 			<div className="mb-8 sm:mb-10 md:mb-12">
 				<h2 className="mt-4 sm:mt-6 text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-emerald-950">
 					Contact Us
@@ -78,7 +75,10 @@ export function ContactForm(): React.ReactElement {
 				</p>
 			</div>
 
-			<Card className="overflow-hidden rounded-lg sm:rounded-2xl bg-linear-to-br from-white to-emerald-50 p-6 sm:p-8 md:p-10 shadow-md ring-1 ring-emerald-100">
+			<Card
+				id="contact"
+				className="overflow-hidden rounded-lg sm:rounded-2xl bg-linear-to-br from-white to-emerald-50 p-6 sm:p-8 md:p-10 shadow-md ring-1 ring-emerald-100"
+			>
 				<div className="grid gap-8 md:grid-cols-2">
 					{/* Contact Form */}
 					<div>
@@ -87,6 +87,7 @@ export function ContactForm(): React.ReactElement {
 						</h3>
 						<Form {...form}>
 							<form
+								id="contact"
 								onSubmit={form.handleSubmit(onSubmit)}
 								className="space-y-4 sm:space-y-5"
 							>
