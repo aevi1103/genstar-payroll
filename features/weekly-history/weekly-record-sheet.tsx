@@ -30,6 +30,7 @@ import type { PayUserCashAdvanceRequestBody } from "@/app/api/payroll/paid/route
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { PAYROL_HISTORY_KEY } from "@/hooks/use-payroll-history-query";
+import type { WeeklySummaryDataSource } from "./hooks/use-weekly-summary";
 
 const dateFormat = "MMM DD, YYYY";
 
@@ -55,7 +56,7 @@ export const WeeklyRecordSheet = ({
 	const queryClient = useQueryClient();
 
 	const { mutateAsync: sendEmail, isPending: isSendingEmail } = useMutation({
-		mutationFn: async () => {
+		mutationFn: async (isPaid?: boolean) => {
 			if (!record) {
 				throw new Error("No record selected");
 			}
@@ -65,7 +66,20 @@ export const WeeklyRecordSheet = ({
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(serializeData(record)),
+				body: JSON.stringify(
+					serializeData(
+						isPaid
+							? {
+									...record,
+									paidInfo: {
+										...record.paidInfo,
+										isPaid: true,
+										paidAt: new Date(),
+									},
+								}
+							: record,
+					) satisfies WeeklySummaryDataSource,
+				),
 			});
 
 			if (!response.ok) {
@@ -119,6 +133,7 @@ export const WeeklyRecordSheet = ({
 	const markAsPaid = async () => {
 		try {
 			await mutateAsync();
+			await sendEmail(true);
 
 			queryClient.invalidateQueries({
 				queryKey: [PAYROL_HISTORY_KEY],
@@ -246,7 +261,7 @@ export const WeeklyRecordSheet = ({
 					<Button
 						className="w-full cursor-pointer"
 						disabled={isSendingEmail}
-						onClick={() => sendEmail()}
+						onClick={async () => await sendEmail(false)}
 					>
 						{isSendingEmail ? (
 							<>

@@ -43,21 +43,29 @@ export async function POST(request: Request) {
 		);
 	}
 
+	const missingFields: string[] = [];
+
+	if (!body.userId) missingFields.push("userId");
+	if (!body.weeklyUserId) missingFields.push("weeklyUserId");
+	if (!body.paidCashAdvance && body.paidCashAdvance !== 0)
+		missingFields.push("paidCashAdvance");
+	if (!body.paidSss && body.paidSss !== 0) missingFields.push("paidSss");
+	if (!body.paidPagibig && body.paidPagibig !== 0)
+		missingFields.push("paidPagibig");
 	if (
-		!body.userId ||
-		!body.weeklyUserId ||
-		!body.paidCashAdvance ||
-		!body.paidSss ||
-		!body.paidPagibig ||
-		!body.remainingCashAdvanceBalance
-	) {
+		!body.remainingCashAdvanceBalance &&
+		body.remainingCashAdvanceBalance !== 0
+	)
+		missingFields.push("remainingCashAdvanceBalance");
+
+	if (missingFields.length > 0) {
 		return NextResponse.json(
-			{ error: "Missing required fields" },
+			{ error: "Missing required fields", missingFields },
 			{ status: 400 },
 		);
 	}
 
-	const userId = body.userId;
+	const userId = body.userId || "";
 	const paidCashAdvance = body.paidCashAdvance;
 	const paidSss = body.paidSss;
 	const paidPagibig = body.paidPagibig;
