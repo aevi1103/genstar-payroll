@@ -195,9 +195,11 @@ const getUserInfo = (data: PayrollDataSource) => {
 	const firstName = data?.firstName || "";
 	const lastName = data?.lastName || "";
 	const name = data?.fullName || data.email || "n/a";
+	const email = data?.email || "n/a";
 
 	return {
 		userId: data.user_id,
+		email,
 		name,
 		firstName,
 		lastName,

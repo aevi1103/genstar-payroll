@@ -53,6 +53,22 @@ export const WeeklyRecordSheet = ({
 
 	const queryClient = useQueryClient();
 
+	const { mutateAsync: sendEmail } = useMutation({
+		mutationFn: async () => {
+			if (!record) {
+				throw new Error("No record selected");
+			}
+
+			const response = await fetch("/api/email/test", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			console.log("Email send response:", response);
+		},
+	});
+
 	const { mutateAsync, isPending } = useMutation({
 		mutationFn: async () => {
 			if (!record) {
@@ -211,6 +227,8 @@ export const WeeklyRecordSheet = ({
 								)}
 							</Button>
 						)}
+
+					<Button onClick={() => sendEmail()}>Send Pay Slip via Email</Button>
 
 					{record.numberOfActiveRecords > 0 && (
 						<>
