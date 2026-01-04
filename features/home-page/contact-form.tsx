@@ -2,46 +2,65 @@
 
 import type React from "react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { NavigationIcon } from "lucide-react";
+import { submitContactForm } from "./actions";
+import {
+	contactFormSchema,
+	type ContactFormData,
+} from "@/lib/schemas/contact-form.schema";
 
 export function ContactForm(): React.ReactElement {
-	const [formData, setFormData] = useState({
-		name: "",
-		email: "",
-		phone: "",
-		message: "",
-	});
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-
-		// Show success toast
-		toast.success("Message sent successfully!", {
-			description: "We'll get back to you as soon as possible.",
-		});
-
-		// Reset form
-		setFormData({
+	const form = useForm<ContactFormData>({
+		resolver: zodResolver(contactFormSchema),
+		defaultValues: {
 			name: "",
 			email: "",
 			phone: "",
 			message: "",
-		});
-	};
+		},
+	});
 
-	const handleChange = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		setFormData({
-			...formData,
-			[e.target.name]: e.target.value,
-		});
+	const onSubmit = async (data: ContactFormData) => {
+		setIsSubmitting(true);
+		try {
+			const result = await submitContactForm(data);
+
+			if (result.success) {
+				toast.success("Message sent successfully!", {
+					description: result.message,
+				});
+				form.reset();
+			} else {
+				toast.error("Failed to send message", {
+					description: result.message,
+				});
+			}
+		} catch (error) {
+			toast.error("An unexpected error occurred", {
+				description:
+					error instanceof Error ? error.message : "Please try again later.",
+			});
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	return (
@@ -116,10 +135,11 @@ export function ContactForm(): React.ReactElement {
 							<div>
 								<p className="font-semibold">Email</p>
 								<a
-									href="mailto:genstarprints@gmail.com"
+									href={`mailto:${process.env.NEXT_PUBLIC_GENSTAR_EMAIL || "genstarprints@gmail.com"}`}
 									className="text-emerald-700 hover:text-emerald-900"
 								>
-									genstarprints@gmail.com
+									{process.env.NEXT_PUBLIC_GENSTAR_EMAIL ||
+										"genstarprints@gmail.com"}
 								</a>
 							</div>
 							<div>
@@ -140,64 +160,102 @@ export function ContactForm(): React.ReactElement {
 						<h3 className="mb-4 text-lg font-semibold text-emerald-900">
 							Send us a message
 						</h3>
-						<form onSubmit={handleSubmit} className="space-y-4">
-							<div className="space-y-2">
-								<Label htmlFor="name">Name</Label>
-								<Input
-									id="name"
-									name="name"
-									value={formData.name}
-									onChange={handleChange}
-									placeholder="Your name"
-									required
-								/>
-							</div>
-
-							<div className="space-y-2">
-								<Label htmlFor="email">Email</Label>
-								<Input
-									id="email"
-									name="email"
-									type="email"
-									value={formData.email}
-									onChange={handleChange}
-									placeholder="your.email@example.com"
-									required
-								/>
-							</div>
-
-							<div className="space-y-2">
-								<Label htmlFor="phone">Phone</Label>
-								<Input
-									id="phone"
-									name="phone"
-									type="tel"
-									value={formData.phone}
-									onChange={handleChange}
-									placeholder="09XX XXX XXXX"
-								/>
-							</div>
-
-							<div className="space-y-2">
-								<Label htmlFor="message">Message</Label>
-								<Textarea
-									id="message"
-									name="message"
-									value={formData.message}
-									onChange={handleChange}
-									placeholder="Tell us about your printing needs..."
-									rows={4}
-									required
-								/>
-							</div>
-
-							<Button
-								type="submit"
-								className="w-full rounded-full bg-emerald-700 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-emerald-700/20 transition hover:-translate-y-0.5 hover:bg-emerald-800"
+						<Form {...form}>
+							<form
+								onSubmit={form.handleSubmit(onSubmit)}
+								className="space-y-4"
 							>
-								Send Message
-							</Button>
-						</form>
+								<FormField
+									control={form.control}
+									name="name"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Name</FormLabel>
+											<FormControl>
+												<Input
+													placeholder="Your name"
+													{...field}
+													disabled={isSubmitting}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name="email"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Email</FormLabel>
+											<FormControl>
+												<Input
+													type="email"
+													placeholder="your.email@example.com"
+													{...field}
+													disabled={isSubmitting}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name="phone"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Phone</FormLabel>
+											<FormControl>
+												<Input
+													type="tel"
+													placeholder="09XX XXX XXXX"
+													{...field}
+													disabled={isSubmitting}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name="message"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Message</FormLabel>
+											<FormControl>
+												<Textarea
+													placeholder="Tell us about your printing needs..."
+													rows={4}
+													{...field}
+													disabled={isSubmitting}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<Button
+									type="submit"
+									disabled={isSubmitting}
+									className="w-full rounded-full bg-emerald-700 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-emerald-700/20 transition hover:-translate-y-0.5 hover:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed"
+								>
+									{isSubmitting ? (
+										<>
+											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											Sending...
+										</>
+									) : (
+										"Send Message"
+									)}
+								</Button>
+							</form>
+						</Form>
 					</div>
 				</div>
 			</Card>

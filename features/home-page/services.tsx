@@ -17,7 +17,10 @@ export const COMPANY_INFO = {
 	ownerManager: "Mr. Renato D. Reformina",
 	residenceAddress:
 		"B6 L27 Pine St. Hillcrest Townhomes, North Olympus Subd., Zabarte Road, Novaliches, Quezon City",
-	emails: ["genstarprints@yahoo.com", "genstarprints@gmail.com"],
+	emails: [
+		"genstarprints@yahoo.com",
+		process.env.GENSTAR_EMAIL || "genstarprints@gmail.com",
+	],
 };
 
 export const BUSINESS_DETAILS = {
