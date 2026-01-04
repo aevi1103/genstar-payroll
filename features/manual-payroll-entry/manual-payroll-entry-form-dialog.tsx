@@ -53,7 +53,6 @@ import type { Users } from "@/lib/db/get-active-employees";
 function formatDateToISOString(date: Date, timeInput: string): string {
 	const dateOnly = dayjs(date).format(shortDateFormat);
 	const dateStr = `${dateOnly} ${timeInput}`;
-	console.log("Formatting date string:", dateStr);
 	return dayjs(dateStr, "MM/DD/YYYY HH:mm:ss").toISOString();
 }
 
@@ -359,7 +358,9 @@ export function ManualPayrollEntryFormDialog() {
 													setClockInDate(date);
 													setClockInOpen(false);
 												}}
-												disabled={(date) => date > new Date()}
+												disabled={(date) =>
+													date > dayjs().add(1, "week").toDate()
+												}
 											/>
 										</PopoverContent>
 									</Popover>

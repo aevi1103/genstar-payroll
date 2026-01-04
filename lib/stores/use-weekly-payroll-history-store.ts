@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { WeeklySummaryDataSource } from "@/features/weekly-history/utils/hooks/use-weekly-summary";
+import type { WeeklySummaryDataSource } from "@/features/weekly-history/hooks/use-weekly-summary";
 
 interface WeeklyPayrollHistoryStore {
 	record: WeeklySummaryDataSource | null | undefined;

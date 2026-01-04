@@ -102,14 +102,13 @@ export const PayrollHistory = ({
 			headerName: "Status",
 			initialWidth: 120,
 			valueGetter: (params) => {
-				const clockIn = params.data?.clock_in_time;
-				const clockOut = params.data?.clock_out_time;
-				if (clockIn && clockOut) {
-					return "Completed";
-				}
-				if (clockIn && !clockOut) {
+				if (params.data?.isPaid) return "Paid";
+
+				if (params.data?.clock_out_date) return "Completed";
+
+				if (params.data?.clock_in_date && !params.data?.clock_out_date)
 					return "In Progress";
-				}
+
 				return "Not Started";
 			},
 

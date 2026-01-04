@@ -46,7 +46,6 @@ export default async function Page({ searchParams }: PageProps) {
 
 	const fromYear = dayjs(params.weekStartDate).year();
 	const toYear = dayjs(params.weekEndDate).year();
-
 	const payrollDeductions = await getPayrollDeductions(fromYear, toYear);
 
 	return (

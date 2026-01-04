@@ -5,7 +5,7 @@ import { useState } from "react";
 import {
 	useWeeklySummary,
 	type WeeklySummaryDataSource,
-} from "./utils/hooks/use-weekly-summary";
+} from "./hooks/use-weekly-summary";
 import type { ColDef, ColGroupDef } from "ag-grid-community";
 import { TableWrapper } from "@/components/table-wrapper";
 import { AgGridReact } from "ag-grid-react";
@@ -55,8 +55,6 @@ export const WeeklyPayrollHistory = ({
 
 	const cashAdvanceDeductionRate =
 		settings.data?.cash_advance_weekly_deduction_percent || 0;
-
-	console.log({ data, weeklySummaryData, isLoading, settings });
 
 	const [colDefs] = useState<
 		(ColDef<WeeklySummaryDataSource> | ColGroupDef<WeeklySummaryDataSource>)[]
@@ -253,7 +251,7 @@ export const WeeklyPayrollHistory = ({
 	]);
 
 	return (
-		<TableWrapper>
+		<TableWrapper isLoading={isLoading}>
 			<AgGridReact
 				columnDefs={colDefs}
 				rowData={weeklySummaryData || []}

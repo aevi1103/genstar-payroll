@@ -25,8 +25,6 @@ export const getPayrollHistory = async (params: PayrollHistoryParams) => {
 		? {}
 		: { user_id: params.userId };
 
-	console.log("Payroll history params:", params);
-
 	if (params.weekStartDate && params.weekEndDate) {
 		const weekStart = dayjs(params.weekStartDate).toDate();
 		const weekEnd = dayjs(params.weekEndDate).toDate();

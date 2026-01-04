@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { CalendarIcon, Send } from "lucide-react";
+import { CalendarIcon, RefreshCcw, Send } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -46,7 +46,7 @@ export const PayrollReportFilterForm = () => {
 	const startDate = searchParams.get("weekStartDate");
 	const endDate = searchParams.get("weekEndDate");
 
-	const { isLoading } = usePayrollHistoryQuery({
+	const { isLoading, refetch, isFetching } = usePayrollHistoryQuery({
 		weekStartDate: startDate || undefined,
 		weekEndDate: endDate || undefined,
 	});
@@ -148,15 +148,17 @@ export const PayrollReportFilterForm = () => {
 					)}
 				/>
 
-				<Button type="submit" disabled={isLoading}>
-					{isLoading ? (
-						<div className="flex gap-2">
-							<Spinner />
-							Loading...
-						</div>
-					) : (
-						<Send />
-					)}
+				<Button type="submit" disabled={isLoading} className="cursor-pointer">
+					{isLoading ? <Spinner /> : <Send />}
+				</Button>
+
+				<Button
+					variant={"default"}
+					onClick={() => refetch()}
+					disabled={isFetching}
+					className="cursor-pointer"
+				>
+					{isFetching ? <Spinner /> : <RefreshCcw />}
 				</Button>
 			</form>
 		</Form>

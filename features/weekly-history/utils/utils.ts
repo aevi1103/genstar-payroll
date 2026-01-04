@@ -4,16 +4,6 @@ import type { PayrollDeductions } from "@/lib/db/get-payroll-deductions";
 import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
 import { shortDateFormat } from "@/lib/utils";
 import dayjs from "dayjs";
-import { useMemo } from "react";
-
-interface UseWeeklySummaryProps {
-	data: PayrollDataSource[];
-	settings: PayrollSettingsResponse;
-	cashAdvances: CashAdvances;
-	payrollDeductions: PayrollDeductions;
-}
-
-const separator = "___";
 
 const getUserRemainingCashAdvanceBalance = ({
 	userId,
@@ -243,6 +233,15 @@ const getPaidInfo = (data: PayrollDataSource) => {
 
 type PaidInfo = ReturnType<typeof getPaidInfo>;
 
+export interface UseWeeklySummaryProps {
+	data: PayrollDataSource[];
+	settings: PayrollSettingsResponse;
+	cashAdvances: CashAdvances;
+	payrollDeductions: PayrollDeductions;
+}
+
+const separator = "___";
+
 export const mapWeeklySummaryData = ({
 	data,
 	settings,
@@ -322,20 +321,4 @@ export const mapWeeklySummaryData = ({
 		);
 
 	return dataSource;
-};
-
-export type WeeklySummaryDataSource = ReturnType<
-	typeof mapWeeklySummaryData
->[number];
-
-export const useWeeklySummary = (params: UseWeeklySummaryProps) => {
-	const dataSource = useMemo(() => mapWeeklySummaryData(params), [params]);
-
-	console.log({ dataSource });
-
-	return {
-		data: dataSource,
-	} as {
-		data: WeeklySummaryDataSource[];
-	};
 };

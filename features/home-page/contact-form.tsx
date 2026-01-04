@@ -21,9 +21,6 @@ export function ContactForm(): React.ReactElement {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		// Log to console
-		console.log("Contact Form Submission:", formData);
-
 		// Show success toast
 		toast.success("Message sent successfully!", {
 			description: "We'll get back to you as soon as possible.",
