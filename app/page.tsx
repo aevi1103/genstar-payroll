@@ -8,6 +8,74 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import "animate.css";
 import { BackgroundBeams } from "@/components/ui/shadcn-io/background-beams";
 import TypingText from "@/components/ui/shadcn-io/typing-text";
+import type { Metadata } from "next";
+import Script from "next/script";
+
+export const metadata: Metadata = {
+	title:
+		"Premium Print Solutions | Genstar - Offset, Digital & Large Format Printing",
+	description:
+		"Genstar Print Solutions - Premium offset, digital & large-format printing in Quezon City, Philippines. Fast turnarounds, color-managed workflows, and meticulous attention to detail since 2007.",
+	keywords: [
+		"offset printing quezon city",
+		"digital printing philippines",
+		"large format printing quezon city",
+		"printing services manila",
+		"signage printing philippines",
+		"packaging printing quezon city",
+		"printing company philippines",
+		"print shop quezon city",
+	],
+	authors: [{ name: "Genstar" }],
+	creator: "Genstar",
+	publisher: "Genstar",
+	formatDetection: {
+		email: false,
+		telephone: false,
+		address: false,
+	},
+	openGraph: {
+		type: "website",
+		locale: "en_US",
+		url: "https://genstar-printing.vercel.app/",
+		siteName: "Genstar Print Solutions",
+		title: "Premium Print Solutions | Genstar",
+		description:
+			"High-quality offset, digital, and large-format printing with color-managed workflows and fast turnarounds.",
+		images: [
+			{
+				url: "https://genstar-printing.vercel.app/og-image.jpg",
+				width: 1200,
+				height: 630,
+				alt: "Genstar Print Solutions",
+				type: "image/jpeg",
+			},
+		],
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Premium Print Solutions | Genstar",
+		description:
+			"High-quality offset, digital, and large-format printing services.",
+		creator: "@genstarprint",
+		images: ["https://genstar-printing.vercel.app/og-image.jpg"],
+	},
+	robots: {
+		index: true,
+		follow: true,
+		"max-image-preview": "large",
+		"max-snippet": -1,
+		"max-video-preview": -1,
+		googleBot: "index, follow",
+	},
+	alternates: {
+		canonical: "https://genstar-printing.vercel.app/",
+	},
+	other: {
+		"geo.position": "14.678685;121.025716",
+		"ICBM": "14.678685, 121.025716",
+	},
+};
 
 export default async function Home({
 	searchParams,
@@ -23,6 +91,104 @@ export default async function Home({
 
 	return (
 		<main className="relative min-h-screen bg-linear-to-b from-emerald-50 via-white to-emerald-50 text-emerald-950">
+			{/* Google Analytics */}
+			<Script
+				src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+				strategy="afterInteractive"
+			/>
+			<Script id="google-analytics" strategy="afterInteractive">
+				{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+        `}
+			</Script>
+
+			{/* JSON-LD Structured Data */}
+			<Script
+				id="organization-schema"
+				type="application/ld+json"
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify({
+						"@context": "https://schema.org",
+						"@type": "LocalBusiness",
+						name: "Genstar Print Solutions",
+						description:
+							"Premium offset, digital, and large-format printing services in Quezon City, Philippines",
+						url: "https://genstar-printing.vercel.app/",
+						image: "https://genstar-printing.vercel.app/og-image.jpg",
+						telephone: "+63-915-736-5273",
+						address: {
+							"@type": "PostalAddress",
+							streetAddress: "#97 General Avenue Near Corner Tandang Sora Avenue",
+							addressLocality: "Quezon City",
+							addressRegion: "NCR",
+							postalCode: "1128",
+							addressCountry: "PH",
+						},
+						areaServed: [
+							{
+								"@type": "City",
+								name: "Quezon City",
+							},
+							{
+								"@type": "City",
+								name: "Manila",
+							},
+							{
+								"@type": "State",
+								name: "National Capital Region",
+							},
+							{
+								"@type": "Country",
+								name: "Philippines",
+							},
+						],
+						priceRange: "$$",
+						sameAs: [
+							"https://www.facebook.com/genstarprint",
+							"https://www.linkedin.com/company/genstar",
+						],
+						contactPoint: {
+							"@type": "ContactPoint",
+							telephone: "+63-915-736-5273",
+							contactType: "Customer Service",
+							email: "genstarprints@gmail.com",
+							areaServed: "PH",
+							availableLanguage: ["en", "tl"],
+						},
+						services: [
+							{
+								"@type": "Service",
+								name: "Offset Printing",
+								description:
+									"High-volume precision printing with exacting ink control",
+							},
+							{
+								"@type": "Service",
+								name: "Digital Printing",
+								description:
+									"Fast-turn variable data and short runs without sacrificing quality",
+							},
+							{
+								"@type": "Service",
+								name: "Large Format Printing",
+								description:
+									"Banners, standees, billboards, and exhibition graphics",
+							},
+						],
+						founder: {
+							"@type": "Person",
+							name: "Mr. Renato D. Reformina",
+						},
+						foundingDate: "2007-03-19",
+						foundingLocation: "Project 8, Quezon City, Philippines",
+					}),
+				}}
+			/>
+
 			<BackgroundBeams className="absolute inset-0" />
 
 			<Header user={user} />
