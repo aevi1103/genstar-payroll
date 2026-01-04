@@ -67,6 +67,10 @@ export const DeletePayrollBtn = ({
 		return null;
 	}
 
+	if (params.data.isPaid) {
+		return null;
+	}
+
 	if (!isAdmin) {
 		return null;
 	}

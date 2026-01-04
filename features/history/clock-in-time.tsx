@@ -27,6 +27,14 @@ export const ClockInTime = ({
 		return null;
 	}
 
+	if (params.data?.isPaid) {
+		return (
+			<span>
+				{new Date(params.data.originalClockInTime.toDate()).toLocaleString()}
+			</span>
+		);
+	}
+
 	return (
 		<div className="flex gap-1 items-center">
 			{isAdmin && (

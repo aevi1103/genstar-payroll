@@ -27,7 +27,6 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useMediaQuery } from "@/hooks/use-media-query";
 
 export const ActionsCellRenderer = (
 	props: CustomCellRendererProps<CashAdvanceRecord>,

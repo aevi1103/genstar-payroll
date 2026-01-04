@@ -8,8 +8,6 @@ import { HistoryLoader } from "./history-loader";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { TableWrapper } from "../../components/table-wrapper";
-import { formatPesoCurrency } from "@/lib/utils";
-import { GpsLocationBtn } from "./gps-location-btn";
 import { ClockOutTime } from "./clock-out-time";
 import { DeletePayrollBtn } from "./delete-payroll-btn";
 import { ClockInTime } from "./clock-in-time";
@@ -18,10 +16,11 @@ import type { PayrollDataSource } from "@/lib/map-payroll-datasource";
 import { useMapPayrollDatasource } from "@/hooks/use-map-payroll-datasource";
 import type { PayrollSettings } from "@/lib/db/get-payroll-settings";
 import { hoursToTime } from "@/lib/convert-hours-to-duration";
-import { Badge } from "@/components/ui/badge";
 import { useSearchParams } from "next/navigation";
 import { uePayrollHistoryStore } from "@/lib/stores/use-payroll-history-store";
 import numeral from "numeral";
+import { StatusCellRenderer } from "./status-cell-renderer";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 dayjs.extend(duration);
 
@@ -32,6 +31,7 @@ export const PayrollHistory = ({
 	const params = useSearchParams();
 	const weekStart = params.get("weekStartDate");
 	const weekEnd = params.get("weekEndDate");
+	const isMobile = useMediaQuery("(max-width: 768px)");
 
 	const openSheet = uePayrollHistoryStore((state) => state.openSheet);
 	const setRecord = uePayrollHistoryStore((state) => state.setRecord);
@@ -57,8 +57,8 @@ export const PayrollHistory = ({
 	>([
 		{
 			colId: "actions",
-			width: 50,
-			pinned: "left",
+			initialWidth: 20,
+			pinned: isMobile ? undefined : "left",
 			cellClass: "!flex !items-center !justify-center !h-full",
 			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
 				return <DeletePayrollBtn params={params} isAdmin={isAdmin} />;
@@ -113,19 +113,7 @@ export const PayrollHistory = ({
 				return "Not Started";
 			},
 
-			cellRenderer: (params: CustomCellRendererProps<PayrollDataSource>) => {
-				const status = params.value;
-
-				if (status === "Completed") {
-					return <Badge variant={"default"}>Completed</Badge>;
-				}
-
-				if (status === "In Progress") {
-					return <Badge variant={"destructive"}>In Progress</Badge>;
-				}
-
-				return <Badge variant={"secondary"}>Not Started</Badge>;
-			},
+			cellRenderer: StatusCellRenderer,
 		},
 		{
 			field: "weekRange",
@@ -225,7 +213,7 @@ export const PayrollHistory = ({
 	}
 
 	return (
-		<div className="h-[90dvh] lg:flex-1">
+		<div className="h-[90dvh] md:flex-1">
 			<TableWrapper>
 				<AgGridReact
 					ref={gridRef}
@@ -234,13 +222,14 @@ export const PayrollHistory = ({
 					getRowId={(params) => params?.data?.id?.toString() || ""}
 					defaultColDef={{
 						filter: true,
-						minWidth: 100,
+						minWidth: 50,
 					}}
 					rowSelection={{
 						mode: "singleRow",
 						checkboxes: false,
 						enableClickSelection: true,
 					}}
+					pagination
 				/>
 			</TableWrapper>
 		</div>

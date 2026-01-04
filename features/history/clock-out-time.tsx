@@ -22,6 +22,14 @@ export const ClockOutTime = ({
 
 	const openDialog = useManualPayrollDialogStore((state) => state.openDialog);
 
+	if (params.data?.isPaid) {
+		if (!params.data?.clock_out_time) {
+			return "Clock out not recorded";
+		}
+
+		return <span>{new Date(params.data.clock_out_time).toLocaleString()}</span>;
+	}
+
 	if (params.data?.clock_out_time) {
 		return (
 			<div className="flex gap-1 items-center w-full">

@@ -269,6 +269,7 @@ export const WeeklyPayrollHistory = ({
 							openSheet();
 						}
 					}}
+					pagination
 				/>
 			</TableWrapper>
 		</div>
