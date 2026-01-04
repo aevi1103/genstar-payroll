@@ -3,7 +3,7 @@
 import type React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,7 @@ export function ContactForm(): React.ReactElement {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const form = useForm<ContactFormData>({
-		resolver: zodResolver(contactFormSchema),
+		resolver: standardSchemaResolver(contactFormSchema),
 		defaultValues: {
 			name: "",
 			email: "",
