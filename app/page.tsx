@@ -90,10 +90,7 @@ export default async function Home({
 	const { message } = await searchParams;
 
 	return (
-		<main className="relative min-h-screen bg-linear-to-b from-emerald-50/50 via-white to-emerald-950/5 text-emerald-950 overflow-hidden">
-			{/* Decorative gradient orbs */}
-			<div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-emerald-200/20 blur-3xl" />
-			<div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-emerald-300/10 blur-3xl" />
+		<>
 			{/* Google Analytics */}
 			<Script
 				src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
@@ -193,11 +190,16 @@ export default async function Home({
 				}}
 			/>
 
-			<BackgroundBeams className="absolute inset-0" />
-
 			<Header user={user} />
 
-			{message === "no role assigned to user" && (
+			<main className="relative min-h-screen bg-linear-to-b from-emerald-50/50 via-white to-emerald-950/5 text-emerald-950 overflow-hidden">
+				{/* Decorative gradient orbs */}
+				<div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-emerald-200/20 blur-3xl" />
+				<div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-emerald-300/10 blur-3xl" />
+
+				<BackgroundBeams className="absolute inset-0" />
+
+				{message === "no role assigned to user" && (
 				<div className="mx-auto max-w-6xl px-6 pt-6 animate__animated animate__pulse">
 					<Alert className="border-red-200 bg-red-50">
 						<AlertDescription className="text-red-800">
@@ -208,7 +210,7 @@ export default async function Home({
 				</div>
 			)}
 
-			<section className="relative z-10 mx-auto flex max-w-6xl flex-col gap-12 px-6 py-20 md:flex-row md:items-center md:py-32 animate__animated animate__slideInUp animate__slow">
+			<section className="relative z-10 mx-auto flex max-w-6xl flex-col gap-12 px-6 py-12 lg:py-20 md:flex-row md:items-center md:py-32 animate__animated animate__slideInUp animate__slow">
 				<div className="flex-1 space-y-8 animate__animated animate__fadeInLeft animate__slower">
 					<div>
 						<TypingText
@@ -217,7 +219,7 @@ export default async function Home({
 							pauseDuration={1500}
 							showCursor={true}
 							cursorCharacter="|"
-							className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight text-emerald-950 py-2"
+							className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight text-emerald-950 lg:py-2"
 							textColors={["#059669", "#047857", "#065f46"]}
 							variableSpeed={{ min: 50, max: 120 }}
 							initialDelay={1000}
@@ -253,7 +255,7 @@ export default async function Home({
 
 							<div className="space-y-4 pt-4">
 								<div className="flex gap-4">
-									<div className="flex-shrink-0">
+									<div className="shrink-0">
 										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 group-hover:bg-emerald-200 transition-colors">
 											{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 											<svg
@@ -480,6 +482,7 @@ export default async function Home({
 			>
 				<ContactForm />
 			</section>
-		</main>
+			</main>
+		</>
 	);
 }

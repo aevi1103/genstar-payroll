@@ -36,7 +36,10 @@ export function AboutSection(): React.ReactElement {
 			</div>
 
 			{/* Main Story - Introduction */}
-			<div className="mb-10 sm:mb-12 overflow-hidden rounded-lg sm:rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-6 sm:p-10 shadow-md ring-1 ring-emerald-200">
+			<div
+				className="mb-10 sm:mb-12 overflow-hidden rounded-lg sm:rounded-2xl bg-linear-to-br from-emerald-50
+			 to-emerald-100/50 p-6 sm:p-10 shadow-md ring-1 ring-emerald-200"
+			>
 				<div className="max-w-4xl">
 					<p className="text-base sm:text-lg leading-relaxed text-emerald-950">
 						{ABOUT_PARAGRAPHS[0]}
