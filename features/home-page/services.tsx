@@ -1,6 +1,14 @@
 "use client";
 
 import type React from "react";
+import {
+	Building2,
+	Users,
+	Settings2,
+	Printer,
+	Zap,
+	Handshake,
+} from "lucide-react";
 
 export const COMPANY_INFO = {
 	businessName: "Genstar Printing Services",
@@ -101,189 +109,240 @@ export function ServicesSection(): React.ReactElement {
 	return (
 		<section
 			id="services"
-			className="relative z-10 mx-auto max-w-6xl px-6 pb-24"
+			className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24"
 		>
-			<div className="mb-6 flex items-center justify-between">
-				<div>
-					<p className="text-sm font-semibold uppercase tracking-[0.14em] text-emerald-700">
-						Services & Company Information
-					</p>
-					<h2 className="mt-2 text-2xl font-semibold text-emerald-950">
-						What we offer and our capacity
-					</h2>
+			{/* Header */}
+			<div className="mb-10 sm:mb-12 md:mb-16">
+				<div className="mb-4 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2">
+					<Building2 className="h-4 w-4 text-emerald-700" />
+					<span className="text-xs sm:text-sm font-semibold text-emerald-700">
+						About Us
+					</span>
+				</div>
+				<h2 className="mt-4 sm:mt-6 text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight text-emerald-950">
+					Capabilities & Experience
+				</h2>
+				<p className="mt-3 sm:mt-4 max-w-3xl text-base sm:text-lg text-emerald-900/60">
+					With nearly two decades of excellence, Genstar Printing Services
+					combines cutting-edge technology, experienced professionals, and
+					trusted partnerships to deliver premium printing solutions.
+				</p>
+			</div>
+
+			{/* Hero Card */}
+			<div className="mb-10 sm:mb-12 overflow-hidden rounded-lg sm:rounded-2xl bg-gradient-to-br from-emerald-900 to-emerald-950 p-6 sm:p-8 md:p-12 text-white shadow-lg">
+				<div className="grid gap-8 md:grid-cols-2">
+					<div>
+						<h3 className="text-2xl font-bold">Genstar Printing Services</h3>
+						<p className="mt-2 text-emerald-100">
+							Your trusted partner since 2007
+						</p>
+						<div className="mt-8 space-y-6">
+							<div>
+								<p className="text-sm font-semibold uppercase tracking-wide text-emerald-200">
+									Location
+								</p>
+								<div className="mt-2 space-y-1">
+									{COMPANY_INFO.addressLines.map((line) => (
+										<p key={line} className="text-emerald-50">
+											{line}
+										</p>
+									))}
+								</div>
+							</div>
+							<div>
+								<p className="text-sm font-semibold uppercase tracking-wide text-emerald-200">
+									Leadership
+								</p>
+								<p className="mt-2 text-emerald-50 font-medium">
+									{COMPANY_INFO.ownerManager}
+								</p>
+							</div>
+						</div>
+					</div>
+					<div className="flex flex-col justify-between">
+						<div>
+							<p className="text-sm font-semibold uppercase tracking-wide text-emerald-200">
+								Contact Us
+							</p>
+							<ul className="mt-2 space-y-2">
+								{COMPANY_INFO.phones.slice(0, 2).map((p) => (
+									<li key={`${p.label}-${p.value}`} className="text-emerald-50">
+										<span className="block text-xs text-emerald-200">
+											{p.label}
+										</span>
+										<span className="font-medium">{p.value}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+						<div>
+							<p className="text-sm font-semibold uppercase tracking-wide text-emerald-200">
+								Email
+							</p>
+							<p className="mt-2 text-emerald-50">{COMPANY_INFO.emails[0]}</p>
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-				{/* General Business Information */}
-				<div className="rounded-2xl bg-white/90 p-6 shadow-sm ring-1 ring-emerald-100">
-					<h3 className="text-base font-semibold text-emerald-900">
-						General Business Information
+			{/* Grid of Services */}
+			<div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+				{/* Business Details Card */}
+				<div className="group flex flex-col rounded-lg sm:rounded-xl bg-white p-5 sm:p-8 shadow-sm ring-1 ring-emerald-100 transition-all hover:shadow-md hover:ring-emerald-200">
+					<div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 group-hover:bg-blue-100 transition-colors">
+						<Building2 className="h-6 w-6 text-blue-600" />
+					</div>
+					<h3 className="text-base sm:text-lg font-bold text-emerald-950">
+						Business Foundation
 					</h3>
-					<div className="mt-3 space-y-2 text-sm text-emerald-900/85">
-						<p>
-							<span className="font-semibold">Business Name:</span>{" "}
-							{COMPANY_INFO.businessName}
-						</p>
+					<p className="mt-2 text-xs sm:text-sm text-emerald-600">
+						Established in {BUSINESS_DETAILS.dateOfCreation.slice(-4)}
+					</p>
+					<div className="mt-6 space-y-4 flex-1">
 						<div>
-							<p className="font-semibold">Address:</p>
-							{COMPANY_INFO.addressLines.map((line) => (
-								<p key={line} className="ml-0">
-									{line}
-								</p>
-							))}
+							<p className="text-xs font-semibold uppercase text-emerald-700">
+								Service Focus
+							</p>
+							<p className="mt-1 text-sm sm:text-base font-medium text-emerald-950">
+								{BUSINESS_DETAILS.mainServices}
+							</p>
 						</div>
 						<div>
-							<p className="font-semibold">Telephone Nos.:</p>
-							<ul className="mt-1 space-y-1">
-								{COMPANY_INFO.phones.map((p) => (
-									<li
-										key={`${p.label}-${p.value}`}
-										className="flex items-start gap-2"
-									>
-										<span
-											className="mt-1 h-2 w-2 rounded-full bg-emerald-600"
-											aria-hidden
-										/>
-										<span>
-											{p.label} {p.value}
-										</span>
-									</li>
-								))}
-							</ul>
-						</div>
-						<p>
-							<span className="font-semibold">Owner / Manager:</span>{" "}
-							{COMPANY_INFO.ownerManager}
-						</p>
-						<p>
-							<span className="font-semibold">Residence Address:</span>{" "}
-							{COMPANY_INFO.residenceAddress}
-						</p>
-						<div>
-							<p className="font-semibold">Email Address:</p>
-							<ul className="mt-1 space-y-1">
-								{COMPANY_INFO.emails.map((e) => (
-									<li key={e} className="flex items-start gap-2">
-										<span
-											className="mt-1 h-2 w-2 rounded-full bg-emerald-600"
-											aria-hidden
-										/>
-										<span>{e}</span>
-									</li>
-								))}
-							</ul>
+							<p className="text-xs font-semibold uppercase text-emerald-700">
+								Years Active
+							</p>
+							<p className="mt-1 text-sm sm:text-base font-medium text-emerald-950">
+								{new Date().getFullYear() - 2007} years
+							</p>
 						</div>
 					</div>
 				</div>
 
-				{/* Business Details */}
-				<div className="rounded-2xl bg-white/90 p-6 shadow-sm ring-1 ring-emerald-100">
-					<h3 className="text-base font-semibold text-emerald-900">
-						Business Details
-					</h3>
-					<div className="mt-3 space-y-2 text-sm text-emerald-900/85">
-						<p>
-							<span className="font-semibold">Date of Creation:</span>{" "}
-							{BUSINESS_DETAILS.dateOfCreation}
-						</p>
-						<p>
-							<span className="font-semibold">Main Services:</span>{" "}
-							{BUSINESS_DETAILS.mainServices}
-						</p>
+				{/* Team Card */}
+				<div className="group flex flex-col rounded-lg sm:rounded-xl bg-white p-5 sm:p-8 shadow-sm ring-1 ring-emerald-100 transition-all hover:shadow-md hover:ring-emerald-200">
+					<div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-purple-50 group-hover:bg-purple-100 transition-colors">
+						<Users className="h-6 w-6 text-purple-600" />
 					</div>
-				</div>
-
-				{/* Human Resources */}
-				<div className="rounded-2xl bg-white/90 p-6 shadow-sm ring-1 ring-emerald-100">
-					<h3 className="text-base font-semibold text-emerald-900">
-						Business Capacity — Human Resources
+					<h3 className="text-base sm:text-lg font-bold text-emerald-950">
+						Our Team
 					</h3>
-					<ul className="mt-3 space-y-2 text-sm text-emerald-900/85">
-						{HUMAN_RESOURCES.map((hr) => (
-							<li key={hr.role} className="flex items-start gap-2">
-								<span
-									className="mt-1 h-2 w-2 rounded-full bg-emerald-600"
-									aria-hidden
-								/>
-								<span>
-									{hr.count} — {hr.role}
+					<p className="mt-2 text-xs sm:text-sm text-emerald-600">
+						{HUMAN_RESOURCES.reduce((sum, hr) => sum + hr.count, 0)} skilled
+						professionals
+					</p>
+					<div className="mt-6 space-y-2 flex-1">
+						{HUMAN_RESOURCES.slice(0, 3).map((hr) => (
+							<div key={hr.role} className="flex items-start gap-3">
+								<div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
+								<span className="text-xs sm:text-sm text-emerald-900/80">
+									{hr.role}
 								</span>
-							</li>
+							</div>
 						))}
-					</ul>
+						{HUMAN_RESOURCES.length > 3 && (
+							<p className="text-xs text-emerald-600 pt-2">
+								+ {HUMAN_RESOURCES.length - 3} more positions
+							</p>
+						)}
+					</div>
 				</div>
 
-				{/* Machines */}
-				<div className="rounded-2xl bg-white/90 p-6 shadow-sm ring-1 ring-emerald-100">
-					<h3 className="text-base font-semibold text-emerald-900">
-						Business Capacity — Types of Machines
+				{/* Equipment Card */}
+				<div className="group flex flex-col rounded-lg sm:rounded-xl bg-white p-5 sm:p-8 shadow-sm ring-1 ring-emerald-100 transition-all hover:shadow-md hover:ring-emerald-200">
+					<div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-orange-50 group-hover:bg-orange-100 transition-colors">
+						<Settings2 className="h-6 w-6 text-orange-600" />
+					</div>
+					<h3 className="text-base sm:text-lg font-bold text-emerald-950">
+						Equipment
 					</h3>
-					<ul className="mt-3 space-y-2 text-sm text-emerald-900/85">
-						{MACHINES.map((m) => (
-							<li key={m} className="flex items-start gap-2">
-								<span
-									className="mt-1 h-2 w-2 rounded-full bg-emerald-600"
-									aria-hidden
-								/>
-								<span>{m}</span>
-							</li>
+					<p className="mt-2 text-xs sm:text-sm text-emerald-600">
+						{MACHINES.length} precision machines
+					</p>
+					<div className="mt-6 space-y-2 flex-1">
+						{MACHINES.slice(0, 3).map((m) => (
+							<div key={m} className="flex items-start gap-3">
+								<div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
+								<span className="text-xs sm:text-sm text-emerald-900/80">
+									{m}
+								</span>
+							</div>
 						))}
-					</ul>
+						{MACHINES.length > 3 && (
+							<p className="text-xs text-emerald-600 pt-2">
+								+ {MACHINES.length - 3} more machines
+							</p>
+						)}
+					</div>
 				</div>
 
-				{/* Services — We Print */}
-				<div className="rounded-2xl bg-white/90 p-6 shadow-sm ring-1 ring-emerald-100">
-					<h3 className="text-base font-semibold text-emerald-900">
-						Services Offered — We Print
+				{/* Printing Services Card */}
+				<div className="group flex flex-col rounded-lg sm:rounded-xl bg-white p-5 sm:p-8 shadow-sm ring-1 ring-emerald-100 transition-all hover:shadow-md hover:ring-emerald-200">
+					<div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-green-50 group-hover:bg-green-100 transition-colors">
+						<Printer className="h-6 w-6 text-green-600" />
+					</div>
+					<h3 className="text-base sm:text-lg font-bold text-emerald-950">
+						What We Print
 					</h3>
-					<ul className="mt-3 space-y-2 text-sm text-emerald-900/85">
+					<p className="mt-2 text-xs sm:text-sm text-emerald-600">
+						{SERVICES_WE_PRINT.length} printing specializations
+					</p>
+					<div className="mt-6 grid grid-cols-2 gap-2 flex-1">
 						{SERVICES_WE_PRINT.map((s) => (
-							<li key={s} className="flex items-start gap-2">
-								<span
-									className="mt-1 h-2 w-2 rounded-full bg-emerald-600"
-									aria-hidden
-								/>
-								<span>{s}</span>
-							</li>
+							<div key={s} className="flex items-start gap-2">
+								<div className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
+								<span className="text-xs sm:text-sm text-emerald-900/80">
+									{s}
+								</span>
+							</div>
 						))}
-					</ul>
+					</div>
 				</div>
 
-				{/* Services — We Also Offer */}
-				<div className="rounded-2xl bg-white/90 p-6 shadow-sm ring-1 ring-emerald-100">
-					<h3 className="text-base font-semibold text-emerald-900">
-						Services Offered — We Also Offer
+				{/* Value Added Services Card */}
+				<div className="group flex flex-col rounded-lg sm:rounded-xl bg-white p-5 sm:p-8 shadow-sm ring-1 ring-emerald-100 transition-all hover:shadow-md hover:ring-emerald-200">
+					<div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-amber-50 group-hover:bg-amber-100 transition-colors">
+						<Zap className="h-6 w-6 text-amber-600" />
+					</div>
+					<h3 className="text-base sm:text-lg font-bold text-emerald-950">
+						Value-Added Services
 					</h3>
-					<ul className="mt-3 space-y-2 text-sm text-emerald-900/85">
+					<p className="mt-2 text-xs sm:text-sm text-emerald-600">
+						Beyond printing
+					</p>
+					<div className="mt-6 space-y-2 flex-1">
 						{SERVICES_WE_OFFER.map((s) => (
-							<li key={s} className="flex items-start gap-2">
-								<span
-									className="mt-1 h-2 w-2 rounded-full bg-emerald-600"
-									aria-hidden
-								/>
-								<span>{s}</span>
-							</li>
+							<div key={s} className="flex items-start gap-3">
+								<div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
+								<span className="text-xs sm:text-sm text-emerald-900/80">
+									{s}
+								</span>
+							</div>
 						))}
-					</ul>
+					</div>
 				</div>
 
-				{/* Major Suppliers */}
-				<div className="rounded-2xl bg-white/90 p-6 shadow-sm ring-1 ring-emerald-100">
-					<h3 className="text-base font-semibold text-emerald-900">
-						Major Suppliers
+				{/* Partners Card */}
+				<div className="group flex flex-col rounded-lg sm:rounded-xl bg-white p-5 sm:p-8 shadow-sm ring-1 ring-emerald-100 transition-all hover:shadow-md hover:ring-emerald-200">
+					<div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-50 group-hover:bg-indigo-100 transition-colors">
+						<Handshake className="h-6 w-6 text-indigo-600" />
+					</div>
+					<h3 className="text-base sm:text-lg font-bold text-emerald-950">
+						Partners
 					</h3>
-					<ul className="mt-3 space-y-2 text-sm text-emerald-900/85">
+					<p className="mt-2 text-xs sm:text-sm text-emerald-600">
+						Trusted suppliers
+					</p>
+					<div className="mt-6 space-y-2 flex-1">
 						{MAJOR_SUPPLIERS.map((s) => (
-							<li key={s} className="flex items-start gap-2">
-								<span
-									className="mt-1 h-2 w-2 rounded-full bg-emerald-600"
-									aria-hidden
-								/>
-								<span>{s}</span>
-							</li>
+							<div key={s} className="flex items-start gap-3">
+								<div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
+								<span className="text-xs sm:text-sm text-emerald-900/80 font-medium">
+									{s}
+								</span>
+							</div>
 						))}
-					</ul>
+					</div>
 				</div>
 			</div>
 		</section>

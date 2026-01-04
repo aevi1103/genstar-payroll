@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -66,36 +66,45 @@ export function ContactForm(): React.ReactElement {
 	return (
 		<section
 			id="contact"
-			className="relative z-10 mx-auto max-w-6xl px-6 pb-24"
+			className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 md:pb-24"
 		>
-			<div className="mb-6">
-				<p className="text-sm font-semibold uppercase tracking-[0.14em] text-emerald-700">
-					Get in Touch
-				</p>
-				<h2 className="mt-2 text-2xl font-semibold text-emerald-950">
+			<div className="mb-8 sm:mb-10 md:mb-12">
+				<div className="mb-4 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2">
+					<NavigationIcon className="h-4 w-4 text-emerald-700" />
+					<span className="text-xs sm:text-sm font-semibold text-emerald-700">
+						Get in Touch
+					</span>
+				</div>
+				<h2 className="mt-4 sm:mt-6 text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-emerald-950">
 					Contact Us
 				</h2>
+				<p className="mt-3 sm:mt-4 max-w-2xl text-sm sm:text-base text-emerald-900/60">
+					Have questions about our printing services? We&apos;d love to hear
+					from you. Get in touch and let&apos;s discuss your printing needs.
+				</p>
 			</div>
 
-			<Card className="rounded-2xl bg-white/90 p-8 shadow-sm ring-1 ring-emerald-100">
+			<Card className="overflow-hidden rounded-lg sm:rounded-2xl bg-linear-to-br from-white to-emerald-50 p-6 sm:p-8 md:p-10 shadow-md ring-1 ring-emerald-100">
 				<div className="grid gap-8 md:grid-cols-2">
 					{/* Contact Information and Map */}
-					<div className="space-y-4">
-						<h3 className="text-lg font-semibold text-emerald-900">
-							Lets discuss your printing needs
-						</h3>
-						<p className="text-sm text-emerald-900/80">
-							Whether you need offset printing, digital solutions, or large
-							format signage, our team is ready to help bring your vision to
-							life.
-						</p>
+					<div className="space-y-5 sm:space-y-6">
+						<div>
+							<h3 className="text-lg sm:text-xl font-bold text-emerald-950">
+								Let&apos;s discuss your printing needs
+							</h3>
+							<p className="mt-2 text-sm sm:text-base leading-relaxed text-emerald-900/75">
+								Whether you need offset printing, digital solutions, or large
+								format signage, our team is ready to help bring your vision to
+								life.
+							</p>
+						</div>
 
 						{/* Map Container */}
-						<div className="overflow-hidden rounded-lg ring-1 ring-emerald-100">
+						<div className="overflow-hidden rounded-lg sm:rounded-xl ring-1 ring-emerald-100 shadow-sm">
 							<iframe
 								src="https://maps.google.com/maps?q=14.678685,121.025716&z=16&output=embed"
 								width="100%"
-								height="300"
+								height="280"
 								style={{ border: 0 }}
 								allowFullScreen
 								loading="lazy"
@@ -106,79 +115,134 @@ export function ContactForm(): React.ReactElement {
 						</div>
 
 						{/* Directions Buttons */}
-						<div className="mt-3 flex flex-wrap gap-2">
-							<Button asChild variant="outline" size="sm">
+						<div className="flex flex-wrap gap-2 sm:gap-3">
+							<Button
+								asChild
+								variant="outline"
+								size="sm"
+								className="text-xs sm:text-sm"
+							>
 								<a
 									href="https://www.google.com/maps/dir/?api=1&destination=14.678685,121.025716&travelmode=driving"
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label="Open directions in Google Maps"
 								>
-									<NavigationIcon className="size-4" />
+									<NavigationIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
 									Google Maps
 								</a>
 							</Button>
-							<Button asChild variant="outline" size="sm">
+							<Button
+								asChild
+								variant="outline"
+								size="sm"
+								className="text-xs sm:text-sm"
+							>
 								<a
 									href="https://waze.com/ul?ll=14.678685,121.025716&navigate=yes&zoom=16"
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label="Open directions in Waze"
 								>
-									<NavigationIcon className="size-4" />
+									<NavigationIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
 									Waze
 								</a>
 							</Button>
 						</div>
 
-						<div className="space-y-3 text-sm text-emerald-900/85">
-							<div>
-								<p className="font-semibold">Email</p>
-								<a
-									href={`mailto:${process.env.NEXT_PUBLIC_GENSTAR_EMAIL || "genstarprints@gmail.com"}`}
-									className="text-emerald-700 hover:text-emerald-900"
-								>
-									{process.env.NEXT_PUBLIC_GENSTAR_EMAIL ||
-										"genstarprints@gmail.com"}
-								</a>
+						{/* Contact Information Cards */}
+						<div className="grid gap-3">
+							<div className="group rounded-lg bg-gradient-to-br from-emerald-50 to-white p-3 sm:p-4 ring-1 ring-emerald-200 shadow-sm hover:shadow-md hover:ring-emerald-300 transition-all duration-300">
+								<div className="flex items-start gap-3">
+									<div className="rounded-lg bg-emerald-100 p-2 group-hover:bg-emerald-200 transition-colors">
+										<Mail className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-700" />
+									</div>
+									<div className="flex-1">
+										<p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-700">
+											Email
+										</p>
+										<a
+											href={`mailto:${process.env.NEXT_PUBLIC_GENSTAR_EMAIL || "genstarprints@gmail.com"}`}
+											className="mt-1 block text-xs sm:text-sm font-semibold text-emerald-950 hover:text-emerald-700 transition-colors break-all"
+										>
+											{process.env.NEXT_PUBLIC_GENSTAR_EMAIL ||
+												"genstarprints@gmail.com"}
+										</a>
+									</div>
+								</div>
 							</div>
-							<div>
-								<p className="font-semibold">Phone</p>
-								<p>Landline: 89294482</p>
-								<p>Cell: 09157365273</p>
+							<div className="group rounded-lg bg-gradient-to-br from-emerald-50 to-white p-3 sm:p-4 ring-1 ring-emerald-200 shadow-sm hover:shadow-md hover:ring-emerald-300 transition-all duration-300">
+								<div className="flex items-start gap-3">
+									<div className="rounded-lg bg-emerald-100 p-2 group-hover:bg-emerald-200 transition-colors">
+										<Phone className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-700" />
+									</div>
+									<div className="flex-1">
+										<p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-700">
+											Phone
+										</p>
+										<div className="mt-1 space-y-0.5">
+											<p className="text-xs sm:text-sm text-emerald-950">
+												<span className="font-semibold text-emerald-700">
+													Landline:
+												</span>{" "}
+												89294482
+											</p>
+											<p className="text-xs sm:text-sm text-emerald-950">
+												<span className="font-semibold text-emerald-700">
+													Cell:
+												</span>{" "}
+												09157365273
+											</p>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div>
-								<p className="font-semibold">Address</p>
-								<p>#97 General Avenue Near Corner Tandang Sora Avenue</p>
-								<p>Project 8 Quezon City</p>
+							<div className="group rounded-lg bg-gradient-to-br from-emerald-50 to-white p-3 sm:p-4 ring-1 ring-emerald-200 shadow-sm hover:shadow-md hover:ring-emerald-300 transition-all duration-300">
+								<div className="flex items-start gap-3">
+									<div className="rounded-lg bg-emerald-100 p-2 group-hover:bg-emerald-200 transition-colors">
+										<MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-700" />
+									</div>
+									<div className="flex-1">
+										<p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-700">
+											Address
+										</p>
+										<div className="mt-1 space-y-0.5 text-xs sm:text-sm text-emerald-950">
+											<p>#97 General Avenue Near Corner Tandang Sora Avenue</p>
+											<p>Project 8 Quezon City</p>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 
 					{/* Contact Form */}
 					<div>
-						<h3 className="mb-4 text-lg font-semibold text-emerald-900">
+						<h3 className="mb-5 sm:mb-6 text-lg sm:text-xl font-bold text-emerald-950">
 							Send us a message
 						</h3>
 						<Form {...form}>
 							<form
 								onSubmit={form.handleSubmit(onSubmit)}
-								className="space-y-4"
+								className="space-y-4 sm:space-y-5"
 							>
 								<FormField
 									control={form.control}
 									name="name"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Name</FormLabel>
+											<FormLabel className="text-sm sm:text-base font-semibold text-emerald-950">
+												Name
+											</FormLabel>
 											<FormControl>
 												<Input
 													placeholder="Your name"
 													{...field}
 													disabled={isSubmitting}
+													className="rounded-lg sm:rounded-lg border-emerald-500 bg-white/80 px-4 py-2 sm:py-2.5 text-sm sm:text-base placeholder:text-emerald-500/60 focus:border-emerald-500 focus:ring-emerald-500"
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className="text-xs sm:text-sm" />
 										</FormItem>
 									)}
 								/>
@@ -188,16 +252,19 @@ export function ContactForm(): React.ReactElement {
 									name="email"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Email</FormLabel>
+											<FormLabel className="text-sm sm:text-base font-semibold text-emerald-950">
+												Email
+											</FormLabel>
 											<FormControl>
 												<Input
 													type="email"
 													placeholder="your.email@example.com"
 													{...field}
 													disabled={isSubmitting}
+													className="rounded-lg sm:rounded-lg border-emerald-500 bg-white/80 px-4 py-2 sm:py-2.5 text-sm sm:text-base placeholder:text-emerald-500/60 focus:border-emerald-500 focus:ring-emerald-500"
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className="text-xs sm:text-sm" />
 										</FormItem>
 									)}
 								/>
@@ -207,16 +274,19 @@ export function ContactForm(): React.ReactElement {
 									name="phone"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Phone</FormLabel>
+											<FormLabel className="text-sm sm:text-base font-semibold text-emerald-950">
+												Phone (Optional)
+											</FormLabel>
 											<FormControl>
 												<Input
 													type="tel"
 													placeholder="09XX XXX XXXX"
 													{...field}
 													disabled={isSubmitting}
+													className="rounded-lg sm:rounded-lg border-emerald-500 bg-white/80 px-4 py-2 sm:py-2.5 text-sm sm:text-base placeholder:text-emerald-500/60 focus:border-emerald-500 focus:ring-emerald-500"
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className="text-xs sm:text-sm" />
 										</FormItem>
 									)}
 								/>
@@ -226,16 +296,19 @@ export function ContactForm(): React.ReactElement {
 									name="message"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Message</FormLabel>
+											<FormLabel className="text-sm sm:text-base font-semibold text-emerald-950">
+												Message
+											</FormLabel>
 											<FormControl>
 												<Textarea
 													placeholder="Tell us about your printing needs..."
 													rows={4}
 													{...field}
 													disabled={isSubmitting}
+													className="rounded-lg sm:rounded-lg border-emerald-500 bg-white/80 px-4 py-2 sm:py-2.5 text-sm sm:text-base placeholder:text-emerald-500/60 focus:border-emerald-500 focus:ring-emerald-500 resize-none"
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className="text-xs sm:text-sm" />
 										</FormItem>
 									)}
 								/>
@@ -243,17 +316,22 @@ export function ContactForm(): React.ReactElement {
 								<Button
 									type="submit"
 									disabled={isSubmitting}
-									className="w-full rounded-full bg-emerald-700 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-emerald-700/20 transition hover:-translate-y-0.5 hover:bg-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed"
+									className="w-full rounded-lg sm:rounded-lg bg-linear-to-r from-emerald-600 to-emerald-700 px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold text-white shadow-lg shadow-emerald-600/30 transition hover:shadow-emerald-600/50 hover:-translate-y-0.5 hover:from-emerald-700 hover:to-emerald-800 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:-translate-y-0"
 								>
 									{isSubmitting ? (
 										<>
 											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-											Sending...
+											<span className="hidden sm:inline">Sending</span>
+											<span className="sm:hidden">Send</span>...
 										</>
 									) : (
 										"Send Message"
 									)}
 								</Button>
+
+								<p className="text-center text-xs sm:text-sm text-emerald-900/60">
+									We&apos;ll get back to you as soon as possible.
+								</p>
 							</form>
 						</Form>
 					</div>
