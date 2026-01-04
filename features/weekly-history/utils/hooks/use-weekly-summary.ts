@@ -55,47 +55,193 @@ const getUserRemainingCashAdvanceBalance = ({
 	};
 };
 
-const getSSSContribution = ({
+const getWeeklyDeductions = ({
 	userId,
 	weekStart,
 	deductions,
+	cashAdvances,
+	settings,
+	paidInfo,
 }: {
 	userId: string;
 	weekStart: string;
 	deductions: PayrollDeductions;
+	cashAdvances: CashAdvances;
+	settings: PayrollSettingsResponse;
+	paidInfo: PaidInfo;
 }) => {
+	const remainingCashAdvanceBalance = getUserRemainingCashAdvanceBalance({
+		userId,
+		cashAdvances,
+		settings,
+	});
+
 	const yearlyDeductions = deductions.find(
 		(item) => item.user_id === userId && item.year === dayjs(weekStart).year(),
 	);
 
-	if (!yearlyDeductions) {
-		return {
-			sss: {
-				yearly: 0,
-				weekly: 0,
-			},
-			pagIbig: {
-				yearly: 0,
-				weekly: 0,
-			},
-		};
-	}
+	const remainingCashAdvanceBalanceValue =
+		remainingCashAdvanceBalance.remainingBalance;
+
+	const weeklyCashAdvanceDeduction =
+		remainingCashAdvanceBalance.weeklyDeductionLimit;
 
 	const weeksPerYer = 52;
-	const sss = yearlyDeductions.sss || 0;
-	const pag_ibig = yearlyDeductions.pag_ibig || 0;
+	const sss = yearlyDeductions?.sss || 0;
+	const pagIbig = yearlyDeductions?.pag_ibig || 0;
 
 	return {
-		sss: {
-			yearly: sss,
-			weekly: sss / weeksPerYer,
-		},
-		pagIbig: {
-			yearly: pag_ibig,
-			weekly: pag_ibig / weeksPerYer,
+		remainingCashAdvanceBalance: paidInfo.isPaid
+			? paidInfo.deductions.remainingCashAdvanceBalance
+			: remainingCashAdvanceBalanceValue,
+		weeklyCashAdvanceDeduction: paidInfo.isPaid
+			? paidInfo.deductions.weeklyCashAdvance
+			: weeklyCashAdvanceDeduction,
+		weeklySss: paidInfo.isPaid ? paidInfo.deductions.sss : sss / weeksPerYer,
+		weeklyPagIbig: paidInfo.isPaid
+			? paidInfo.deductions.pagibig
+			: pagIbig / weeksPerYer,
+	};
+};
+
+const calculateWorkHours = (records: PayrollDataSource[]) => {
+	const totalRegularHours =
+		records?.reduce(
+			(acc, record) => acc + (record.regularHoursWorked || 0),
+			0,
+		) || 0;
+
+	const totalLateMinutes =
+		records?.reduce(
+			(acc, record) => acc + (record.lateTimeInMinutes || 0),
+			0,
+		) || 0;
+
+	const totalLateHours = totalLateMinutes / 60;
+
+	const totalRegularOvertimeHours =
+		records?.reduce(
+			(acc, record) => acc + (record.overtimeHoursWorked || 0),
+			0,
+		) || 0;
+
+	const sundayHours =
+		records?.reduce(
+			(acc, record) => acc + (record.sundayHoursWorked || 0),
+			0,
+		) || 0;
+
+	const totalHours = totalRegularHours - totalLateHours;
+
+	return {
+		totalRegularHours,
+		totalLateHours,
+		totalLateMinutes,
+		totalRegularOvertimeHours,
+		totalHours,
+		sundayHours,
+	};
+};
+
+type CalculatedWorkedHours = ReturnType<typeof calculateWorkHours>;
+
+const getOtMultipliers = (settings: PayrollSettingsResponse) => {
+	const regularOtMultiplier = settings.data?.regular_ot_rate_percent || 1.25;
+	const sundayMultiplier = settings.data?.weekend_ot_rate || 1.3;
+
+	return {
+		regularOtMultiplier,
+		sundayMultiplier,
+	};
+};
+
+type OtMultipliers = ReturnType<typeof getOtMultipliers>;
+
+const calculatePayments = ({
+	workedHours,
+	salaryPerHour,
+	otMultipliers,
+	deductions,
+}: {
+	workedHours: CalculatedWorkedHours;
+	salaryPerHour: number;
+	otMultipliers: OtMultipliers;
+	deductions: {
+		cashAdvance: number;
+		sss: number;
+		pagIbig: number;
+	};
+}) => {
+	const { totalRegularHours, totalRegularOvertimeHours, sundayHours } =
+		workedHours;
+
+	const { regularOtMultiplier, sundayMultiplier } = otMultipliers;
+
+	const regularHoursPay = totalRegularHours * salaryPerHour;
+
+	const overtimePay =
+		totalRegularOvertimeHours * (salaryPerHour * regularOtMultiplier);
+
+	const sundayPay = sundayHours * (salaryPerHour * sundayMultiplier);
+
+	const grossSalary = regularHoursPay + overtimePay + sundayPay;
+
+	const totalDeductions =
+		deductions.cashAdvance + deductions.sss + deductions.pagIbig;
+
+	const netSalary = grossSalary - totalDeductions;
+
+	return {
+		regularHoursPay,
+		overtimePay,
+		sundayPay,
+		grossSalary,
+		netSalary,
+		totalDeductions,
+	};
+};
+
+const getUserInfo = (data: PayrollDataSource) => {
+	const firstName = data?.firstName || "";
+	const lastName = data?.lastName || "";
+	const name = data?.fullName || data.email || "n/a";
+
+	return {
+		userId: data.user_id,
+		name,
+		firstName,
+		lastName,
+	};
+};
+
+const getSalaryInfo = (data: PayrollDataSource) => {
+	const salaryPerDay = data?.salaryPerDay || 0;
+	const salaryPerHour = data?.salaryPerHour || 0;
+
+	return {
+		salaryPerDay,
+		salaryPerHour,
+	};
+};
+
+const getPaidInfo = (data: PayrollDataSource) => {
+	const isPaid = data?.isPaid || false;
+	const paidAt = data?.paidAt || null;
+
+	return {
+		isPaid,
+		paidAt,
+		deductions: {
+			remainingCashAdvanceBalance:
+				data.paiDeducrions.remainingCashAdvanceBalance || 0,
+			weeklyCashAdvance: data.paiDeducrions.weeklyCashAdvance || 0,
+			sss: data.paiDeducrions.sss || 0,
+			pagibig: data.paiDeducrions.pagibig || 0,
 		},
 	};
 };
+
+type PaidInfo = ReturnType<typeof getPaidInfo>;
 
 export const mapWeeklySummaryData = ({
 	data,
@@ -114,112 +260,60 @@ export const mapWeeklySummaryData = ({
 	const dataSource = Object.entries(groupByWeek)
 		.map(([recordKey, records]) => {
 			const [weekStart, weekEnd, userId] = recordKey.split(separator);
+			const daysWorked = records?.length || 0;
+
+			const [firstRecord] = records || [];
+			const userWeeklyId = firstRecord?.userWeeklyId || 0;
+
+			const userInfo = getUserInfo(firstRecord);
+			const otMultipliers = getOtMultipliers(settings);
 
 			const numberOfActiveRecords =
 				records?.filter((record) => !record.clock_out_time).length || 0;
 
-			const totalRegularHours =
-				records?.reduce(
-					(acc, record) => acc + (record.regularHoursWorked || 0),
-					0,
-				) || 0;
+			const hoursInfo = calculateWorkHours(records || []);
+			const salaryInfo = getSalaryInfo(firstRecord);
+			const paidInfo = getPaidInfo(firstRecord);
 
-			const totalLateMinutes =
-				records?.reduce(
-					(acc, record) => acc + (record.lateTimeInMinutes || 0),
-					0,
-				) || 0;
-
-			const totalLateHours = totalLateMinutes / 60;
-
-			const totalRegularOvertime =
-				records?.reduce(
-					(acc, record) => acc + (record.overtimeHoursWorked || 0),
-					0,
-				) || 0;
-
-			const sundayHours =
-				records?.reduce(
-					(acc, record) => acc + (record.sundayHoursWorked || 0),
-					0,
-				) || 0;
-
-			const regularDaysWorked = records?.length || 0;
-			const [firstRecord] = records || [];
-			const salaryPerDay = firstRecord?.salaryPerDay || 0;
-			const salaryPerHour = salaryPerDay ? Number(salaryPerDay) / 8 : 0;
-
-			const regularOtMultiplier =
-				settings.data?.regular_ot_rate_percent || 1.25;
-			const sundayMultiplier = settings.data?.weekend_ot_rate || 1.3;
-			const regularHoursPay = totalRegularHours * salaryPerHour;
-			const overtimePay =
-				totalRegularOvertime * (salaryPerHour * regularOtMultiplier);
-			const sundayPay = sundayHours * (salaryPerHour * sundayMultiplier);
-			const totalPay = regularHoursPay + overtimePay + sundayPay;
-
-			const firstName = firstRecord?.firstName || "";
-			const lastName = firstRecord?.lastName || "";
-			const name = firstRecord?.fullName || firstRecord.email || "n/a";
-
-			const remainingCashAdvanceBalance = getUserRemainingCashAdvanceBalance({
-				userId,
-				cashAdvances,
-				settings,
-			});
-
-			const deductions = getSSSContribution({
+			const deductions = getWeeklyDeductions({
 				userId,
 				weekStart,
 				deductions: payrollDeductions,
+				cashAdvances,
+				settings,
+				paidInfo,
 			});
-
-			const grossSalary = regularHoursPay + overtimePay + sundayPay;
-			const totalDeductions =
-				remainingCashAdvanceBalance.weeklyDeductionLimit +
-				deductions.sss.weekly +
-				deductions.pagIbig.weekly;
-			const netSalary = grossSalary - totalDeductions;
-
-			const isPaid = firstRecord?.isPaid || false;
-			const userWeeklyId = firstRecord?.userWeeklyId || 0;
-			const paidAt = firstRecord?.paidAt || null;
+			const paymentInfo = calculatePayments({
+				workedHours: hoursInfo,
+				salaryPerHour: salaryInfo.salaryPerHour,
+				otMultipliers,
+				deductions: {
+					cashAdvance: deductions.weeklyCashAdvanceDeduction,
+					sss: deductions.weeklySss,
+					pagIbig: deductions.weeklyPagIbig,
+				},
+			});
 
 			return {
 				recordKey,
 				numberOfActiveRecords,
+				daysWorked,
 
 				weekStart,
 				weekEnd,
 				userId,
-				name,
-				firstName,
-				lastName,
-				salaryPerDay,
-				salaryPerHour,
-				totalRegularHours,
-				totalRegularOvertime,
-				sundayHours,
-				regularHoursPay,
-				overtimePay,
-				sundayPay,
-				totalPay,
-				regulatOtMultiplier: regularOtMultiplier,
-				sundayMultiplier,
-				regularDaysWorked,
-				details: records,
-				late: totalLateHours,
+				userWeeklyId: BigInt(userWeeklyId),
 
-				remainingCashAdvanceBalance,
+				otMultipliers,
+				hoursInfo,
+				userInfo,
+				salaryInfo,
+				paymentInfo,
+				paidInfo,
+
 				deductions,
 
-				grossSalary,
-				totalDeductions,
-				netSalary,
-
-				isPaid,
-				paidAt,
-				userWeeklyId: BigInt(userWeeklyId),
+				details: records,
 			};
 		})
 		.sort(

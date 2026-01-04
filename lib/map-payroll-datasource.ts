@@ -88,6 +88,13 @@ export const mapPayrollDataSource = ({
 
 			const isPaid = record.user_weekly_payroll?.is_paid || false;
 			const paidAt = record.user_weekly_payroll?.paid_at || null;
+			const paidDeductions = {
+				weeklyCashAdvance: record.user_weekly_payroll?.paid_cash_advacne || 0,
+				remainingCashAdvanceBalance:
+					record.user_weekly_payroll?.current_cash_advance_balance || 0,
+				sss: record.user_weekly_payroll?.paid_sss || 0,
+				pagibig: record.user_weekly_payroll?.paid_pagibig || 0,
+			};
 
 			return {
 				...record,
@@ -116,12 +123,11 @@ export const mapPayrollDataSource = ({
 				breakHours,
 				isPaid,
 				paidAt,
+				paiDeducrions: paidDeductions,
 				userWeeklyId: record.user_weekly_payroll.id,
 				is_manual: record.is_manual || false,
 			};
 		}) || [];
-
-	console.log("Mapped Payroll Data Source:", ds);
 
 	return ds;
 };

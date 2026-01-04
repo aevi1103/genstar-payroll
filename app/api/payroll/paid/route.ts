@@ -9,7 +9,10 @@ import { NextResponse } from "next/server";
 export interface PayUserCashAdvanceRequestBody {
 	userId: string | null | undefined;
 	weeklyUserId: string;
-	cashAdvanceAmountPaid: number;
+	paidCashAdvance: number;
+	paidSss: number;
+	paidPagibig: number;
+	remainingCashAdvanceBalance: number;
 	remarks?: string;
 }
 
@@ -40,7 +43,14 @@ export async function POST(request: Request) {
 		);
 	}
 
-	if (!body.userId || !body.weeklyUserId || !body.cashAdvanceAmountPaid) {
+	if (
+		!body.userId ||
+		!body.weeklyUserId ||
+		!body.paidCashAdvance ||
+		!body.paidSss ||
+		!body.paidPagibig ||
+		!body.remainingCashAdvanceBalance
+	) {
 		return NextResponse.json(
 			{ error: "Missing required fields" },
 			{ status: 400 },
@@ -48,7 +58,9 @@ export async function POST(request: Request) {
 	}
 
 	const userId = body.userId;
-	const cashAdvanceAmountPaid = body.cashAdvanceAmountPaid;
+	const paidCashAdvance = body.paidCashAdvance;
+	const paidSss = body.paidSss;
+	const paidPagibig = body.paidPagibig;
 	const remarks = body.remarks || null;
 
 	const record = await prisma.user_weekly_payroll.findUnique({
@@ -69,7 +81,7 @@ export async function POST(request: Request) {
 		const remainingBalance = await getUserRemainingCashAdvBalance(userId);
 
 		if (remainingBalance > 0) {
-			await autopayUserCashBalance(userId, cashAdvanceAmountPaid, tx);
+			await autopayUserCashBalance(userId, paidCashAdvance, tx);
 		}
 
 		await tx.user_weekly_payroll.update({
@@ -82,6 +94,10 @@ export async function POST(request: Request) {
 				notes: remarks,
 				modified_at: new Date(),
 				modified_by: session.user.email || "system",
+				paid_cash_advacne: paidCashAdvance,
+				paid_sss: paidSss,
+				paid_pagibig: paidPagibig,
+				current_cash_advance_balance: body.remainingCashAdvanceBalance,
 			},
 		});
 	});

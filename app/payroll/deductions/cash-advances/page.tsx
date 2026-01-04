@@ -7,6 +7,7 @@ import { TotalUnpaidBalance } from "@/features/cash-advances/total-unpaid-balanc
 import { getUsers, type UserProfiles } from "@/lib/db/get-user-profiles";
 import { type CashAdvances, getCashAdvances } from "@/lib/db/get-cash-advances";
 import { serializeData } from "@/lib/utils";
+import { getActiveEmployees, type Users } from "@/lib/db/get-active-employees";
 
 // Serialize BigInt fields to strings
 export default async function CashAdvancesPage() {
@@ -18,7 +19,7 @@ export default async function CashAdvancesPage() {
 	}
 
 	// Fetch all employees for the form dropdown
-	const employees = await getUsers();
+	const employees = await getActiveEmployees();
 
 	// Fetch all cash advances with employee names
 	const cashAdvancesRaw = await getCashAdvances();
@@ -32,9 +33,7 @@ export default async function CashAdvancesPage() {
 				<p className="text-muted-foreground mt-2">
 					Manage employee cash advances and payments
 				</p>
-				<CashAdvanceFormDialog
-					employees={serializeData<UserProfiles>(employees)}
-				/>
+				<CashAdvanceFormDialog employees={serializeData<Users>(employees)} />
 			</div>
 
 			<TotalUnpaidBalance cashAdvances={cashAdvances} />

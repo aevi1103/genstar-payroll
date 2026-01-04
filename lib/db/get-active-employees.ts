@@ -23,19 +23,21 @@ export const getActiveEmployees = async () => {
 		},
 	});
 
-	return data.map((user) => {
-		const fName = user.user_profiles?.[0]?.first_name || "";
-		const lName = user.user_profiles?.[0]?.last_name || "";
-		const fullName = fName ? `${fName} ${lName}`.trim() : user.email;
+	return data
+		.map((user) => {
+			const fName = user.user_profiles?.[0]?.first_name || "";
+			const lName = user.user_profiles?.[0]?.last_name || "";
+			const fullName = fName ? `${fName} ${lName}`.trim() : user.email;
 
-		return {
-			id: user.id,
-			email: user.email,
-			firstName: fName,
-			lastName: lName,
-			fullName: fullName || "unknown",
-		};
-	});
+			return {
+				id: user.id,
+				email: user.email,
+				firstName: fName,
+				lastName: lName,
+				fullName: fullName || "unknown",
+			};
+		})
+		.sort((a, b) => a.fullName.localeCompare(b.fullName));
 };
 
 export type Users = Prisma.PromiseReturnType<typeof getActiveEmployees>;

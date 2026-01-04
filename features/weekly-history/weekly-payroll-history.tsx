@@ -62,7 +62,7 @@ export const WeeklyPayrollHistory = ({
 		(ColDef<WeeklySummaryDataSource> | ColGroupDef<WeeklySummaryDataSource>)[]
 	>([
 		{
-			field: "name",
+			field: "userInfo.name",
 			headerName: "Employee Name",
 			initialWidth: 200,
 			initialPinned: isMobile ? undefined : "left",
@@ -84,13 +84,13 @@ export const WeeklyPayrollHistory = ({
 		},
 
 		{
-			field: "salaryPerDay",
+			field: "salaryInfo.salaryPerDay",
 			headerName: "Salary Per Day",
 			valueFormatter: (params) => formatPesoCurrency(params.value),
 			initialWidth: 150,
 		},
 		{
-			field: "salaryPerHour",
+			field: "salaryInfo.salaryPerHour",
 			headerName: "Amount Per Hour",
 			valueFormatter: (params) => formatPesoCurrency(params.value),
 		},
@@ -101,32 +101,27 @@ export const WeeklyPayrollHistory = ({
 					headerName: "Working Days",
 					children: [
 						{
-							field: "regularDaysWorked",
+							field: "daysWorked",
 							headerName: "REG.",
 							valueFormatter: (params) =>
 								numeral(params.value).format("0.[00]"),
 						},
 						{
-							field: "totalRegularHours",
+							field: "hoursInfo.totalRegularHours",
 							headerName: "Hrs.",
 							valueFormatter: (params) =>
 								numeral(params.value).format("0.[00]"),
 						},
 						{
-							field: "late",
-							headerName: "Late",
+							field: "hoursInfo.totalLateMinutes",
+							headerName: "Late (mins)",
 							valueFormatter: (params) =>
 								numeral(params.value).format("0.[00]"),
 						},
 						{
-							colId: "totalHours",
+							field: "hoursInfo.totalHours",
 							headerName: "Total Hrs.",
 							initialWidth: 150,
-							valueGetter: (params) => {
-								const totalRegularHours = params.data?.totalRegularHours || 0;
-								const lateHours = params.data?.late || 0;
-								return totalRegularHours - lateHours;
-							},
 							valueFormatter: (params) =>
 								numeral(params.value).format("0.[00]"),
 						},
@@ -136,28 +131,28 @@ export const WeeklyPayrollHistory = ({
 					headerName: "Overtime",
 					children: [
 						{
-							field: "totalRegularOvertime",
+							field: "hoursInfo.totalRegularOvertimeHours",
 							headerName: "REG. OT Hrs.",
 							initialWidth: 150,
 							valueFormatter: (params) =>
 								numeral(params.value).format("0.[00]"),
 						},
 						{
-							field: "regulatOtMultiplier",
+							field: "otMultipliers.regularOtMultiplier",
 							headerName: "Reg. OT %",
 							initialWidth: 120,
 							valueFormatter: (params) =>
 								numeral(params.value).format("0.[00]"),
 						},
 						{
-							field: "sundayHours",
+							field: "hoursInfo.sundayHours",
 							headerName: "SUN. OT Hrs.",
 							initialWidth: 150,
 							valueFormatter: (params) =>
 								numeral(params.value).format("0.[00]"),
 						},
 						{
-							field: "sundayMultiplier",
+							field: "otMultipliers.sundayMultiplier",
 							headerName: "Sun. OT %",
 							initialWidth: 120,
 							valueFormatter: (params) =>
@@ -174,13 +169,13 @@ export const WeeklyPayrollHistory = ({
 					headerName: "Regular Pay",
 					children: [
 						{
-							field: "regularHoursPay",
+							field: "paymentInfo.regularHoursPay",
 							headerName: "Reg. Day Pay",
 							initialWidth: 170,
 							valueFormatter: (params) => formatPesoCurrency(params.value),
 						},
 						{
-							field: "overtimePay",
+							field: "paymentInfo.overtimePay",
 							initialWidth: 170,
 							headerName: "Reg. OT Pay",
 							valueFormatter: (params) => formatPesoCurrency(params.value),
@@ -191,7 +186,7 @@ export const WeeklyPayrollHistory = ({
 					headerName: "Holiday",
 					children: [
 						{
-							field: "sundayPay",
+							field: "paymentInfo.sundayPay",
 							headerName: "Sun. OT Pay",
 							initialWidth: 170,
 							valueFormatter: (params) => formatPesoCurrency(params.value),
@@ -207,14 +202,14 @@ export const WeeklyPayrollHistory = ({
 					headerName: "Cash Advance",
 					children: [
 						{
-							field: "remainingCashAdvanceBalance.remainingBalance",
+							field: "deductions.remainingCashAdvanceBalance",
 							headerName: "Remaining",
 							headerTooltip: "Remaining Cash Advance Balance",
 							initialWidth: 130,
 							valueFormatter: (params) => formatPesoCurrency(params.value),
 						},
 						{
-							field: "remainingCashAdvanceBalance.weeklyDeductionLimit",
+							field: "deductions.weeklyCashAdvanceDeduction",
 							headerName: `Weekly (${cashAdvanceDeductionRate}%)`,
 							headerTooltip: "Cash Advance Weekly Deduction",
 							initialWidth: 130,
@@ -224,13 +219,13 @@ export const WeeklyPayrollHistory = ({
 				},
 
 				{
-					field: "deductions.sss.weekly",
+					field: "deductions.weeklySss",
 					headerName: "SSS",
 					initialWidth: 130,
 					valueFormatter: (params) => formatPesoCurrency(params.value),
 				},
 				{
-					field: "deductions.pagIbig.weekly",
+					field: "deductions.weeklyPagIbig",
 					headerName: "Pag-IBIG",
 					initialWidth: 130,
 					valueFormatter: (params) => formatPesoCurrency(params.value),
@@ -238,19 +233,19 @@ export const WeeklyPayrollHistory = ({
 			],
 		},
 		{
-			field: "grossSalary",
+			field: "paymentInfo.grossSalary",
 			headerName: "Gross Salary",
 			valueFormatter: (params) => formatPesoCurrency(params.value),
 			initialWidth: 130,
 		},
 		{
-			field: "totalDeductions",
+			field: "paymentInfo.totalDeductions",
 			headerName: "Total Deductions",
 			valueFormatter: (params) => formatPesoCurrency(params.value),
 			initialWidth: 130,
 		},
 		{
-			field: "netSalary",
+			field: "paymentInfo.netSalary",
 			headerName: "Net Salary",
 			valueFormatter: (params) => formatPesoCurrency(params.value),
 			initialWidth: 130,

@@ -580,19 +580,23 @@ model cash_advances {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model user_weekly_payroll {
-  id          BigInt    @id(map: "user_payroll_pkey") @default(autoincrement())
-  created_at  DateTime  @default(now()) @db.Timestamptz(6)
-  user_id     String    @default(dbgenerated("auth.uid()")) @db.Uuid
-  week_start  DateTime  @db.Timestamptz(6)
-  week_end    DateTime  @db.Timestamptz(6)
-  is_paid     Boolean   @default(false)
-  modified_at DateTime? @db.Timestamptz(6)
-  created_by  String?   @db.VarChar
-  modified_by String?   @db.VarChar
-  notes       String?   @db.VarChar
-  paid_at     DateTime? @db.Timestamptz(6)
-  payroll     payroll[]
-  users       users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id                           BigInt    @id(map: "user_payroll_pkey") @default(autoincrement())
+  created_at                   DateTime  @default(now()) @db.Timestamptz(6)
+  user_id                      String    @default(dbgenerated("auth.uid()")) @db.Uuid
+  week_start                   DateTime  @db.Timestamptz(6)
+  week_end                     DateTime  @db.Timestamptz(6)
+  is_paid                      Boolean   @default(false)
+  modified_at                  DateTime? @db.Timestamptz(6)
+  created_by                   String?   @db.VarChar
+  modified_by                  String?   @db.VarChar
+  notes                        String?   @db.VarChar
+  paid_at                      DateTime? @db.Timestamptz(6)
+  paid_cash_advacne            Float?    @db.Real
+  paid_sss                     Float?    @db.Real
+  paid_pagibig                 Float?    @db.Real
+  current_cash_advance_balance Float?    @db.Real
+  payroll                      payroll[]
+  users                        users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }

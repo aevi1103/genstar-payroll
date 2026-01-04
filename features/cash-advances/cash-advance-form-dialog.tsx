@@ -36,10 +36,10 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import type { UserProfiles } from "@/lib/db/get-user-profiles";
+import type { Users } from "@/lib/db/get-active-employees";
 
 type CashAdvanceFormDialogProps = {
-	employees: UserProfiles;
+	employees: Users;
 };
 
 export const CashAdvanceFormDialog = ({
@@ -113,7 +113,7 @@ export const CashAdvanceFormDialog = ({
 										<SelectContent>
 											{employees.map((employee) => (
 												<SelectItem key={employee.id} value={employee.id}>
-													{employee.name || ""}
+													{employee.fullName || ""}
 												</SelectItem>
 											))}
 										</SelectContent>

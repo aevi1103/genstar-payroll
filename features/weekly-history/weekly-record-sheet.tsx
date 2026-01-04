@@ -65,10 +65,13 @@ export const WeeklyRecordSheet = ({
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					userId: record.userId,
+					userId: record.userInfo.userId,
 					weeklyUserId: record.userWeeklyId.toString(),
-					cashAdvanceAmountPaid:
-						record.remainingCashAdvanceBalance?.weeklyDeductionLimit || 0,
+					paidCashAdvance: record.deductions?.weeklyCashAdvanceDeduction || 0,
+					paidSss: record.deductions?.weeklySss || 0,
+					paidPagibig: record.deductions?.weeklyPagIbig || 0,
+					remainingCashAdvanceBalance:
+						record.deductions?.remainingCashAdvanceBalance || 0,
 					remarks: "Marked as paid by admin",
 				} satisfies PayUserCashAdvanceRequestBody),
 			});
@@ -119,7 +122,7 @@ export const WeeklyRecordSheet = ({
 			<SheetContent className="overflow-y-auto w-full sm:max-w-xl">
 				<SheetHeader>
 					<SheetTitle className="flex items-center gap-2">
-						<span>{record.name}</span>
+						<span>{record.userInfo.name}</span>
 						<Badge variant="default">
 							{formatWeekPeriod(record.weekStart, record.weekEnd)}
 						</Badge>
@@ -132,7 +135,7 @@ export const WeeklyRecordSheet = ({
 				<div className="m-6 mt-0 space-y-6">
 					<Card
 						className={cn(
-							record.isPaid
+							record.paidInfo.isPaid
 								? "from-green-50 to-green-50 border-green-200 hover:border-green-300"
 								: "from-gray-50 to-gray-50 border-gray-200 hover:border-gray-300",
 							`
@@ -144,11 +147,11 @@ export const WeeklyRecordSheet = ({
 						<div className="space-y-4">
 							<div className="flex items-center gap-2 mb-4 justify-between">
 								<h3 className="font-bold text-lg">Salary Summary</h3>
-								{record.isPaid && (
+								{record.paidInfo.isPaid && (
 									<Badge>
 										Paid at{" "}
-										{record.paidAt
-											? new Date(record.paidAt).toLocaleString()
+										{record.paidInfo.paidAt
+											? new Date(record.paidInfo.paidAt).toLocaleString()
 											: "N/A"}
 									</Badge>
 								)}
@@ -158,7 +161,7 @@ export const WeeklyRecordSheet = ({
 								<div className="flex justify-between items-center">
 									<span className="text-sm ">Gross Salary</span>
 									<span className="text-xl font-bold">
-										{formatPesoCurrency(record.grossSalary)}
+										{formatPesoCurrency(record.paymentInfo.grossSalary)}
 									</span>
 								</div>
 
@@ -169,7 +172,7 @@ export const WeeklyRecordSheet = ({
 										Total Deductions
 									</span>
 									<span className="text-lg font-semibold text-red-600 dark:text-red-400">
-										-{formatPesoCurrency(record.totalDeductions)}
+										-{formatPesoCurrency(record.paymentInfo.totalDeductions)}
 									</span>
 								</div>
 
@@ -180,39 +183,43 @@ export const WeeklyRecordSheet = ({
 										Net Salary
 									</span>
 									<span className="text-2xl font-bold text-green-700 dark:text-green-300">
-										{formatPesoCurrency(record.netSalary)}
+										{formatPesoCurrency(record.paymentInfo.netSalary)}
 									</span>
 								</div>
 							</div>
 						</div>
 					</Card>
 
-					{isAdmin && !record.isPaid && record.numberOfActiveRecords === 0 && (
-						<Button
-							size={"lg"}
-							className="w-full cursor-pointer"
-							onClick={markAsPaid}
-							disabled={record.isPaid || isPending}
-						>
-							{isPending ? (
-								<>
-									<Spinner /> Marking as Paid...
-								</>
-							) : (
-								<>
-									<UserCheck />
-									Mark as Paid
-								</>
-							)}
-						</Button>
-					)}
+					{isAdmin &&
+						!record.paidInfo.isPaid &&
+						record.numberOfActiveRecords === 0 && (
+							<Button
+								size={"lg"}
+								className="w-full cursor-pointer"
+								onClick={markAsPaid}
+								disabled={record.paidInfo.isPaid || isPending}
+							>
+								{isPending ? (
+									<>
+										<Spinner /> Marking as Paid...
+									</>
+								) : (
+									<>
+										<UserCheck />
+										Mark as Paid
+									</>
+								)}
+							</Button>
+						)}
 
 					{record.numberOfActiveRecords > 0 && (
 						<>
-							<Badge variant="destructive" className="w-full">
-								Cannot mark as paid. There are still{" "}
-								{record.numberOfActiveRecords} active records for this user in
-								the selected week.
+							<Badge variant="destructive" className="w-full ">
+								<span className="whitespace-pre-wrap">
+									Cannot mark as paid. There are still{" "}
+									{record.numberOfActiveRecords} active records for this user in
+									the selected week.
+								</span>
 							</Badge>
 
 							<ul>
@@ -256,9 +263,15 @@ export const WeeklyRecordSheet = ({
 							<h3 className="font-semibold text-sm">Employee Information</h3>
 						</div>
 						<div className="space-y-2 pl-6">
-							<DetailRow label="Name" value={record.name || "N/A"} />
-							<DetailRow label="First Name" value={record.firstName || "N/A"} />
-							<DetailRow label="Last Name" value={record.lastName || "N/A"} />
+							<DetailRow label="Name" value={record.userInfo.name || "N/A"} />
+							<DetailRow
+								label="First Name"
+								value={record.userInfo.firstName || "N/A"}
+							/>
+							<DetailRow
+								label="Last Name"
+								value={record.userInfo.lastName || "N/A"}
+							/>
 						</div>
 					</div>
 					<Separator />
@@ -276,7 +289,7 @@ export const WeeklyRecordSheet = ({
 							<DetailRow label="Week End" value={formatDate(record.weekEnd)} />
 							<DetailRow
 								label="Days Worked"
-								value={record.regularDaysWorked.toFixed(2)}
+								value={record.daysWorked.toFixed(2)}
 							/>
 						</div>
 					</div>
@@ -290,11 +303,11 @@ export const WeeklyRecordSheet = ({
 						<div className="space-y-2 pl-6">
 							<DetailRow
 								label="Salary Per Day"
-								value={formatPesoCurrency(record.salaryPerDay)}
+								value={formatPesoCurrency(record.salaryInfo.salaryPerDay)}
 							/>
 							<DetailRow
 								label="Salary Per Hour"
-								value={formatPesoCurrency(record.salaryPerHour)}
+								value={formatPesoCurrency(record.salaryInfo.salaryPerHour)}
 							/>
 						</div>
 					</div>
@@ -308,23 +321,23 @@ export const WeeklyRecordSheet = ({
 						<div className="space-y-2 pl-6">
 							<DetailRow
 								label="Regular Hours"
-								value={`${record.totalRegularHours.toFixed(2)} hrs`}
+								value={`${record.hoursInfo.totalRegularHours.toFixed(2)} hrs`}
 							/>
 							<DetailRow
 								label="Overtime (Regular)"
-								value={`${record.totalRegularOvertime.toFixed(2)} hrs`}
+								value={`${record.hoursInfo.totalRegularOvertimeHours.toFixed(2)} hrs`}
 							/>
 							<DetailRow
 								label="Sunday Hours"
-								value={`${record.sundayHours.toFixed(2)} hrs`}
+								value={`${record.hoursInfo.sundayHours.toFixed(2)} hrs`}
 							/>
 							<DetailRow
 								label="Late Deduction"
-								value={`${record.late.toFixed(2)} hrs`}
+								value={`${record.hoursInfo.totalLateHours.toFixed(2)} hrs (${record.hoursInfo.totalLateMinutes} mins)`}
 							/>
 							<DetailRow
 								label="Net Hours"
-								value={`${(record.totalRegularHours - record.late).toFixed(2)} hrs`}
+								value={`${(record.hoursInfo.totalRegularHours - record.hoursInfo.totalLateHours).toFixed(2)} hrs`}
 								highlight
 							/>
 						</div>
@@ -339,11 +352,11 @@ export const WeeklyRecordSheet = ({
 						<div className="space-y-2 pl-6">
 							<DetailRow
 								label="Regular OT Rate"
-								value={`${(record.regulatOtMultiplier * 100).toFixed(0)}%`}
+								value={`${(record.otMultipliers.regularOtMultiplier * 100).toFixed(0)}%`}
 							/>
 							<DetailRow
 								label="Sunday OT Rate"
-								value={`${(record.sundayMultiplier * 100).toFixed(0)}%`}
+								value={`${(record.otMultipliers.sundayMultiplier * 100).toFixed(0)}%`}
 							/>
 						</div>
 					</div>
@@ -357,20 +370,20 @@ export const WeeklyRecordSheet = ({
 						<div className="space-y-2 pl-6">
 							<DetailRow
 								label="Regular Pay"
-								value={formatPesoCurrency(record.regularHoursPay)}
+								value={formatPesoCurrency(record.paymentInfo.regularHoursPay)}
 							/>
 							<DetailRow
 								label="Regular OT Pay"
-								value={formatPesoCurrency(record.overtimePay)}
+								value={formatPesoCurrency(record.paymentInfo.overtimePay)}
 							/>
 							<DetailRow
 								label="Sunday Pay"
-								value={formatPesoCurrency(record.sundayPay)}
+								value={formatPesoCurrency(record.paymentInfo.sundayPay)}
 							/>
 							<Separator className="my-2" />
 							<DetailRow
 								label="Total Pay"
-								value={formatPesoCurrency(record.totalPay)}
+								value={formatPesoCurrency(record.paymentInfo.grossSalary)}
 								highlight
 							/>
 						</div>
@@ -391,14 +404,13 @@ export const WeeklyRecordSheet = ({
 								<DetailRow
 									label="Remaining Balance"
 									value={formatPesoCurrency(
-										record.remainingCashAdvanceBalance?.remainingBalance || 0,
+										record.deductions?.remainingCashAdvanceBalance || 0,
 									)}
 								/>
 								<DetailRow
 									label="Weekly Deduction"
 									value={formatPesoCurrency(
-										record.remainingCashAdvanceBalance?.weeklyDeductionLimit ||
-											0,
+										record.deductions?.weeklyCashAdvanceDeduction || 0,
 									)}
 								/>
 							</div>
@@ -412,14 +424,12 @@ export const WeeklyRecordSheet = ({
 								</p>
 								<DetailRow
 									label="SSS"
-									value={formatPesoCurrency(
-										record.deductions?.sss?.weekly || 0,
-									)}
+									value={formatPesoCurrency(record.deductions?.weeklySss || 0)}
 								/>
 								<DetailRow
 									label="Pag-IBIG"
 									value={formatPesoCurrency(
-										record.deductions?.pagIbig?.weekly || 0,
+										record.deductions?.weeklyPagIbig || 0,
 									)}
 								/>
 							</div>
