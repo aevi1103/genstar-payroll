@@ -44,7 +44,11 @@ export function Header({ user }: HeaderProps) {
 						Contact
 					</Link>
 					{user && (
-						<Link href="/payroll" className="hover:text-emerald-900">
+						<Link
+							href="/payroll"
+							className="hover:text-emerald-900
+							 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1 rounded-full font-medium transition-colors ease-in-out duration-200"
+						>
 							Payroll
 						</Link>
 					)}
@@ -57,7 +61,7 @@ export function Header({ user }: HeaderProps) {
 						{user ? (
 							<>
 								<span className="hidden rounded-full bg-emerald-50 px-3 py-1 font-semibold text-emerald-800 sm:inline">
-									{user.email ?? "Signed in"}
+									Hi {user.user_metadata.name ?? "Signed in"}!
 								</span>
 								<LogoutButton />
 							</>
