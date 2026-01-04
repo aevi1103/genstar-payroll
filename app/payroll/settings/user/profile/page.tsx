@@ -29,10 +29,7 @@ export default async function Page() {
 					information.
 				</p>
 			</div>
-			<div className="h-[90dvh] lg:flex-1">
-				<UsersTable data={users.data || []} />
-			</div>
-
+			<UsersTable data={users.data || []} />
 			<UserProfileSheet />
 		</div>
 	);

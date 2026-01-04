@@ -253,25 +253,23 @@ export const WeeklyPayrollHistory = ({
 	]);
 
 	return (
-		<div className="h-[90dvh] lg:flex-1">
-			<TableWrapper>
-				<AgGridReact
-					columnDefs={colDefs}
-					rowData={weeklySummaryData || []}
-					getRowId={(params) => params?.data?.recordKey}
-					defaultColDef={{
-						filter: true,
-						initialWidth: 100,
-					}}
-					onRowClicked={(event) => {
-						if (event.data) {
-							setRecord(event.data);
-							openSheet();
-						}
-					}}
-					pagination
-				/>
-			</TableWrapper>
-		</div>
+		<TableWrapper>
+			<AgGridReact
+				columnDefs={colDefs}
+				rowData={weeklySummaryData || []}
+				getRowId={(params) => params?.data?.recordKey}
+				defaultColDef={{
+					filter: true,
+					initialWidth: 100,
+				}}
+				onRowClicked={(event) => {
+					if (event.data) {
+						setRecord(event.data);
+						openSheet();
+					}
+				}}
+				pagination
+			/>
+		</TableWrapper>
 	);
 };

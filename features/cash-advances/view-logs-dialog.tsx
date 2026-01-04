@@ -174,11 +174,10 @@ export const ViewLogsDialog = ({
 					</div>
 				) : (
 					<div className="h-75">
-						<TableWrapper>
+						<TableWrapper withWrapper={false}>
 							<AgGridReact<PaymentLog>
 								rowData={logs}
 								columnDefs={columnDefs}
-								suppressCellFocus
 								defaultColDef={{
 									initialWidth: 150,
 								}}

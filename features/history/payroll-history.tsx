@@ -213,25 +213,23 @@ export const PayrollHistory = ({
 	}
 
 	return (
-		<div className="h-[90dvh] md:flex-1">
-			<TableWrapper>
-				<AgGridReact
-					ref={gridRef}
-					columnDefs={colDefs}
-					rowData={data || []}
-					getRowId={(params) => params?.data?.id?.toString() || ""}
-					defaultColDef={{
-						filter: true,
-						minWidth: 50,
-					}}
-					rowSelection={{
-						mode: "singleRow",
-						checkboxes: false,
-						enableClickSelection: true,
-					}}
-					pagination
-				/>
-			</TableWrapper>
-		</div>
+		<TableWrapper>
+			<AgGridReact
+				ref={gridRef}
+				columnDefs={colDefs}
+				rowData={data || []}
+				getRowId={(params) => params?.data?.id?.toString() || ""}
+				defaultColDef={{
+					filter: true,
+					minWidth: 50,
+				}}
+				rowSelection={{
+					mode: "singleRow",
+					checkboxes: false,
+					enableClickSelection: true,
+				}}
+				pagination
+			/>
+		</TableWrapper>
 	);
 };

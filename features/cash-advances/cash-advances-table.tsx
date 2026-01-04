@@ -101,19 +101,17 @@ export const CashAdvancesTable = ({ cashAdvances }: CashAdvancesTableProps) => {
 	}
 
 	return (
-		<div className="h-[90dvh] lg:flex-1">
-			<TableWrapper>
-				<AgGridReact
-					columnDefs={colDefs}
-					rowData={cashAdvances}
-					getRowId={(params) => params.data?.id?.toString() || ""}
-					defaultColDef={{
-						filter: true,
-						sortable: true,
-						resizable: true,
-					}}
-				/>
-			</TableWrapper>
-		</div>
+		<TableWrapper>
+			<AgGridReact
+				columnDefs={colDefs}
+				rowData={cashAdvances}
+				getRowId={(params) => params.data?.id?.toString() || ""}
+				defaultColDef={{
+					filter: true,
+					sortable: true,
+					resizable: true,
+				}}
+			/>
+		</TableWrapper>
 	);
 };
