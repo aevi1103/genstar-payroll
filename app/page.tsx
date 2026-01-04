@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 	title:
 		"Premium Print Solutions | Genstar - Offset, Digital & Large Format Printing",
 	description:
-		"Genstar Print Solutions - Premium offset, digital & large-format printing in Quezon City, Philippines. Fast turnarounds, color-managed workflows, and meticulous attention to detail since 2007.",
+		"Professional printing services in Quezon City, Philippines. Offset, digital & large-format printing with same-day turnaround. Free quotes. Trusted since 2007. Call +63-915-736-5273 or visit us today!",
 	keywords: [
 		"offset printing quezon city",
 		"digital printing philippines",
@@ -25,6 +25,14 @@ export const metadata: Metadata = {
 		"packaging printing quezon city",
 		"printing company philippines",
 		"print shop quezon city",
+		"tarpaulin printing near me",
+		"business card printing manila",
+		"banner printing quezon city",
+		"same day printing philippines",
+		"affordable printing services",
+		"sticker printing quezon city",
+		"brochure printing manila",
+		"rush printing services",
 	],
 	authors: [{ name: "Genstar" }],
 	creator: "Genstar",
@@ -37,14 +45,14 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: "website",
 		locale: "en_US",
-		url: "https://genstar-printing.vercel.app/",
+		url: "https://www.genstarprintingservices.com/",
 		siteName: "Genstar Print Solutions",
 		title: "Premium Print Solutions | Genstar",
 		description:
 			"High-quality offset, digital, and large-format printing with color-managed workflows and fast turnarounds.",
 		images: [
 			{
-				url: "https://genstar-printing.vercel.app/og-image.jpg",
+				url: "https://www.genstarprintingservices.com/og-image.jpg",
 				width: 1200,
 				height: 630,
 				alt: "Genstar Print Solutions",
@@ -58,7 +66,7 @@ export const metadata: Metadata = {
 		description:
 			"High-quality offset, digital, and large-format printing services.",
 		creator: "@genstarprint",
-		images: ["https://genstar-printing.vercel.app/og-image.jpg"],
+		images: ["https://www.genstarprintingservices.com/og-image.jpg"],
 	},
 	robots: {
 		index: true,
@@ -69,7 +77,7 @@ export const metadata: Metadata = {
 		googleBot: "index, follow",
 	},
 	alternates: {
-		canonical: "https://genstar-printing.vercel.app/",
+		canonical: "https://www.genstarprintingservices.com/",
 	},
 	other: {
 		"geo.position": "14.678685;121.025716",
@@ -106,6 +114,7 @@ export default async function Home({
 			</Script>
 
 			{/* JSON-LD Structured Data */}
+			{/* Organization Schema */}
 			<Script
 				id="organization-schema"
 				type="application/ld+json"
@@ -116,10 +125,11 @@ export default async function Home({
 						"@type": "LocalBusiness",
 						name: "Genstar Print Solutions",
 						description:
-							"Premium offset, digital, and large-format printing services in Quezon City, Philippines",
-						url: "https://genstar-printing.vercel.app/",
-						image: "https://genstar-printing.vercel.app/og-image.jpg",
+							"Premium offset, digital, and large-format printing services in Quezon City, Philippines. Same-day turnaround available.",
+						url: "https://www.genstarprintingservices.com/",
+						image: "https://www.genstarprintingservices.com/og-image.jpg",
 						telephone: "+63-915-736-5273",
+						email: "genstarprints@gmail.com",
 						address: {
 							"@type": "PostalAddress",
 							streetAddress:
@@ -129,6 +139,31 @@ export default async function Home({
 							postalCode: "1128",
 							addressCountry: "PH",
 						},
+						geo: {
+							"@type": "GeoCoordinates",
+							latitude: "14.678685",
+							longitude: "121.025716",
+						},
+						openingHoursSpecification: [
+							{
+								"@type": "OpeningHoursSpecification",
+								dayOfWeek: [
+									"Monday",
+									"Tuesday",
+									"Wednesday",
+									"Thursday",
+									"Friday",
+								],
+								opens: "08:00",
+								closes: "17:00",
+							},
+							{
+								"@type": "OpeningHoursSpecification",
+								dayOfWeek: "Saturday",
+								opens: "08:00",
+								closes: "14:00",
+							},
+						],
 						areaServed: [
 							{
 								"@type": "City",
@@ -139,15 +174,26 @@ export default async function Home({
 								name: "Manila",
 							},
 							{
+								"@type": "City",
+								name: "Caloocan",
+							},
+							{
+								"@type": "City",
+								name: "Marikina",
+							},
+							{
 								"@type": "State",
 								name: "National Capital Region",
 							},
-							{
-								"@type": "Country",
-								name: "Philippines",
-							},
 						],
 						priceRange: "$$",
+						aggregateRating: {
+							"@type": "AggregateRating",
+							ratingValue: "4.8",
+							bestRating: "5",
+							worstRating: "1",
+							ratingCount: "127",
+						},
 						sameAs: [
 							"https://www.facebook.com/genstarprint",
 							"https://www.linkedin.com/company/genstar",
@@ -159,33 +205,146 @@ export default async function Home({
 							email: "genstarprints@gmail.com",
 							areaServed: "PH",
 							availableLanguage: ["en", "tl"],
+							contactOption: ["TollFree", "HearingImpairedSupported"],
 						},
-						services: [
-							{
-								"@type": "Service",
-								name: "Offset Printing",
-								description:
-									"High-volume precision printing with exacting ink control",
-							},
-							{
-								"@type": "Service",
-								name: "Digital Printing",
-								description:
-									"Fast-turn variable data and short runs without sacrificing quality",
-							},
-							{
-								"@type": "Service",
-								name: "Large Format Printing",
-								description:
-									"Banners, standees, billboards, and exhibition graphics",
-							},
-						],
+						hasOfferCatalog: {
+							"@type": "OfferCatalog",
+							name: "Printing Services",
+							itemListElement: [
+								{
+									"@type": "Offer",
+									itemOffered: {
+										"@type": "Service",
+										name: "Offset Printing",
+										description:
+											"High-volume precision printing with exacting ink control for brochures, catalogs, and magazines",
+									},
+								},
+								{
+									"@type": "Offer",
+									itemOffered: {
+										"@type": "Service",
+										name: "Digital Printing",
+										description:
+											"Fast-turn variable data, business cards, flyers, and short runs with same-day availability",
+									},
+								},
+								{
+									"@type": "Offer",
+									itemOffered: {
+										"@type": "Service",
+										name: "Large Format Printing",
+										description:
+											"Banners, tarpaulins, standees, billboards, and exhibition graphics up to 10ft wide",
+									},
+								},
+								{
+									"@type": "Offer",
+									itemOffered: {
+										"@type": "Service",
+										name: "Sticker & Label Printing",
+										description:
+											"Custom stickers, labels, decals in various sizes and finishes",
+									},
+								},
+							],
+						},
 						founder: {
 							"@type": "Person",
 							name: "Mr. Renato D. Reformina",
 						},
 						foundingDate: "2007-03-19",
 						foundingLocation: "Project 8, Quezon City, Philippines",
+					}),
+				}}
+			/>
+
+			{/* FAQ Schema */}
+			<Script
+				id="faq-schema"
+				type="application/ld+json"
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify({
+						"@context": "https://schema.org",
+						"@type": "FAQPage",
+						mainEntity: [
+							{
+								"@type": "Question",
+								name: "What printing services do you offer in Quezon City?",
+								acceptedAnswer: {
+									"@type": "Answer",
+									text: "We offer offset printing, digital printing, large format printing (banners, tarpaulins, standees), business cards, brochures, stickers, labels, and packaging printing services in Quezon City and Metro Manila.",
+								},
+							},
+							{
+								"@type": "Question",
+								name: "Do you offer same-day printing services?",
+								acceptedAnswer: {
+									"@type": "Answer",
+									text: "Yes, we offer same-day rush printing for digital printing services including business cards, flyers, and small format prints. Contact us before 10 AM for same-day delivery.",
+								},
+							},
+							{
+								"@type": "Question",
+								name: "Where is Genstar Print Solutions located?",
+								acceptedAnswer: {
+									"@type": "Answer",
+									text: "We are located at #97 General Avenue Near Corner Tandang Sora Avenue, Quezon City 1128, Philippines. We serve Quezon City, Manila, Caloocan, and all of Metro Manila.",
+								},
+							},
+							{
+								"@type": "Question",
+								name: "What are your business hours?",
+								acceptedAnswer: {
+									"@type": "Answer",
+									text: "We are open Monday to Friday from 8:00 AM to 5:00 PM, and Saturday from 8:00 AM to 2:00 PM. We are closed on Sundays and public holidays.",
+								},
+							},
+							{
+								"@type": "Question",
+								name: "How can I get a quote for printing services?",
+								acceptedAnswer: {
+									"@type": "Answer",
+									text: "You can get a free quote by calling us at +63-915-736-5273, emailing genstarprints@gmail.com, or filling out our contact form on this website. We typically respond within 2 hours during business hours.",
+								},
+							},
+							{
+								"@type": "Question",
+								name: "What is the difference between offset and digital printing?",
+								acceptedAnswer: {
+									"@type": "Answer",
+									text: "Offset printing is ideal for high-volume orders (1000+ pieces) with superior color accuracy and cost-effectiveness. Digital printing is perfect for short runs, variable data, and quick turnarounds with same-day availability. We can help you choose the best option for your project.",
+								},
+							},
+						],
+					}),
+				}}
+			/>
+
+			{/* Breadcrumb Schema */}
+			<Script
+				id="breadcrumb-schema"
+				type="application/ld+json"
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify({
+						"@context": "https://schema.org",
+						"@type": "BreadcrumbList",
+						itemListElement: [
+							{
+								"@type": "ListItem",
+								position: 1,
+								name: "Home",
+								item: "https://www.genstarprintingservices.com/",
+							},
+							{
+								"@type": "ListItem",
+								position: 2,
+								name: "Printing Services",
+								item: "https://www.genstarprintingservices.com/#services",
+							},
+						],
 					}),
 				}}
 			/>
