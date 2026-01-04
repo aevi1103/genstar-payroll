@@ -43,6 +43,7 @@
 		"culori": "^4.0.2",
 		"date-fns": "^4.1.0",
 		"dayjs": "^1.11.19",
+		"framer-motion": "^12.23.26",
 		"html2canvas": "^1.4.1",
 		"jwt-decode": "^4.0.0",
 		"lodash.debounce": "^4.0.8",

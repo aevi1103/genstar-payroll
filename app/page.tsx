@@ -6,6 +6,7 @@ import { ContactForm } from "@/features/home-page/contact-form";
 import { createClient } from "@/lib/supabase/server";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import "animate.css";
+import { BackgroundBeams } from "@/components/ui/shadcn-io/background-beams";
 
 export default async function Home({
 	searchParams,
@@ -21,6 +22,8 @@ export default async function Home({
 
 	return (
 		<main className="relative min-h-screen bg-linear-to-b from-emerald-50 via-white to-emerald-50 text-emerald-950">
+			<BackgroundBeams className="absolute inset-0" />
+
 			<Header user={user} />
 
 			{message === "no role assigned to user" && (
