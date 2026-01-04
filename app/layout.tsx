@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import Providers from "@/components/providers";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
 				<Providers>{children}</Providers>
 				<Toaster position="top-center" richColors />
 			</body>
+			<GoogleAnalytics gaId="G-ZQZGQ357XS" />
 		</html>
 	);
 }
