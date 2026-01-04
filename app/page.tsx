@@ -5,6 +5,7 @@ import { ServicesSection } from "@/features/home-page/services";
 import { ContactForm } from "@/features/home-page/contact-form";
 import { createClient } from "@/lib/supabase/server";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import "animate.css";
 
 export default async function Home({
 	searchParams,
@@ -23,7 +24,7 @@ export default async function Home({
 			<Header user={user} />
 
 			{message === "no role assigned to user" && (
-				<div className="mx-auto max-w-6xl px-6 pt-6">
+				<div className="mx-auto max-w-6xl px-6 pt-6 animate__animated animate__pulse">
 					<Alert className="border-red-200 bg-red-50">
 						<AlertDescription className="text-red-800">
 							No role has been assigned to your account. Please contact an
@@ -33,8 +34,8 @@ export default async function Home({
 				</div>
 			)}
 
-			<section className="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16 md:flex-row md:items-center md:py-24">
-				<div className="flex-1 space-y-6">
+			<section className="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16 md:flex-row md:items-center md:py-24 animate__animated animate__slideInUp animate__slow">
+				<div className="flex-1 space-y-6 animate__animated animate__fadeInLeft animate__slower">
 					<h1 className="text-4xl font-semibold leading-tight tracking-tight text-emerald-950 md:text-5xl">
 						Premium print solutions that move your brand forward.
 					</h1>
@@ -46,7 +47,7 @@ export default async function Home({
 					<div className="flex flex-wrap gap-3" />
 				</div>
 
-				<div className="relative flex-1">
+				<div className="relative flex-1 animate__animated animate__fadeInRight animate__slower">
 					<div className="relative overflow-hidden rounded-3xl bg-white/90 p-6 shadow-2xl ring-1 ring-emerald-100 backdrop-blur">
 						<div className="flex items-center justify-between gap-3">
 							<h2 className="text-lg font-semibold text-emerald-950">
@@ -83,8 +84,8 @@ export default async function Home({
 				</div>
 			</section>
 
-			<section className="relative z-10 mx-auto max-w-6xl px-6 pb-20">
-				<div className="mb-6 flex items-center justify-between">
+			<section className="relative z-10 mx-auto max-w-6xl px-6 pb-20 animate__animated animate__fadeInUp animate__slow">
+				<div className="mb-6 flex items-center justify-between animate__animated animate__fadeIn animate__slower">
 					<div>
 						<p className="text-sm font-semibold uppercase tracking-[0.14em] text-emerald-700">
 							What we do
@@ -96,7 +97,7 @@ export default async function Home({
 					{/* Company profile PDF link removed */}
 				</div>
 				<div className="grid gap-4 md:grid-cols-3">
-					<div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
+					<div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-emerald-100 animate__animated animate__fadeInUp animate__slow">
 						<p className="text-base font-semibold text-emerald-900">
 							Offset printing
 						</p>
@@ -105,7 +106,7 @@ export default async function Home({
 							packaging, and marketing kits.
 						</p>
 					</div>
-					<div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
+					<div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-emerald-100 animate__animated animate__fadeInUp animate__slow animate__delay-1s">
 						<p className="text-base font-semibold text-emerald-900">
 							Digital printing
 						</p>
@@ -114,7 +115,7 @@ export default async function Home({
 							campaigns without sacrificing quality.
 						</p>
 					</div>
-					<div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
+					<div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-emerald-100 animate__animated animate__fadeInUp animate__slow animate__delay-2s">
 						<p className="text-base font-semibold text-emerald-900">
 							Large format & signage
 						</p>
@@ -126,16 +127,16 @@ export default async function Home({
 				</div>
 			</section>
 
-			<section id="services" className="scroll-mt-20">
+		<section id="services" className="scroll-mt-20 animate__animated animate__fadeIn animate__slow">
 				<ServicesSection />
 			</section>
-			<section id="vision" className="scroll-mt-20">
+			<section id="vision" className="scroll-mt-20 animate__animated animate__slideInUp animate__slow">
 				<VisionSection />
 			</section>
-			<section id="about" className="scroll-mt-20">
+			<section id="about" className="scroll-mt-20 animate__animated animate__fadeInUp animate__slow">
 				<AboutSection />
 			</section>
-			<section id="contact" className="scroll-mt-20">
+			<section id="contact" className="scroll-mt-20 animate__animated animate__slideInUp animate__slow">
 				<ContactForm />
 			</section>
 		</main>
