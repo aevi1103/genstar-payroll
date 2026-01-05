@@ -20,7 +20,7 @@ export default async function Page() {
 	}
 
 	return (
-		<div className="flex flex-col h-[calc(100vh-5rem)] gap-6">
+		<div className="flex flex-col h-screen lg:h-[calc(100vh-5rem)] gap-2 lg:gap-6">
 			<div className="shrink-0">
 				<h1 className="text-3xl font-bold tracking-tight">
 					Company Information

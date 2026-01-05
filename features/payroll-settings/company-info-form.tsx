@@ -158,7 +158,7 @@ export const CompanyInfoForm = ({
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="flex flex-col h-full"
 			>
-				<div className="flex-1 overflow-y-auto p-6 space-y-6">
+				<div className="flex-1 overflow-y-auto p-4 lg:p-6 lg:space-y-6 space-y-4">
 					{/* Company Overview */}
 					<Collapsible
 						open={collapsibleState.companyOverview}
@@ -167,7 +167,7 @@ export const CompanyInfoForm = ({
 						}
 						className="space-y-4"
 					>
-						<CollapsibleTrigger className="group flex w-full items-center justify-between rounded-lg border bg-card p-4 text-left hover:bg-accent transition-colors">
+						<CollapsibleTrigger className="group flex w-full items-center justify-between rounded-lg border bg-card lg:p-4 p-2 text-left hover:bg-accent transition-colors">
 							<div>
 								<h3 className="text-lg font-semibold group-data-[state=open]:text-primary transition-colors">
 									Company Overview
@@ -256,7 +256,7 @@ export const CompanyInfoForm = ({
 						}
 						className="space-y-4"
 					>
-						<CollapsibleTrigger className="group flex w-full items-center justify-between rounded-lg border bg-card p-4 text-left hover:bg-accent transition-colors">
+						<CollapsibleTrigger className="group flex w-full items-center justify-between rounded-lg border bg-card lg:p-4 p-2 text-left hover:bg-accent transition-colors">
 							<div>
 								<h3 className="text-lg font-semibold group-data-[state=open]:text-primary transition-colors">
 									Address
@@ -336,7 +336,7 @@ export const CompanyInfoForm = ({
 						}
 						className="space-y-4"
 					>
-						<CollapsibleTrigger className="group flex w-full items-center justify-between rounded-lg border bg-card p-4 text-left hover:bg-accent transition-colors">
+						<CollapsibleTrigger className="group flex w-full items-center justify-between rounded-lg border bg-card lg:p-4 p-2 text-left hover:bg-accent transition-colors">
 							<div>
 								<h3 className="text-lg font-semibold group-data-[state=open]:text-primary transition-colors">
 									Contact & Owner
@@ -423,7 +423,7 @@ export const CompanyInfoForm = ({
 						}
 						className="space-y-4"
 					>
-						<CollapsibleTrigger className="group flex w-full items-center justify-between rounded-lg border bg-card p-4 text-left hover:bg-accent transition-colors">
+						<CollapsibleTrigger className="group flex w-full items-center justify-between rounded-lg border bg-card lg:p-4 p-2 text-left hover:bg-accent transition-colors">
 							<div>
 								<h3 className="text-lg font-semibold group-data-[state=open]:text-primary transition-colors">
 									Geolocation
@@ -485,7 +485,7 @@ export const CompanyInfoForm = ({
 						}
 						className="space-y-4 "
 					>
-						<div className="flex items-center gap-3 rounded-lg border bg-card p-4 hover:bg-accent transition-colors">
+						<div className="flex items-center gap-3 rounded-lg border bg-card lg:p-4 p-2 hover:bg-accent transition-colors">
 							<CollapsibleTrigger className="group flex flex-1 items-center text-left hover:opacity-80 transition-opacity">
 								<div>
 									<h3 className="text-lg font-semibold">
@@ -556,7 +556,7 @@ export const CompanyInfoForm = ({
 						}
 						className="space-y-4"
 					>
-						<div className="flex items-center gap-3 rounded-lg border bg-card p-4 hover:bg-accent transition-colors">
+						<div className="flex items-center gap-3 rounded-lg border bg-card lg:p-4 p-2 hover:bg-accent transition-colors">
 							<CollapsibleTrigger className="group flex flex-1 items-center text-left hover:opacity-80 transition-opacity">
 								<div>
 									<h3 className="text-lg font-semibold group-data-[state=open]:text-primary transition-colors">
@@ -624,7 +624,7 @@ export const CompanyInfoForm = ({
 						}
 						className="space-y-4"
 					>
-						<div className="flex items-center gap-3 rounded-lg border bg-card p-4 hover:bg-accent transition-colors">
+						<div className="flex items-center gap-3 rounded-lg border bg-card lg:p-4 p-2 hover:bg-accent transition-colors">
 							<CollapsibleTrigger className="group flex flex-1 items-center text-left hover:opacity-80 transition-opacity">
 								<div>
 									<h3 className="text-lg font-semibold group-data-[state=open]:text-primary transition-colors">
@@ -692,7 +692,7 @@ export const CompanyInfoForm = ({
 						}
 						className="space-y-4"
 					>
-						<div className="flex items-center gap-3 rounded-lg border bg-card p-4 hover:bg-accent transition-colors">
+						<div className="flex items-center gap-3 rounded-lg border bg-card lg:p-4 p-2 hover:bg-accent transition-colors">
 							<CollapsibleTrigger className="group flex flex-1 items-center text-left hover:opacity-80 transition-opacity">
 								<div>
 									<h3 className="text-lg font-semibold group-data-[state=open]:text-primary transition-colors">
@@ -810,7 +810,7 @@ export const CompanyInfoForm = ({
 						}
 						className="space-y-4"
 					>
-						<div className="flex items-center gap-3 rounded-lg border bg-card p-4 hover:bg-accent transition-colors">
+						<div className="flex items-center gap-3 rounded-lg border bg-card lg:p-4 p-2 hover:bg-accent transition-colors">
 							<CollapsibleTrigger className="group flex flex-1 items-center text-left hover:opacity-80 transition-opacity">
 								<div>
 									<h3 className="text-lg font-semibold group-data-[state=open]:text-primary transition-colors">
