@@ -12,6 +12,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Hero } from "@/features/home-page/hero";
 import { getCompanyInfo } from "@/lib/db/get-company-info";
+import { listImages } from "./payroll/settings/images/actions";
+import { getPublicImages } from "@/lib/db/get-public-images";
 
 const publicLogo = "https://www.genstarprintingservices.com/logo";
 
@@ -115,6 +117,7 @@ export default async function Home({
 	const apiKey = process.env.GOOGLE_CLOUD_API_KEY || "";
 
 	const companyInfo = await getCompanyInfo();
+	const images = await getPublicImages();
 
 	return (
 		<>
@@ -397,7 +400,7 @@ export default async function Home({
 					id="gallery"
 					className="scroll-mt-20 animate__animated animate__fadeInUp animate__slow"
 				>
-					<ImagesSection />
+					<ImagesSection images={images || []} />
 				</section>
 				<section
 					id="contact"

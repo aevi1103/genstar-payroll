@@ -205,3 +205,5 @@ export async function listImages() {
 		};
 	}
 }
+
+export type Images = Awaited<ReturnType<typeof listImages>>["files"];

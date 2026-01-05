@@ -1,9 +1,8 @@
 "use client";
 
-import type React from "react";
-import { useState, useEffect } from "react";
-import { Images as ImagesIcon, Sparkles, ImageIcon } from "lucide-react";
-import { listImages } from "@/app/payroll/settings/images/actions";
+import { useState } from "react";
+import { Images as ImagesIcon } from "lucide-react";
+import type { Images } from "@/app/payroll/settings/images/actions";
 import Image from "next/image";
 import {
 	Dialog,
@@ -20,53 +19,14 @@ import {
 	CarouselPrevious,
 } from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import type { PublicImages } from "@/lib/db/get-public-images";
 
-interface ImageFile {
-	name: string;
-	publicUrl: string;
-	createdAt: string;
-	size: number;
-}
+export function ImagesSection({ images }: { images: PublicImages }) {
+	const [selectedImage, setSelectedImage] = useState<
+		NonNullable<PublicImages>[number] | null
+	>(null);
 
-export function ImagesSection(): React.ReactElement | null {
-	const [images, setImages] = useState<ImageFile[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [selectedImage, setSelectedImage] = useState<ImageFile | null>(null);
-
-	useEffect(() => {
-		const fetchImages = async () => {
-			setLoading(true);
-			try {
-				const result = await listImages();
-				if (result.success && result.files) {
-					setImages(result.files);
-				}
-			} catch (error) {
-				console.error("Error fetching images:", error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchImages();
-	}, []);
-
-	if (loading) {
-		return (
-			<section className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-28 lg:py-32">
-				<div className="text-center">
-					<div className="inline-flex items-center gap-2 rounded-full bg-linear-to-r from-emerald-100 to-emerald-50 px-4 sm:px-6 py-2.5 sm:py-3 ring-1 ring-emerald-200 animate-pulse">
-						<ImagesIcon className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
-						<span className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-emerald-700">
-							Loading Gallery
-						</span>
-					</div>
-				</div>
-			</section>
-		);
-	}
-
-	if (images.length === 0) {
+	if (images?.length === 0) {
 		return null;
 	}
 
@@ -112,7 +72,7 @@ export function ImagesSection(): React.ReactElement | null {
 						className="w-full"
 					>
 						<CarouselContent className="-ml-4">
-							{images.map((image) => (
+							{images?.map((image) => (
 								<CarouselItem
 									key={image.name}
 									className="pl-4 md:basis-1/2 lg:basis-1/3"
@@ -127,18 +87,13 @@ export function ImagesSection(): React.ReactElement | null {
 											}
 										}}
 									>
-										{/* Decorative gradient overlay */}
-										{/* <div className="absolute inset-0 bg-linear-to-br from-emerald-500/0 via-transparent to-teal-500/0 group-hover:from-emerald-500/15 group-hover:to-teal-500/15 transition-all duration-500 pointer-events-none z-10 rounded-2xl" />
-										<div className="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-emerald-300/20 blur-3xl group-hover:bg-emerald-400/40 transition-all duration-500 pointer-events-none" />
-										<div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-teal-300/20 blur-3xl group-hover:bg-teal-400/40 transition-all duration-500 pointer-events-none" /> */}
-
 										{/* Image Container */}
 										<AspectRatio
 											ratio={16 / 9}
 											className="bg-muted rounded-lg overflow-hidden"
 										>
 											<Image
-												src={image.publicUrl}
+												src={image?.publicUrl}
 												alt={`Gallery image ${image.name}`}
 												fill
 												className="object-cover rounded-lg transition-transform duration-300 hover:scale-110"
@@ -160,7 +115,7 @@ export function ImagesSection(): React.ReactElement | null {
 				open={selectedImage !== null}
 				onOpenChange={(open) => !open && setSelectedImage(null)}
 			>
-				<DialogContent className="h-[60vh] w-[90vw]! max-w-7xl! p-0 border-0 bg-black/60 backdrop-blur-md">
+				<DialogContent className="h-[80vh] w-[90vw]! max-w-7xl! p-0 border-0 overflow-hidden rounded-2xl">
 					<DialogHeader className="sr-only">
 						<DialogTitle className="text-emerald-950">
 							Image Preview
@@ -170,21 +125,15 @@ export function ImagesSection(): React.ReactElement | null {
 						</DialogDescription>
 					</DialogHeader>
 					{selectedImage && (
-						<div
-							className="relative w-full h-full rounded-lg
-             overflow-hidden flex items-center justify-center p-6"
-						>
-							{/* Image container with blend */}
-							<div className="relative w-full h-full">
-								<Image
-									src={selectedImage.publicUrl}
-									alt="Gallery preview"
-									fill
-									className="object-contain drop-shadow-2xl"
-									sizes="98vw"
-									priority
-								/>
-							</div>
+						<div className="relative w-full h-full">
+							<Image
+								src={selectedImage.publicUrl}
+								alt="Gallery preview"
+								fill
+								className="object-cover"
+								sizes="90vw"
+								priority
+							/>
 						</div>
 					)}
 				</DialogContent>
