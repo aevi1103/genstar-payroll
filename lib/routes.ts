@@ -49,6 +49,11 @@ export const navs = {
 					title: "Company Info",
 					url: "/payroll/settings/company-info",
 				},
+				{
+					title: "Images",
+					isAdmin: true,
+					url: "/payroll/settings/images",
+				},
 			],
 		},
 	] as NavMainItem[],
