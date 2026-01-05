@@ -517,16 +517,6 @@ model payroll_settings {
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model business_capacity {
-  id          BigInt    @id @default(autoincrement())
-  created_at  DateTime  @default(now()) @db.Timestamptz(6)
-  capacity    String    @db.VarChar
-  modified_at DateTime? @db.Timestamptz(6)
-
-  @@schema("public")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model contact_form {
   id             BigInt   @id @default(autoincrement())
   created_at     DateTime @default(now()) @db.Timestamptz(6)
@@ -536,17 +526,6 @@ model contact_form {
   message        String   @db.VarChar
   email_sent     Boolean?
   email_response String?  @db.VarChar
-
-  @@schema("public")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model major_suppliers {
-  id          BigInt    @id @default(autoincrement())
-  created_at  DateTime  @default(now()) @db.Timestamptz(6)
-  suppliers   String    @db.VarChar
-  description String?   @db.VarChar
-  modified_at DateTime? @db.Timestamptz(6)
 
   @@schema("public")
 }
@@ -629,6 +608,89 @@ model cash_advance_payments_log {
   is_auto         Boolean?
   current_balance Float         @db.Real
   cash_advances   cash_advances @relation(fields: [cash_advance_id], references: [id], onDelete: Cascade, map: "cash_advance_payments_cash_advance_id_fkey")
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model company_info {
+  id                     BigInt                   @id @default(autoincrement())
+  created_at             DateTime                 @default(now()) @db.Timestamptz(6)
+  street_address         String?                  @db.VarChar
+  region_address         String?                  @db.VarChar
+  city_address           String?                  @db.VarChar
+  district_address       String?                  @db.VarChar
+  owner                  String?                  @db.VarChar
+  land_line              String?                  @db.VarChar
+  mobile                 String?                  @db.VarChar
+  email                  String?                  @db.VarChar
+  long                   String?                  @db.VarChar
+  lat                    String?                  @db.VarChar
+  company_name           String?                  @db.VarChar
+  main_services          String?                  @db.VarChar
+  founded_at             DateTime?                @db.Timestamptz(6)
+  company_machines       company_machines[]
+  company_other_services company_other_services[]
+  company_suppliers      company_suppliers[]
+  company_team           company_team[]
+  company_what_we_print  company_what_we_print[]
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model company_machines {
+  id                  BigInt       @id @default(autoincrement())
+  created_at          DateTime     @default(now()) @db.Timestamptz(6)
+  company_id          BigInt
+  machine_description String       @db.VarChar
+  company_info        company_info @relation(fields: [company_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model company_other_services {
+  id           BigInt       @id(map: "company_services_pkey") @default(autoincrement())
+  created_at   DateTime     @default(now()) @db.Timestamptz(6)
+  company_id   BigInt
+  service      String       @db.VarChar
+  company_info company_info @relation(fields: [company_id], references: [id], onDelete: Cascade, map: "company_services_company_id_fkey")
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model company_suppliers {
+  id           BigInt       @id @default(autoincrement())
+  created_at   DateTime     @default(now()) @db.Timestamptz(6)
+  company_id   BigInt
+  supplier     String       @db.VarChar
+  company_info company_info @relation(fields: [company_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model company_team {
+  id           BigInt       @id(map: "company_positions_pkey") @default(autoincrement())
+  created_at   DateTime     @default(now()) @db.Timestamptz(6)
+  position     String       @db.VarChar
+  description  String?      @db.VarChar
+  company_id   BigInt
+  count        Int?         @db.SmallInt
+  company_info company_info @relation(fields: [company_id], references: [id], onDelete: Cascade, map: "company_positions_company_id_fkey")
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model company_what_we_print {
+  id           BigInt       @id @default(autoincrement())
+  created_at   DateTime     @default(now()) @db.Timestamptz(6)
+  company_id   BigInt
+  service      String       @db.VarChar
+  company_info company_info @relation(fields: [company_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }

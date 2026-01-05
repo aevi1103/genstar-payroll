@@ -2,7 +2,7 @@ import { Header } from "@/features/home-page/header";
 import { AboutSection } from "@/features/home-page/about";
 import { VisionSection } from "@/features/home-page/vision";
 import { ServicesSection } from "@/features/home-page/services";
-import { ContactForm } from "@/features/home-page/contact-form";
+import { Contact } from "@/features/home-page/contact";
 import { createClient } from "@/lib/supabase/server";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import "animate.css";
@@ -10,8 +10,11 @@ import { BackgroundBeams } from "@/components/ui/shadcn-io/background-beams";
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Hero } from "@/features/home-page/hero";
+import { getCompanyInfo } from "@/lib/db/get-company-info";
 
-export const metadata: Metadata = {
+const publicLogo = "https://www.genstarprintingservices.com/logo";
+
+const baseMetadata: Metadata = {
 	title:
 		"Premium Print Solutions | Genstar - Offset, Digital & Large Format Printing",
 	description:
@@ -46,13 +49,13 @@ export const metadata: Metadata = {
 		type: "website",
 		locale: "en_US",
 		url: "https://www.genstarprintingservices.com/",
-		siteName: "Genstar Print Solutions",
-		title: "Premium Print Solutions | Genstar",
+		siteName: "Genstar Printing Services",
+		title: "Premium Print Solutions | Genstar Printing Services",
 		description:
 			"High-quality offset, digital, and large-format printing with color-managed workflows and fast turnarounds.",
 		images: [
 			{
-				url: "https://www.genstarprintingservices.com/og-image.jpg",
+				url: publicLogo,
 				width: 1200,
 				height: 630,
 				alt: "Genstar Print Solutions",
@@ -62,11 +65,11 @@ export const metadata: Metadata = {
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "Premium Print Solutions | Genstar",
+		title: "Premium Print Solutions | Genstar Printing Services",
 		description:
 			"High-quality offset, digital, and large-format printing services.",
 		creator: "@genstarprint",
-		images: ["https://www.genstarprintingservices.com/og-image.jpg"],
+		images: [publicLogo],
 	},
 	robots: {
 		index: true,
@@ -85,6 +88,18 @@ export const metadata: Metadata = {
 	},
 };
 
+export async function generateMetadata(): Promise<Metadata> {
+	const companyInfo = await getCompanyInfo();
+
+	return {
+		...baseMetadata,
+		other: {
+			"geo.position": `${companyInfo.lat};${companyInfo.long}`,
+			ICBM: `${companyInfo.lat}, ${companyInfo.long}`,
+		},
+	};
+}
+
 export default async function Home({
 	searchParams,
 }: {
@@ -96,6 +111,9 @@ export default async function Home({
 	} = await supabase.auth.getUser();
 
 	const { message } = await searchParams;
+	const apiKey = process.env.GOOGLE_CLOUD_API_KEY || "";
+
+	const companyInfo = await getCompanyInfo();
 
 	return (
 		<>
@@ -114,21 +132,20 @@ export default async function Home({
 							"Premium offset, digital, and large-format printing services in Quezon City, Philippines. Same-day turnaround available.",
 						url: "https://www.genstarprintingservices.com/",
 						image: "https://www.genstarprintingservices.com/og-image.jpg",
-						telephone: "+63-915-736-5273",
-						email: "genstarprints@gmail.com",
+						telephone: companyInfo.mobile,
+						email: companyInfo.email,
 						address: {
 							"@type": "PostalAddress",
-							streetAddress:
-								"#97 General Avenue Near Corner Tandang Sora Avenue",
-							addressLocality: "Quezon City",
-							addressRegion: "NCR",
+							streetAddress: companyInfo.streetAddress,
+							addressLocality: companyInfo.cityAddress,
+							addressRegion: companyInfo.regionAddress ?? "NCR",
 							postalCode: "1128",
 							addressCountry: "PH",
 						},
 						geo: {
 							"@type": "GeoCoordinates",
-							latitude: "14.678685",
-							longitude: "121.025716",
+							latitude: companyInfo.lat,
+							longitude: companyInfo.long,
 						},
 						openingHoursSpecification: [
 							{
@@ -186,9 +203,9 @@ export default async function Home({
 						],
 						contactPoint: {
 							"@type": "ContactPoint",
-							telephone: "+63-915-736-5273",
+							telephone: companyInfo.mobile,
 							contactType: "Customer Service",
-							email: "genstarprints@gmail.com",
+							email: companyInfo.email,
 							areaServed: "PH",
 							availableLanguage: ["en", "tl"],
 							contactOption: ["TollFree", "HearingImpairedSupported"],
@@ -237,7 +254,7 @@ export default async function Home({
 						},
 						founder: {
 							"@type": "Person",
-							name: "Mr. Renato D. Reformina",
+							name: companyInfo.owner,
 						},
 						foundingDate: "2007-03-19",
 						foundingLocation: "Project 8, Quezon City, Philippines",
@@ -276,7 +293,7 @@ export default async function Home({
 								name: "Where is Genstar Print Solutions located?",
 								acceptedAnswer: {
 									"@type": "Answer",
-									text: "We are located at #97 General Avenue Near Corner Tandang Sora Avenue, Quezon City 1128, Philippines. We serve Quezon City, Manila, Caloocan, and all of Metro Manila.",
+									text: `We are located at ${companyInfo.fullAddress}. We serve Quezon City, Manila, Caloocan, and all of Metro Manila.`,
 								},
 							},
 							{
@@ -292,7 +309,7 @@ export default async function Home({
 								name: "How can I get a quote for printing services?",
 								acceptedAnswer: {
 									"@type": "Answer",
-									text: "You can get a free quote by calling us at +63-915-736-5273, emailing genstarprints@gmail.com, or filling out our contact form on this website. We typically respond within 2 hours during business hours.",
+									text: `You can get a free quote by calling us at ${companyInfo.mobile}, emailing ${companyInfo.email}, or filling out our contact form on this website. We typically respond within 2 hours during business hours.`,
 								},
 							},
 							{
@@ -361,7 +378,7 @@ export default async function Home({
 					id="services"
 					className="scroll-mt-20 animate__animated animate__fadeIn animate__slow"
 				>
-					<ServicesSection />
+					<ServicesSection companyInfo={companyInfo} />
 				</section>
 				<section
 					id="vision"
@@ -379,7 +396,7 @@ export default async function Home({
 					id="contact"
 					className="scroll-mt-20 animate__animated animate__slideInUp animate__slow"
 				>
-					<ContactForm />
+					<Contact apiKey={apiKey} companyInfo={companyInfo} />
 				</section>
 			</main>
 		</>

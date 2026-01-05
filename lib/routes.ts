@@ -45,6 +45,10 @@ export const navs = {
 					title: "Payroll Settings",
 					url: "/payroll/settings/payroll",
 				},
+				{
+					title: "Company Info",
+					url: "/payroll/settings/company-info",
+				},
 			],
 		},
 	] as NavMainItem[],

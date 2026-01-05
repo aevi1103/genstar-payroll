@@ -12,100 +12,13 @@ import {
 	Sparkles,
 	ChevronDown,
 } from "lucide-react";
+import type { CompanyInfo } from "@/lib/db/get-company-info";
 
-export const COMPANY_INFO = {
-	businessName: "Genstar Printing Services",
-	addressLines: [
-		"#97 General Avenue Near Corner Tandang Sora Avenue",
-		"Project 8 Quezon City",
-	],
-	phones: [
-		{ label: "Landline", value: "89294482" },
-		{ label: "Mobile Landline", value: "85426284" },
-		{ label: "Cell", value: "09157365273" },
-		{ label: "Cell", value: "09103082519" },
-	],
-	ownerManager: "Mr. Renato D. Reformina",
-	residenceAddress:
-		"B6 L27 Pine St. Hillcrest Townhomes, North Olympus Subd., Zabarte Road, Novaliches, Quezon City",
-	emails: ["genstarprints@yahoo.com", "genstarprints@gmail.com"],
-};
-
-export const BUSINESS_DETAILS = {
-	dateOfCreation: "March 19, 2007",
-	mainServices: "Printing Services",
-};
-
-export const HUMAN_RESOURCES: { role: string; count: number }[] = [
-	{ role: "Office Manager", count: 1 },
-	{ role: "Secretary / Liaison Officer", count: 1 },
-	{ role: "Graphic Artist", count: 1 },
-	{ role: "Operators - for 1 color Heidelberg KORS Offset Machine", count: 2 },
-	{
-		role: "Operators - for 2 Colors Offset Machine Heidelberg SORKZ",
-		count: 2,
-	},
-	{
-		role: "Operators - for GTO 52 Offset Machine and with numbering",
-		count: 2,
-	},
-	{ role: "Cutter Operators", count: 2 },
-	{ role: "Bindery Section Staffs", count: 6 },
-];
-
-export const MACHINES: string[] = [
-	"2 units Heidelberg Sorkz 2 colors offset machine",
-	"2 units Heidelberg Kors 20 x 29 offset machine",
-	"2 units Heidelberg GTO 52 offset machine with numbering",
-	"2 units Cutting Machine",
-	"1 unit UV Lamination Machine",
-	"1 unit Horizon 4 stations Perfect Binding Machine",
-	"1 unit Minerva Numbering Machine",
-	"1 unit Smyth Sewn Machine",
-	"1 unit Folding Machine",
-	"1 unit Stitching Machine",
-	"3 units Sewing Machines",
-	"2 units Computers",
-];
-
-export const SERVICES_WE_PRINT: string[] = [
-	"Souvenir Program",
-	"Magazine",
-	"Brochure",
-	"Flyer",
-	"Box and Label",
-	"Poster",
-	"Campaign Paraphernalia",
-	"Calendar",
-	"Newsletter",
-	"Books",
-	"Journal",
-	"Forms",
-	"Business Card",
-	"Postcard",
-	"Stickers",
-	"Leaflets",
-];
-
-export const SERVICES_WE_OFFER: string[] = [
-	"Offset Running",
-	"Numbering",
-	"Perfect Binding",
-	"Cutting",
-	"Layouting",
-	"Graphic Design",
-];
-
-export const MAJOR_SUPPLIERS: string[] = [
-	"NAPPCO Paper Philippines",
-	"Starpaper",
-	"MJB Paper",
-	"TOYO Ink International",
-	"Graphica",
-	"Belo CTP and printing",
-];
-
-export function ServicesSection(): React.ReactElement {
+export function ServicesSection({
+	companyInfo,
+}: {
+	companyInfo: CompanyInfo;
+}): React.ReactElement {
 	const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>(
 		{},
 	);
@@ -175,7 +88,7 @@ export function ServicesSection(): React.ReactElement {
 									Service Focus
 								</p>
 								<p className="mt-3 text-base sm:text-lg text-emerald-50 font-medium">
-									{BUSINESS_DETAILS.mainServices}
+									{companyInfo.mainServices}
 								</p>
 								<p className="mt-2 text-xs sm:text-sm text-emerald-200">
 									{new Date().getFullYear() - 2007} years of printing excellence
@@ -189,7 +102,7 @@ export function ServicesSection(): React.ReactElement {
 									Location
 								</p>
 								<div className="mt-3 space-y-2">
-									{COMPANY_INFO.addressLines.map((line) => (
+									{companyInfo.addressLines.map((line) => (
 										<p
 											key={line}
 											className="text-sm sm:text-base text-emerald-50"
@@ -204,7 +117,7 @@ export function ServicesSection(): React.ReactElement {
 									Owner & Manager
 								</p>
 								<p className="mt-3 text-sm sm:text-base text-emerald-50 font-medium">
-									{COMPANY_INFO.ownerManager}
+									{companyInfo.owner}
 								</p>
 							</div>
 							<div>
@@ -212,23 +125,28 @@ export function ServicesSection(): React.ReactElement {
 									Contact
 								</p>
 								<ul className="mt-3 space-y-2">
-									{COMPANY_INFO.phones.slice(0, 2).map((p) => (
-										<li
-											key={`${p.label}-${p.value}`}
-											className="text-emerald-50"
-										>
+									{companyInfo.landLine && (
+										<li className="text-emerald-50">
 											<span className="text-xs text-emerald-300">
-												{p.label}
+												Land Line
 											</span>
 											<p className="text-sm sm:text-base font-medium text-emerald-100">
-												{p.value}
+												{companyInfo.landLine}
 											</p>
 										</li>
-									))}
+									)}
+									{companyInfo.mobile && (
+										<li className="text-emerald-50">
+											<span className="text-xs text-emerald-300">Mobile</span>
+											<p className="text-sm sm:text-base font-medium text-emerald-100">
+												{companyInfo.mobile}
+											</p>
+										</li>
+									)}
 									<li className="text-emerald-50 pt-1">
 										<span className="text-xs text-emerald-300">Email</span>
 										<p className="text-sm sm:text-base font-medium text-emerald-100">
-											{COMPANY_INFO.emails[0]}
+											{companyInfo.email}
 										</p>
 									</li>
 								</ul>
@@ -240,14 +158,14 @@ export function ServicesSection(): React.ReactElement {
 
 			{/* Divider */}
 			<div className="my-12 sm:my-16 md:my-20">
-				<div className="h-1 w-full rounded-full bg-gradient-to-r from-transparent via-emerald-300 to-transparent" />
+				<div className="h-1 w-full rounded-full bg-linear-to-r from-transparent via-emerald-300 to-transparent" />
 			</div>
 
 			{/* Grid of Services */}
 			<div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 				{/* Business Details Card */}
-				<div className="group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-blue-300">
-					<div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-transparent to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300" />
+				<div className="group relative flex flex-col overflow-hidden rounded-2xl bg-linear-to-br from-blue-50 to-cyan-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-blue-300">
+					<div className="absolute inset-0 bg-linear-to-br from-blue-500/0 via-transparent to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300" />
 					<div className="relative">
 						<div className="mb-5 inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 ring-1 ring-blue-200/50">
 							<Building2 className="h-7 sm:h-8 w-7 sm:w-8 text-blue-600" />
@@ -255,9 +173,10 @@ export function ServicesSection(): React.ReactElement {
 						<h3 className="text-lg sm:text-xl font-bold text-blue-950">
 							Business Foundation
 						</h3>
-						<div className="h-1 w-8 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 mt-2" />
+						<div className="h-1 w-8 rounded-full bg-linear-to-r from-blue-500 to-cyan-500 mt-2" />
 						<p className="mt-3 text-xs sm:text-sm text-blue-600">
-							Established in {BUSINESS_DETAILS.dateOfCreation.slice(-4)}
+							Established in{" "}
+							{companyInfo.dateOfCreation?.split(" ")[1] ?? "2007"}
 						</p>
 						<div className="mt-6 space-y-5 flex-1">
 							<div>
@@ -265,7 +184,7 @@ export function ServicesSection(): React.ReactElement {
 									Service Focus
 								</p>
 								<p className="mt-2 text-sm sm:text-base font-medium text-blue-950">
-									{BUSINESS_DETAILS.mainServices}
+									{companyInfo.mainServices}
 								</p>
 							</div>
 							<div>
@@ -292,7 +211,7 @@ export function ServicesSection(): React.ReactElement {
 							<div className="mb-5 inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 ring-1 ring-purple-200/50">
 								<Users className="h-7 sm:h-8 w-7 sm:w-8 text-purple-600" />
 							</div>
-							{HUMAN_RESOURCES.length > 3 && (
+							{companyInfo.companyTeam.length > 3 && (
 								<div
 									className={`transition-transform duration-300 ${expandedCards.team ? "rotate-180" : ""}`}
 								>
@@ -303,26 +222,25 @@ export function ServicesSection(): React.ReactElement {
 						<h3 className="text-lg sm:text-xl font-bold text-purple-950">
 							Our Team
 						</h3>
-						<div className="h-1 w-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 mt-2" />
+						<div className="h-1 w-8 rounded-full bg-linear-to-r from-purple-500 to-indigo-500 mt-2" />
 						<p className="mt-3 text-xs sm:text-sm text-purple-600">
-							{HUMAN_RESOURCES.reduce((sum, hr) => sum + hr.count, 0)} skilled
-							professionals
+							{companyInfo.companyTeam.length} skilled professionals
 						</p>
 						<div className="mt-6 space-y-3 flex-1">
 							{(expandedCards.team
-								? HUMAN_RESOURCES
-								: HUMAN_RESOURCES.slice(0, 3)
-							).map((hr) => (
-								<div key={hr.role} className="flex items-start gap-3">
-									<div className="mt-1.5 h-2 w-2 rounded-full bg-purple-500 flex-shrink-0" />
+								? companyInfo.companyTeam
+								: companyInfo.companyTeam.slice(0, 3)
+							).map((position) => (
+								<div key={position} className="flex items-start gap-3">
+									<div className="mt-1.5 h-2 w-2 rounded-full bg-purple-500 shrink-0" />
 									<span className="text-xs sm:text-sm text-purple-900/80">
-										{hr.role}
+										{position}
 									</span>
 								</div>
 							))}
-							{!expandedCards.team && HUMAN_RESOURCES.length > 3 && (
+							{!expandedCards.team && companyInfo.companyTeam.length > 3 && (
 								<p className="text-xs text-purple-600 pt-2 font-medium">
-									+ {HUMAN_RESOURCES.length - 3} more positions
+									+ {companyInfo.companyTeam.length - 3} more positions
 								</p>
 							)}
 						</div>
@@ -341,7 +259,7 @@ export function ServicesSection(): React.ReactElement {
 							<div className="mb-5 inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl bg-gradient-to-br from-orange-100 to-amber-100 ring-1 ring-orange-200/50">
 								<Settings2 className="h-7 sm:h-8 w-7 sm:w-8 text-orange-600" />
 							</div>
-							{MACHINES.length > 3 && (
+							{companyInfo.companyMachines.length > 3 && (
 								<div
 									className={`transition-transform duration-300 ${expandedCards.equipment ? "rotate-180" : ""}`}
 								>
@@ -354,24 +272,26 @@ export function ServicesSection(): React.ReactElement {
 						</h3>
 						<div className="h-1 w-8 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 mt-2" />
 						<p className="mt-3 text-xs sm:text-sm text-orange-600">
-							{MACHINES.length} precision machines
+							{companyInfo.companyMachines.length} precision machines
 						</p>
 						<div className="mt-6 space-y-3 flex-1">
-							{(expandedCards.equipment ? MACHINES : MACHINES.slice(0, 3)).map(
-								(m) => (
-									<div key={m} className="flex items-start gap-3">
-										<div className="mt-1.5 h-2 w-2 rounded-full bg-orange-500 flex-shrink-0" />
-										<span className="text-xs sm:text-sm text-orange-900/80">
-											{m}
-										</span>
-									</div>
-								),
-							)}
-							{!expandedCards.equipment && MACHINES.length > 3 && (
-								<p className="text-xs text-orange-600 pt-2 font-medium">
-									+ {MACHINES.length - 3} more machines
-								</p>
-							)}
+							{(expandedCards.equipment
+								? companyInfo.companyMachines
+								: companyInfo.companyMachines.slice(0, 3)
+							).map((machine) => (
+								<div key={machine} className="flex items-start gap-3">
+									<div className="mt-1.5 h-2 w-2 rounded-full bg-orange-500 flex-shrink-0" />
+									<span className="text-xs sm:text-sm text-orange-900/80">
+										{machine}
+									</span>
+								</div>
+							))}
+							{!expandedCards.equipment &&
+								companyInfo.companyMachines.length > 3 && (
+									<p className="text-xs text-orange-600 pt-2 font-medium">
+										+ {companyInfo.companyMachines.length - 3} more machines
+									</p>
+								)}
 						</div>
 					</div>
 				</div>
@@ -388,7 +308,7 @@ export function ServicesSection(): React.ReactElement {
 							<div className="mb-5 inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 ring-1 ring-green-200/50">
 								<Printer className="h-7 sm:h-8 w-7 sm:w-8 text-green-600" />
 							</div>
-							{SERVICES_WE_PRINT.length > 6 && (
+							{companyInfo.companyWhatWePrint.length > 6 && (
 								<div
 									className={`transition-transform duration-300 ${expandedCards.printing ? "rotate-180" : ""}`}
 								>
@@ -402,22 +322,23 @@ export function ServicesSection(): React.ReactElement {
 						<div className="mt-6 space-y-3 flex-1">
 							<div className="grid grid-cols-2 gap-3">
 								{(expandedCards.printing
-									? SERVICES_WE_PRINT
-									: SERVICES_WE_PRINT.slice(0, 6)
-								).map((s) => (
-									<div key={s} className="flex items-start gap-2">
+									? companyInfo.companyWhatWePrint
+									: companyInfo.companyWhatWePrint.slice(0, 6)
+								).map((service) => (
+									<div key={service} className="flex items-start gap-2">
 										<div className="mt-1 h-2 w-2 rounded-full bg-green-500 shrink-0" />
 										<span className="text-xs sm:text-sm text-green-900/80">
-											{s}
+											{service}
 										</span>
 									</div>
 								))}
 							</div>
-							{!expandedCards.printing && SERVICES_WE_PRINT.length > 6 && (
-								<p className="text-xs text-green-600 pt-2 font-medium">
-									+ {SERVICES_WE_PRINT.length - 6} more services
-								</p>
-							)}
+							{!expandedCards.printing &&
+								companyInfo.companyWhatWePrint.length > 6 && (
+									<p className="text-xs text-green-600 pt-2 font-medium">
+										+ {companyInfo.companyWhatWePrint.length - 6} more services
+									</p>
+								)}
 						</div>
 					</div>
 				</div>
@@ -434,7 +355,7 @@ export function ServicesSection(): React.ReactElement {
 							<div className="mb-5 inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl bg-gradient-to-br from-amber-100 to-yellow-100 ring-1 ring-amber-200/50">
 								<Zap className="h-7 sm:h-8 w-7 sm:w-8 text-amber-600" />
 							</div>
-							{SERVICES_WE_OFFER.length > 3 && (
+							{companyInfo.companyOtherServices.length > 3 && (
 								<div
 									className={`transition-transform duration-300 ${expandedCards.services ? "rotate-180" : ""}`}
 								>
@@ -451,21 +372,23 @@ export function ServicesSection(): React.ReactElement {
 						</p>
 						<div className="mt-6 space-y-3 flex-1">
 							{(expandedCards.services
-								? SERVICES_WE_OFFER
-								: SERVICES_WE_OFFER.slice(0, 3)
-							).map((s) => (
-								<div key={s} className="flex items-start gap-3">
+								? companyInfo.companyOtherServices
+								: companyInfo.companyOtherServices.slice(0, 3)
+							).map((service) => (
+								<div key={service} className="flex items-start gap-3">
 									<div className="mt-1.5 h-2 w-2 rounded-full bg-amber-500 shrink-0" />
 									<span className="text-xs sm:text-sm text-amber-900/80">
-										{s}
+										{service}
 									</span>
 								</div>
 							))}
-							{!expandedCards.services && SERVICES_WE_OFFER.length > 3 && (
-								<p className="text-xs text-amber-600 pt-2 font-medium">
-									+ {SERVICES_WE_OFFER.length - 3} more services
-								</p>
-							)}
+							{!expandedCards.services &&
+								companyInfo.companyOtherServices.length > 3 && (
+									<p className="text-xs text-amber-600 pt-2 font-medium">
+										+ {companyInfo.companyOtherServices.length - 3} more
+										services
+									</p>
+								)}
 						</div>
 					</div>
 				</div>
@@ -482,7 +405,7 @@ export function ServicesSection(): React.ReactElement {
 							<div className="mb-5 inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-100 to-blue-100 ring-1 ring-indigo-200/50">
 								<Handshake className="h-7 sm:h-8 w-7 sm:w-8 text-indigo-600" />
 							</div>
-							{MAJOR_SUPPLIERS.length > 3 && (
+							{companyInfo.companySuppliers.length > 3 && (
 								<div
 									className={`transition-transform duration-300 ${expandedCards.partners ? "rotate-180" : ""}`}
 								>
@@ -499,21 +422,22 @@ export function ServicesSection(): React.ReactElement {
 						</p>
 						<div className="mt-6 space-y-3 flex-1">
 							{(expandedCards.partners
-								? MAJOR_SUPPLIERS
-								: MAJOR_SUPPLIERS.slice(0, 3)
-							).map((s) => (
-								<div key={s} className="flex items-start gap-3">
+								? companyInfo.companySuppliers
+								: companyInfo.companySuppliers.slice(0, 3)
+							).map((supplier) => (
+								<div key={supplier} className="flex items-start gap-3">
 									<div className="mt-1.5 h-2 w-2 rounded-full bg-indigo-500 flex-shrink-0" />
 									<span className="text-xs sm:text-sm text-indigo-900/80 font-medium">
-										{s}
+										{supplier}
 									</span>
 								</div>
 							))}
-							{!expandedCards.partners && MAJOR_SUPPLIERS.length > 3 && (
-								<p className="text-xs text-indigo-600 pt-2 font-medium">
-									+ {MAJOR_SUPPLIERS.length - 3} more partners
-								</p>
-							)}
+							{!expandedCards.partners &&
+								companyInfo.companySuppliers.length > 3 && (
+									<p className="text-xs text-indigo-600 pt-2 font-medium">
+										+ {companyInfo.companySuppliers.length - 3} more partners
+									</p>
+								)}
 						</div>
 					</div>
 				</div>
