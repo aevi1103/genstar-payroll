@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Images as ImagesIcon } from "lucide-react";
 import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
 import {
 	Dialog,
 	DialogContent,
@@ -24,6 +25,10 @@ export function ImagesSection({ images }: { images: PublicImages }) {
 	const [selectedImage, setSelectedImage] = useState<
 		NonNullable<PublicImages>[number] | null
 	>(null);
+
+	const autoplayPlugin = useRef(
+		Autoplay({ delay: 2000, stopOnInteraction: false }),
+	);
 
 	if (images?.length === 0) {
 		return null;
@@ -68,7 +73,10 @@ export function ImagesSection({ images }: { images: PublicImages }) {
 							align: "start",
 							loop: true,
 						}}
+						plugins={[autoplayPlugin.current]}
 						className="w-full"
+						onMouseEnter={() => autoplayPlugin.current.stop()}
+						onMouseLeave={() => autoplayPlugin.current.play()}
 					>
 						<CarouselContent className="-ml-4">
 							{images?.map((image) => (
@@ -76,29 +84,29 @@ export function ImagesSection({ images }: { images: PublicImages }) {
 									key={image.name}
 									className="pl-4 md:basis-1/2 lg:basis-1/3"
 								>
-									<div
-										className="group relative cursor-pointer transition-all duration-500
-                    "
-										onClick={() => setSelectedImage(image)}
-										onKeyDown={(e) => {
-											if (e.key === "Enter" || e.key === " ") {
-												setSelectedImage(image);
-											}
-										}}
-									>
-										{/* Image Container */}
-										<AspectRatio
-											ratio={4 / 3}
-											className="bg-muted rounded-lg overflow-hidden"
+									<div className="group relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+										<div
+											className="cursor-pointer"
+											onClick={() => setSelectedImage(image)}
+											onKeyDown={(e) => {
+												if (e.key === "Enter" || e.key === " ") {
+													setSelectedImage(image);
+												}
+											}}
 										>
-											<Image
-												src={image?.publicUrl}
-												alt={`Gallery image ${image.name}`}
-												fill
-												className="object-cover rounded-lg transition-transform duration-300 hover:scale-110"
-												sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-											/>
-										</AspectRatio>
+											{/* Image Container */}
+											<AspectRatio ratio={4 / 3} className="bg-muted">
+												<Image
+													src={image?.publicUrl}
+													alt={`Gallery image ${image.name}`}
+													fill
+													className="object-cover transition-transform duration-500 group-hover:scale-110"
+													sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+												/>
+												{/* Overlay on hover */}
+												<div className="absolute inset-0 bg-emerald-900/0 group-hover:bg-emerald-900/10 transition-colors duration-300" />
+											</AspectRatio>
+										</div>
 									</div>
 								</CarouselItem>
 							))}
