@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Images as ImagesIcon } from "lucide-react";
-import type { Images } from "@/app/payroll/settings/images/actions";
 import Image from "next/image";
 import {
 	Dialog,
@@ -89,7 +88,7 @@ export function ImagesSection({ images }: { images: PublicImages }) {
 									>
 										{/* Image Container */}
 										<AspectRatio
-											ratio={16 / 9}
+											ratio={4 / 3}
 											className="bg-muted rounded-lg overflow-hidden"
 										>
 											<Image
@@ -115,7 +114,11 @@ export function ImagesSection({ images }: { images: PublicImages }) {
 				open={selectedImage !== null}
 				onOpenChange={(open) => !open && setSelectedImage(null)}
 			>
-				<DialogContent className="h-[80vh] w-[90vw]! max-w-7xl! p-0 border-0 overflow-hidden rounded-2xl">
+				<DialogContent
+					className="h-[85vh] sm:h-[80vh] md:h-[85vh] lg:h-[90vh] 
+        max-w-[95vw] sm:max-w-[90vw] md:max-w-[92vw] lg:max-w-[95vw] p-0 border-0
+         overflow-hidden rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-xl"
+				>
 					<DialogHeader className="sr-only">
 						<DialogTitle className="text-emerald-950">
 							Image Preview
@@ -125,13 +128,13 @@ export function ImagesSection({ images }: { images: PublicImages }) {
 						</DialogDescription>
 					</DialogHeader>
 					{selectedImage && (
-						<div className="relative w-full h-full">
+						<div className="relative w-full h-full flex items-center justify-center bg-transparent backdrop-blur-sm">
 							<Image
 								src={selectedImage.publicUrl}
 								alt="Gallery preview"
 								fill
-								className="object-cover"
-								sizes="90vw"
+								className="object-contain"
+								sizes="(max-width: 640px) 95vw, 90vw"
 								priority
 							/>
 						</div>

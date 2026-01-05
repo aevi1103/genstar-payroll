@@ -11,7 +11,6 @@ import {
 	UserPen,
 	X,
 } from "lucide-react";
-import Image from "next/image";
 import {
 	Drawer,
 	DrawerTrigger,
@@ -72,6 +71,9 @@ export function Header({ user }: HeaderProps) {
 					</Link>
 					<Link href="#about" className="hover:text-emerald-900">
 						About Us
+					</Link>
+					<Link href="#gallery" className="hover:text-emerald-900">
+						Portfolio
 					</Link>
 					<Link href="#contact" className="hover:text-emerald-900">
 						Contact
@@ -203,6 +205,13 @@ export function Header({ user }: HeaderProps) {
 										className="hover:text-emerald-900"
 									>
 										About
+									</Link>
+									<Link
+										href="#gallery"
+										onClick={() => setOpen(false)}
+										className="hover:text-emerald-900"
+									>
+										Portfolio
 									</Link>
 									<Link
 										href="#contact"
