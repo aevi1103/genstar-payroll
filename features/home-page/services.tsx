@@ -77,7 +77,7 @@ export function ServicesSection({
 								<h3 className="text-2xl sm:text-3xl md:text-4xl font-bold">
 									Genstar Printing Services
 								</h3>
-								<div className="h-1 w-12 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 mt-3" />
+								<div className="h-1 w-12 rounded-full bg-linear-to-r from-emerald-400 to-teal-400 mt-3" />
 								<p className="mt-4 text-base sm:text-lg text-emerald-100">
 									Your trusted partner for premium printing solutions with
 									nearly two decades of excellence.
@@ -91,7 +91,7 @@ export function ServicesSection({
 									{companyInfo.mainServices}
 								</p>
 								<p className="mt-2 text-xs sm:text-sm text-emerald-200">
-									{new Date().getFullYear() - 2007} years of printing excellence
+									{companyInfo.yearInService} years of printing excellence
 								</p>
 							</div>
 						</div>
@@ -175,8 +175,7 @@ export function ServicesSection({
 						</h3>
 						<div className="h-1 w-8 rounded-full bg-linear-to-r from-blue-500 to-cyan-500 mt-2" />
 						<p className="mt-3 text-xs sm:text-sm text-blue-600">
-							Established in{" "}
-							{companyInfo.dateOfCreation?.split(" ")[1] ?? "2007"}
+							Established in {companyInfo.dateOfCreation ?? "2007"}
 						</p>
 						<div className="mt-6 space-y-5 flex-1">
 							<div>
@@ -192,7 +191,7 @@ export function ServicesSection({
 									Years Active
 								</p>
 								<p className="mt-2 text-sm sm:text-base font-medium text-blue-950">
-									{new Date().getFullYear() - 2007} years
+									{companyInfo.yearInService} years
 								</p>
 							</div>
 						</div>

@@ -372,7 +372,7 @@ export default async function Home({
 					</div>
 				)}
 
-				<Hero />
+				<Hero companyInfo={companyInfo} />
 
 				<section
 					id="services"

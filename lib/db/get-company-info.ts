@@ -68,10 +68,15 @@ export const getCompanyInfo = async () => {
 	const companyWhatWePrint =
 		record?.company_what_we_print?.map((w) => w.service)?.sort() ?? [];
 
+	const yearInService = record?.founded_at
+		? dayjs().diff(dayjs(record.founded_at), "year")
+		: 17;
+
 	return {
-		dateOfCreation: record?.created_at
-			? dayjs(record.created_at).format("MMMM YYYY")
-			: null,
+		dateOfCreation: record?.founded_at
+			? dayjs(record.founded_at).year().toString()
+			: "2007",
+		yearInService,
 		mainServices:
 			record?.main_services ??
 			"Offset Printing, Digital Printing, Large Format Printing, Signages",

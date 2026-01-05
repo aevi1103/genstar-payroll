@@ -1,6 +1,7 @@
 import TypingText from "@/components/ui/shadcn-io/typing-text";
+import type { CompanyInfo } from "@/lib/db/get-company-info";
 
-export const Hero = () => {
+export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 	return (
 		<>
 			<section className="relative z-10 mx-auto flex max-w-6xl flex-col gap-12 px-6 py-12 lg:py-20 md:flex-row md:items-center md:py-32 animate__animated animate__slideInUp animate__slow">
@@ -38,11 +39,11 @@ export const Hero = () => {
 										Why Choose Us
 									</h2>
 									<p className="text-sm text-emerald-600 font-semibold mt-1">
-										Since 2007 • Premium Quality
+										Since {companyInfo.dateOfCreation} • Premium Quality
 									</p>
 								</div>
 								<span className="rounded-full bg-emerald-100 px-4 py-2 text-sm font-bold text-emerald-700 whitespace-nowrap">
-									18+ Years
+									{companyInfo.yearInService} Years
 								</span>
 							</div>
 
