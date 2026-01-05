@@ -20,8 +20,8 @@ export default async function Page() {
 	}
 
 	return (
-		<div className="space-y-6">
-			<div>
+		<div className="flex flex-col h-[calc(100vh-5rem)] gap-6">
+			<div className="shrink-0">
 				<h1 className="text-3xl font-bold tracking-tight">
 					Company Information
 				</h1>
@@ -29,7 +29,7 @@ export default async function Page() {
 					Manage your organization&apos;s address, contacts, and coordinates.
 				</p>
 			</div>
-			<div className="rounded-lg border p-6 bg-card">
+			<div className="flex-1 rounded-lg border bg-card overflow-hidden flex flex-col min-h-0">
 				<CompanyInfoForm initialData={info.data || null} />
 			</div>
 		</div>

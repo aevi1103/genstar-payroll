@@ -4,6 +4,12 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "./ui/tooltip";
 
 export function LogoutButton() {
 	const router = useRouter();
@@ -15,9 +21,17 @@ export function LogoutButton() {
 	};
 
 	return (
-		<Button onClick={logout}>
-			<LogOut />
-			Logout
-		</Button>
+		<TooltipProvider>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button onClick={logout}>
+						<LogOut />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent>
+					<p>Logout</p>
+				</TooltipContent>
+			</Tooltip>
+		</TooltipProvider>
 	);
 }

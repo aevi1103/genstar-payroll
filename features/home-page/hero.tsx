@@ -4,18 +4,20 @@ import type { CompanyInfo } from "@/lib/db/get-company-info";
 export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 	return (
 		<>
-			<section className="relative z-10 mx-auto flex max-w-6xl flex-col gap-12 px-6 py-12 lg:py-20 md:flex-row md:items-center md:py-32 animate__animated animate__slideInUp animate__slow">
+			<section
+				className="relative z-10 mx-auto flex max-w-6xl flex-col gap-12 px-6 py-12 lg:py-20
+			 md:flex-row md:items-center md:py-32 animate__animated animate__slideInUp animate__slow"
+			>
 				<div className="flex-1 space-y-8 animate__animated animate__fadeInLeft animate__slower">
-					<div>
+					<div className="min-h-32 sm:min-h-56 md:min-h-64">
 						<TypingText
 							text={["Premium print solutions that move your brand forward."]}
-							typingSpeed={75}
+							typingSpeed={200}
 							pauseDuration={1500}
-							showCursor={true}
-							cursorCharacter="|"
+							showCursor={false}
 							className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight text-emerald-950 lg:py-2"
 							textColors={["#059669", "#047857", "#065f46"]}
-							variableSpeed={{ min: 50, max: 120 }}
+							variableSpeed={{ min: 50, max: 200 }}
 							initialDelay={1000}
 						/>
 					</div>
@@ -78,7 +80,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 								</div>
 
 								<div className="flex gap-4">
-									<div className="flex-shrink-0">
+									<div className="shrink-0">
 										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 group-hover:bg-emerald-200 transition-colors">
 											{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 											<svg
@@ -107,7 +109,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 								</div>
 
 								<div className="flex gap-4">
-									<div className="flex-shrink-0">
+									<div className="shrink-0">
 										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 group-hover:bg-emerald-200 transition-colors">
 											{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 											<svg
