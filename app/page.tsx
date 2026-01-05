@@ -3,6 +3,7 @@ import { AboutSection } from "@/features/home-page/about";
 import { VisionSection } from "@/features/home-page/vision";
 import { ServicesSection } from "@/features/home-page/services";
 import { Contact } from "@/features/home-page/contact";
+import { ImagesSection } from "@/features/home-page/images";
 import { createClient } from "@/lib/supabase/server";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import "animate.css";
@@ -391,6 +392,12 @@ export default async function Home({
 					className="scroll-mt-20 animate__animated animate__fadeInUp animate__slow"
 				>
 					<AboutSection />
+				</section>
+				<section
+					id="gallery"
+					className="scroll-mt-20 animate__animated animate__fadeInUp animate__slow"
+				>
+					<ImagesSection />
 				</section>
 				<section
 					id="contact"
