@@ -9,7 +9,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 			 md:flex-row md:items-center md:py-32 animate__animated animate__slideInUp animate__slow"
 			>
 				<div className="flex-1 space-y-8 animate__animated animate__fadeInLeft animate__slower">
-					<div className="min-h-32 sm:min-h-56 md:min-h-64">
+					<h1 className="min-h-32 sm:min-h-56 md:min-h-64">
 						<TypingText
 							text={["Premium print solutions that move your brand forward."]}
 							typingSpeed={200}
@@ -20,8 +20,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 							variableSpeed={{ min: 50, max: 200 }}
 							initialDelay={1000}
 						/>
-					</div>
-
+					</h1>
 					<p className="max-w-2xl text-lg sm:text-xl text-emerald-900/75 leading-relaxed">
 						High-quality offset, digital, and large-format printing with
 						meticulous color management, fast turnarounds, and a team that
