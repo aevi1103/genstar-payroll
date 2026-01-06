@@ -14,12 +14,15 @@ import {
 } from "lucide-react";
 import type { CompanyInfo } from "@/lib/db/get-company-info";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function ServicesSection({
 	companyInfo,
 }: {
 	companyInfo: CompanyInfo;
 }): React.ReactElement {
+	const isMobile = useIsMobile();
+
 	const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>(
 		{},
 	);
@@ -107,7 +110,7 @@ export function ServicesSection({
 				ref={heroRef}
 				className={`mb-16 sm:mb-20 md:mb-24 relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-900 via-emerald-950 to-teal-950 p-8 sm:p-10 md:p-12 text-white shadow-xl ring-1 ring-emerald-800/50 transition-all duration-500 ${
 					isHeroVisible
-						? "animate-in fade-in slide-in-from-bottom-6 duration-700"
+						? `animate-in fade-in slide-in-from-bottom-6 ${isMobile ? "duration-400" : "duration-700"}`
 						: "opacity-0 translate-y-6"
 				}`}
 			>
@@ -226,7 +229,7 @@ export function ServicesSection({
 					ref={businessRef}
 					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-linear-to-br from-blue-50 to-cyan-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-blue-300 ${
 						isBusinessVisible
-							? "animate-in fade-in slide-in-from-bottom-4 duration-600"
+							? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-300" : "duration-600"}`
 							: "opacity-0 translate-y-4"
 					}`}
 				>
@@ -270,7 +273,7 @@ export function ServicesSection({
 					onClick={() => toggleCard("team")}
 					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-purple-300 cursor-pointer ${
 						isTeamVisible
-							? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-100"
+							? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-300" : "duration-600"} delay-100`
 							: "opacity-0 translate-y-4"
 					}`}
 				>
@@ -323,7 +326,7 @@ export function ServicesSection({
 					onClick={() => toggleCard("equipment")}
 					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-linear-to-br from-orange-50 to-amber-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-orange-300 cursor-pointer ${
 						isEquipmentVisible
-							? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-200"
+							? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-300" : "duration-600"} delay-200`
 							: "opacity-0 translate-y-4"
 					}`}
 				>
@@ -377,7 +380,7 @@ export function ServicesSection({
 					onClick={() => toggleCard("printing")}
 					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-green-300 cursor-pointer ${
 						isPrintingVisible
-							? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-300"
+							? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-300" : "duration-600"} delay-300`
 							: "opacity-0 translate-y-4"
 					}`}
 				>
@@ -429,7 +432,7 @@ export function ServicesSection({
 					onClick={() => toggleCard("services")}
 					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 to-yellow-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-amber-300 cursor-pointer ${
 						isServicesVisible
-							? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-[400ms]"
+							? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-300" : "duration-600"} delay-[400ms]`
 							: "opacity-0 translate-y-4"
 					}`}
 				>
@@ -484,7 +487,7 @@ export function ServicesSection({
 					onClick={() => toggleCard("partners")}
 					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 to-blue-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-indigo-300 cursor-pointer ${
 						isPartnersVisible
-							? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-500"
+							? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-300" : "duration-600"} delay-500`
 							: "opacity-0 translate-y-4"
 					}`}
 				>

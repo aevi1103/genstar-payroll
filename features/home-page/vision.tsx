@@ -3,6 +3,7 @@
 import type React from "react";
 import { Eye, Target, Heart, Sparkles } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const VISION_TEXT =
 	"Clients total satisfaction as to Quality, Affordability and Service.";
@@ -43,6 +44,8 @@ export const CORE_VALUES: Array<{
 ];
 
 export function VisionSection(): React.ReactElement {
+	const isMobile = useIsMobile();
+
 	const { isIntersecting: isVisionVisible, ref: visionRef } =
 		useIntersectionObserver({
 			threshold: 0.3,
@@ -123,7 +126,7 @@ export function VisionSection(): React.ReactElement {
 					ref={visionRef}
 					className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 via-blue-50/50 to-cyan-50/30 p-8 sm:p-10 md:p-12 shadow-lg ring-1 ring-blue-200/60 transition-all duration-300 hover:shadow-2xl hover:ring-blue-300 hover:-translate-y-2 ${
 						isVisionVisible
-							? "animate-in fade-in slide-in-from-left-4 duration-700"
+							? `animate-in fade-in slide-in-from-left-4 ${isMobile ? "duration-400" : "duration-700"}`
 							: "opacity-0 -translate-x-4"
 					}`}
 				>
@@ -137,7 +140,7 @@ export function VisionSection(): React.ReactElement {
 						<div
 							className={`inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 ring-1 ring-blue-200/50 group-hover:ring-blue-300 group-hover:shadow-md transition-all duration-300 ${
 								isVisionVisible
-									? "animate-in zoom-in duration-500 delay-200"
+									? `animate-in zoom-in ${isMobile ? "duration-300" : "duration-500"} delay-200`
 									: "opacity-0 scale-0"
 							}`}
 						>
@@ -146,7 +149,7 @@ export function VisionSection(): React.ReactElement {
 						<h3
 							className={`mt-6 sm:mt-8 text-2xl sm:text-3xl font-bold text-blue-950 ${
 								isVisionVisible
-									? "animate-in fade-in slide-in-from-bottom-2 duration-500 delay-300"
+									? `animate-in fade-in slide-in-from-bottom-2 ${isMobile ? "duration-300" : "duration-500"} delay-300`
 									: "opacity-0 translate-y-2"
 							}`}
 						>
@@ -155,14 +158,14 @@ export function VisionSection(): React.ReactElement {
 						<div
 							className={`mt-3 h-1 w-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 ${
 								isVisionVisible
-									? "animate-in fade-in slide-in-from-left duration-400 delay-500"
+									? `animate-in fade-in slide-in-from-left ${isMobile ? "duration-250" : "duration-400"} delay-500`
 									: "opacity-0 -translate-x-4"
 							}`}
 						/>
 						<p
 							className={`mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-blue-950/85 ${
 								isVisionVisible
-									? "animate-in fade-in duration-600 delay-700"
+									? `animate-in fade-in ${isMobile ? "duration-350" : "duration-600"} delay-700`
 									: "opacity-0"
 							}`}
 						>
@@ -182,7 +185,7 @@ export function VisionSection(): React.ReactElement {
 					ref={missionRef}
 					className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 via-emerald-50/50 to-teal-50/30 p-8 sm:p-10 md:p-12 shadow-lg ring-1 ring-emerald-200/60 transition-all duration-300 hover:shadow-2xl hover:ring-emerald-300 hover:-translate-y-2 ${
 						isMissionVisible
-							? "animate-in fade-in slide-in-from-right-4 duration-700"
+							? `animate-in fade-in slide-in-from-right-4 ${isMobile ? "duration-400" : "duration-700"}`
 							: "opacity-0 translate-x-4"
 					}`}
 				>
@@ -196,7 +199,7 @@ export function VisionSection(): React.ReactElement {
 						<div
 							className={`inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 ring-1 ring-emerald-200/50 group-hover:ring-emerald-300 group-hover:shadow-md transition-all duration-300 ${
 								isMissionVisible
-									? "animate-in zoom-in duration-500 delay-200"
+									? `animate-in zoom-in ${isMobile ? "duration-300" : "duration-500"} delay-200`
 									: "opacity-0 scale-0"
 							}`}
 						>
@@ -205,7 +208,7 @@ export function VisionSection(): React.ReactElement {
 						<h3
 							className={`mt-6 sm:mt-8 text-2xl sm:text-3xl font-bold text-emerald-950 ${
 								isMissionVisible
-									? "animate-in fade-in slide-in-from-bottom-2 duration-500 delay-300"
+									? `animate-in fade-in slide-in-from-bottom-2 ${isMobile ? "duration-300" : "duration-500"} delay-300`
 									: "opacity-0 translate-y-2"
 							}`}
 						>
@@ -214,14 +217,14 @@ export function VisionSection(): React.ReactElement {
 						<div
 							className={`mt-3 h-1 w-12 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 ${
 								isMissionVisible
-									? "animate-in fade-in slide-in-from-left duration-400 delay-500"
+									? `animate-in fade-in slide-in-from-left ${isMobile ? "duration-250" : "duration-400"} delay-500`
 									: "opacity-0 -translate-x-4"
 							}`}
 						/>
 						<p
 							className={`mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-emerald-950/85 ${
 								isMissionVisible
-									? "animate-in fade-in duration-600 delay-700"
+									? `animate-in fade-in ${isMobile ? "duration-350" : "duration-600"} delay-700`
 									: "opacity-0"
 							}`}
 						>
@@ -354,7 +357,7 @@ export function VisionSection(): React.ReactElement {
 								ref={currentRef}
 								className={`group relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br ${colors.bg} p-6 sm:p-8 shadow-md ring-1 ${colors.ring} transition-all duration-300 hover:shadow-xl ${colors.hoverRing} hover:-translate-y-2 ${
 									isVisible
-										? `animate-in fade-in slide-in-from-bottom-4 duration-600 ${delay}`
+										? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-300" : "duration-600"} ${delay}`
 										: "opacity-0 translate-y-4"
 								}`}
 							>
