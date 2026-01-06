@@ -1,9 +1,12 @@
+"use server";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/prisma/client";
 import type { Prisma } from "@prisma/client";
 import dayjs from "dayjs";
 import parsePhoneNumber from "libphonenumber-js";
+import { serializeData } from "@/lib/utils";
 
-export const getCompanyInfo = async () => {
+const getCompanyInfoData = async () => {
 	const record = await prisma.company_info.findFirst({
 		include: {
 			company_machines: {
@@ -23,6 +26,22 @@ export const getCompanyInfo = async () => {
 			},
 		},
 	});
+
+	// Serialize BigInt values to prevent JSON serialization errors
+	return serializeData(record);
+};
+
+const getCachedCompanyInfo = unstable_cache(
+	getCompanyInfoData,
+	["company-info"],
+	{
+		tags: ["company-info"],
+		revalidate: false, // Only revalidate on manual tag invalidation
+	},
+);
+
+export const getCompanyInfo = async () => {
+	const record = await getCachedCompanyInfo();
 
 	const streetAddress =
 		record?.street_address ??

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { getSessionWithRole } from "@/lib/session";
 import { prisma } from "@/prisma/client";
 import type { Prisma } from "@prisma/client";
@@ -205,7 +205,9 @@ export const upsertCompanyInfo = async (data: CompanyInfoFormData) => {
 			},
 		});
 
+		// Revalidate both the path and the cache tag
 		revalidatePath("/payroll/settings/company-info");
+		revalidateTag("company-info");
 
 		return {
 			success: true,
