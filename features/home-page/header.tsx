@@ -213,13 +213,17 @@ export function Header({ user, images }: HeaderProps) {
 									>
 										About
 									</Link>
-									<Link
-										href="#gallery"
-										onClick={() => setOpen(false)}
-										className="hover:text-emerald-900"
-									>
-										Portfolio
-									</Link>
+
+									{(images?.length ?? 0) > 0 && (
+										<Link
+											href="#gallery"
+											onClick={() => setOpen(false)}
+											className="hover:text-emerald-900"
+										>
+											Portfolio
+										</Link>
+									)}
+
 									<Link
 										href="#contact"
 										onClick={() => setOpen(false)}
