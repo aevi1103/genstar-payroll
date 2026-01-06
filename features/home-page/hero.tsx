@@ -3,6 +3,7 @@
 import TypingText from "@/components/ui/shadcn-io/typing-text";
 import type { CompanyInfo } from "@/lib/db/get-company-info";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import dayjs from "dayjs";
 
 export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 	const { isIntersecting: isHeaderVisible, ref: headerRef } =
@@ -71,7 +72,8 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 									</p>
 								</div>
 								<span className="rounded-full bg-emerald-100 px-4 py-2 text-sm font-bold text-emerald-700 whitespace-nowrap">
-									{companyInfo.yearInService} Years
+									{dayjs().diff(dayjs(companyInfo.dateOfCreation), "year")}{" "}
+									Years
 								</span>
 							</div>
 

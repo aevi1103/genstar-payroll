@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import type { CompanyInfo } from "@/lib/db/get-company-info";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import dayjs from "dayjs";
 
 export function ServicesSection({
 	companyInfo,
@@ -149,7 +150,8 @@ export function ServicesSection({
 									{companyInfo.mainServices}
 								</p>
 								<p className="mt-2 text-xs sm:text-sm text-emerald-200">
-									{companyInfo.yearInService} years of printing excellence
+									{dayjs().diff(dayjs(companyInfo.dateOfCreation), "year")}{" "}
+									years of printing excellence
 								</p>
 							</div>
 						</div>
@@ -256,7 +258,8 @@ export function ServicesSection({
 									Years Active
 								</p>
 								<p className="mt-2 text-sm sm:text-base font-medium text-blue-950">
-									{companyInfo.yearInService} years
+									{dayjs().diff(dayjs(companyInfo.dateOfCreation), "year")}{" "}
+									years
 								</p>
 							</div>
 						</div>

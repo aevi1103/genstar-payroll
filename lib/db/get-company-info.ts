@@ -1,5 +1,5 @@
 "use server";
-import { unstable_cache } from "next/cache";
+import { cacheTag } from "next/cache";
 import { prisma } from "@/prisma/client";
 import type { Prisma } from "@prisma/client";
 import dayjs from "dayjs";
@@ -7,6 +7,9 @@ import parsePhoneNumber from "libphonenumber-js";
 import { serializeData } from "@/lib/utils";
 
 const getCompanyInfoData = async () => {
+	"use cache";
+	cacheTag("company-info");
+
 	const record = await prisma.company_info.findFirst({
 		include: {
 			company_machines: {
@@ -31,17 +34,8 @@ const getCompanyInfoData = async () => {
 	return serializeData(record);
 };
 
-const getCachedCompanyInfo = unstable_cache(
-	getCompanyInfoData,
-	["company-info"],
-	{
-		tags: ["company-info"],
-		revalidate: false, // Only revalidate on manual tag invalidation
-	},
-);
-
 export const getCompanyInfo = async () => {
-	const record = await getCachedCompanyInfo();
+	const record = await getCompanyInfoData();
 
 	const streetAddress =
 		record?.street_address ??
@@ -87,15 +81,10 @@ export const getCompanyInfo = async () => {
 	const companyWhatWePrint =
 		record?.company_what_we_print?.map((w) => w.service)?.sort() ?? [];
 
-	const yearInService = record?.founded_at
-		? dayjs().diff(dayjs(record.founded_at), "year")
-		: 17;
-
 	return {
 		dateOfCreation: record?.founded_at
 			? dayjs(record.founded_at).year().toString()
 			: "2007",
-		yearInService,
 		mainServices:
 			record?.main_services ??
 			"Offset Printing, Digital Printing, Large Format Printing, Signages",

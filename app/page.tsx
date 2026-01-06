@@ -14,6 +14,7 @@ import { Hero } from "@/features/home-page/hero";
 import { getCompanyInfo } from "@/lib/db/get-company-info";
 import { getPublicImages } from "@/lib/db/get-public-images";
 import Script from "next/script";
+import { Suspense } from "react";
 
 // Static base keywords for SEO
 const baseKeywords = [
@@ -235,8 +236,14 @@ export default async function Home({
 
 			<Header user={user} images={images} />
 
-			<main className="relative min-h-screen bg-linear-to-b from-emerald-50/50 via-white to-emerald-950/5 text-emerald-950 overflow-hidden">
-				<BackgroundBeams className="absolute inset-0" />
+			<main
+				className="relative min-h-screen bg-linear-to-b
+			 from-emerald-50/50 via-white to-emerald-950/5
+			  text-emerald-950 overflow-hidden"
+			>
+				<Suspense>
+					<BackgroundBeams className="absolute inset-0" />
+				</Suspense>
 
 				{message === "no role assigned to user" && (
 					<div className="mx-auto max-w-6xl px-6 pt-6 animate__animated animate__pulse">

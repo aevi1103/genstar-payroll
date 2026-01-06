@@ -207,7 +207,7 @@ export const upsertCompanyInfo = async (data: CompanyInfoFormData) => {
 
 		// Revalidate both the path and the cache tag
 		revalidatePath("/payroll/settings/company-info");
-		revalidateTag("company-info");
+		revalidateTag("company-info", "default");
 
 		return {
 			success: true,

@@ -1,10 +1,13 @@
 import { BackgroundBeams } from "@/components/ui/shadcn-io/background-beams";
 import "animate.css";
+import { Suspense } from "react";
 
 export default function Loading() {
 	return (
 		<div className="relative min-h-screen bg-linear-to-b from-emerald-50/50 via-white to-emerald-950/5 flex items-center justify-center overflow-hidden">
-			<BackgroundBeams className="absolute inset-0" />
+			<Suspense>
+				<BackgroundBeams className="absolute inset-0" />
+			</Suspense>
 
 			<div className="relative z-10 flex flex-col items-center gap-6 animate__animated animate__fadeIn">
 				{/* Animated Logo/Spinner */}
