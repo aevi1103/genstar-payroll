@@ -1,5 +1,5 @@
 "use server";
-import { cacheTag } from "next/cache";
+// import { cacheTag } from "next/cache";
 import { prisma } from "@/prisma/client";
 import type { Prisma } from "@prisma/client";
 import dayjs from "dayjs";
@@ -7,8 +7,8 @@ import parsePhoneNumber from "libphonenumber-js";
 import { serializeData } from "@/lib/utils";
 
 const getCompanyInfoData = async () => {
-	"use cache";
-	cacheTag("company-info");
+	// "use cache";
+	// cacheTag("company-info");
 
 	const record = await prisma.company_info.findFirst({
 		include: {
