@@ -116,7 +116,7 @@ export function AboutSection(): React.ReactElement {
 								className={`flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-linear-to-br from-blue-100 to-blue-50 ring-1 ring-blue-200/50 group-hover:ring-blue-300 group-hover:shadow-md transition-all duration-300 ${
 									isSection1Visible
 										? "animate-in zoom-in duration-500 delay-300"
-										: "opacity-0 scale-0"
+										: "opacity-0 scale-0 transform-gpu"
 								}`}
 							>
 								<Star
@@ -178,7 +178,7 @@ export function AboutSection(): React.ReactElement {
 								className={`flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-100 to-purple-50 ring-1 ring-purple-200/50 group-hover:ring-purple-300 group-hover:shadow-md transition-all duration-300 ${
 									isSection2Visible
 										? "animate-in zoom-in duration-500 delay-300"
-										: "opacity-0 scale-0"
+										: "opacity-0 scale-0 transform-gpu"
 								}`}
 							>
 								<span
@@ -242,7 +242,7 @@ export function AboutSection(): React.ReactElement {
 								className={`flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-orange-100 to-orange-50 ring-1 ring-orange-200/50 group-hover:ring-orange-300 group-hover:shadow-md transition-all duration-300 ${
 									isSection3Visible
 										? "animate-in zoom-in duration-500 delay-300"
-										: "opacity-0 scale-0"
+										: "opacity-0 scale-0 transform-gpu"
 								}`}
 							>
 								<Lightbulb
@@ -304,7 +304,7 @@ export function AboutSection(): React.ReactElement {
 								className={`flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-rose-100 to-rose-50 ring-1 ring-rose-200/50 group-hover:ring-rose-300 group-hover:shadow-md transition-all duration-300 ${
 									isSection4Visible
 										? "animate-in zoom-in duration-500 delay-300"
-										: "opacity-0 scale-0"
+										: "opacity-0 scale-0 transform-gpu"
 								}`}
 							>
 								<Award
@@ -351,7 +351,7 @@ export function AboutSection(): React.ReactElement {
 				className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-900 via-emerald-950 to-teal-950 p-8 sm:p-10 md:p-14 text-center shadow-xl ring-1 ring-emerald-800/50 transition-all duration-500 hover:shadow-2xl hover:scale-105 ${
 					isClosingVisible
 						? "animate-in fade-in zoom-in duration-1000"
-						: "opacity-0 scale-75"
+						: "opacity-0 scale-75 transform-gpu"
 				}`}
 			>
 				<div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-transparent to-teal-500/0 group-hover:from-emerald-500/10 group-hover:to-teal-500/10 transition-all duration-300" />
@@ -387,7 +387,7 @@ export function AboutSection(): React.ReactElement {
 						className={`text-lg sm:text-2xl md:text-3xl font-bold italic text-white ${
 							isClosingVisible
 								? "animate-in fade-in zoom-in duration-700 delay-500"
-								: "opacity-0 scale-90"
+								: "opacity-0 scale-90 transform-gpu"
 						}`}
 					>
 						&quot;{ABOUT_PARAGRAPHS[5]}&quot;

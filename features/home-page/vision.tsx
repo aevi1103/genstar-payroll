@@ -138,7 +138,7 @@ export function VisionSection(): React.ReactElement {
 							className={`inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 ring-1 ring-blue-200/50 group-hover:ring-blue-300 group-hover:shadow-md transition-all duration-300 ${
 								isVisionVisible
 									? "animate-in zoom-in duration-500 delay-200"
-									: "opacity-0 scale-0"
+									: "opacity-0 scale-0 transform-gpu"
 							}`}
 						>
 							<Eye className="h-7 sm:h-8 w-7 sm:w-8 text-blue-600" />
@@ -197,7 +197,7 @@ export function VisionSection(): React.ReactElement {
 							className={`inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 ring-1 ring-emerald-200/50 group-hover:ring-emerald-300 group-hover:shadow-md transition-all duration-300 ${
 								isMissionVisible
 									? "animate-in zoom-in duration-500 delay-200"
-									: "opacity-0 scale-0"
+									: "opacity-0 scale-0 transform-gpu"
 							}`}
 						>
 							<Target className="h-7 sm:h-8 w-7 sm:w-8 text-emerald-600" />

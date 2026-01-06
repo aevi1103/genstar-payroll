@@ -57,7 +57,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 					<div className="flex flex-wrap gap-4 pt-4" />
 				</div>
 
-				<div className="relative flex-1 animate__animated animate__fadeInRight animate__slower hover:scale-105 transition-transform duration-500">
+				<div className="relative transform-gpu flex-1 animate__animated animate__fadeInRight animate__slower hover:scale-105 transition-transform duration-500">
 					<div className="absolute inset-0 bg-linear-to-br from-emerald-600/20 to-emerald-400/10 rounded-3xl blur-2xl" />
 					<div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-white via-emerald-50/30 to-white p-8 shadow-2xl ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300 transition-all duration-500 group">
 						<div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/5 rounded-full -mr-48 -mt-48 blur-3xl" />
@@ -175,7 +175,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 					ref={headerRef}
 					className={`mb-12 space-y-4 ${
 						isHeaderVisible
-							? "animate-in fade-in slide-in-from-bottom-4 duration-700"
+							? "animate-in fade-in slide-in-from-bottom-4 duration-700 transform-gpu"
 							: "opacity-0 translate-y-4"
 					}`}
 				>
@@ -196,7 +196,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 						ref={offsetRef}
 						className={`group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 ${
 							isOffsetVisible
-								? "animate-in fade-in slide-in-from-bottom-4 duration-600"
+								? "animate-in fade-in slide-in-from-bottom-4 duration-600 transform-gpu"
 								: "opacity-0 translate-y-4"
 						}`}
 					>
@@ -233,7 +233,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 						ref={digitalRef}
 						className={`group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 ${
 							isDigitalVisible
-								? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-100"
+								? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-100 transform-gpu"
 								: "opacity-0 translate-y-4"
 						}`}
 					>
@@ -270,7 +270,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 						ref={largeFormatRef}
 						className={`group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 ${
 							isLargeFormatVisible
-								? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-200"
+								? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-200 transform-gpu"
 								: "opacity-0 translate-y-4"
 						}`}
 					>

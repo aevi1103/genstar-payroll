@@ -100,7 +100,7 @@ export function ImagesSection({ images }: { images: PublicImages }) {
 													src={image?.publicUrl}
 													alt={`Gallery image ${image.name}`}
 													fill
-													className="object-cover transition-transform duration-500 group-hover:scale-110"
+													className="object-cover transition-transform duration-500 transform-gpu group-hover:scale-110"
 													sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
 												/>
 												{/* Overlay on hover */}
