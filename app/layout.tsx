@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 const companyUrl =
 	process.env.PROD_SITE_URL || "https://www.genstarprintingservices.com";
 const developer = process.env.DEVELOPER || "Aebbie Rontos";
-const gaId = process.env.GA_ID || "";
+const gaId = process.env.GA_ID || "G-ZQZGQ357XS";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(companyUrl),
