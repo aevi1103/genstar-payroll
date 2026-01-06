@@ -26,7 +26,7 @@ export function AppSidebar({ session, ...props }: AppSidebarProps) {
 		avatar: session?.user.avatar ?? "/avatars/shadcn.jpg",
 	};
 
-	const logoSrc = encodeURI("/genstar logo.png");
+	const logoSrc = encodeURI("/logo.png");
 	const isAdmin = session.role.toLowerCase() === "admin";
 
 	return (

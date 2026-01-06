@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-const logoSrc = encodeURI("/genstar logo.png");
+const logoSrc = encodeURI("/logo.png");
 
 export const Logo = ({
 	width = 140,

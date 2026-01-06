@@ -84,7 +84,7 @@ export function SignUpForm({
 				<CardHeader>
 					<div className="flex justify-center mb-6">
 						<Image
-							src="/genstar logo.png"
+							src="/logo.png"
 							alt="GenStar Printing Services"
 							width={300}
 							height={80}

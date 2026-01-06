@@ -78,7 +78,7 @@ const QrCodePDFDocument = ({ qrCodeImage }: QrCodePdfDocumentProps) => (
 		<Page size="A4" style={styles.page}>
 			<View style={styles.container}>
 				{/* eslint-disable-next-line jsx-a11y/alt-text */}
-				<Image src="/genstar logo.png" style={styles.logo} />
+				<Image src="/logo.png" style={styles.logo} />
 
 				<Text style={styles.title}>Clock In/Out QR Code</Text>
 

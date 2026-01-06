@@ -59,7 +59,7 @@ export const PayrollEmail = (data: WeeklySummaryDataSource) => {
 								<Column>
 									<Img
 										src={logoUrl}
-										alt="GenStar Logo"
+										alt="logo"
 										width="250"
 										height="80"
 										className="mx-auto mb-4"

@@ -114,7 +114,7 @@ export function ServicesSection({
 							</div>
 							<div>
 								<p className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-emerald-200">
-									Owner & Manager
+									Manager
 								</p>
 								<p className="mt-3 text-sm sm:text-base text-emerald-50 font-medium">
 									{companyInfo.owner}
