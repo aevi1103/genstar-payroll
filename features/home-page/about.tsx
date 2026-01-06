@@ -3,7 +3,6 @@
 import type React from "react";
 import { BookOpen, Star, Lightbulb, Award, Sparkles } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export const ABOUT_PARAGRAPHS: string[] = [
 	"The Genstar Printing Services is recognized as a commercial print industry.",
@@ -15,8 +14,6 @@ export const ABOUT_PARAGRAPHS: string[] = [
 ];
 
 export function AboutSection(): React.ReactElement {
-	const isMobile = useIsMobile();
-
 	const { isIntersecting: isSection1Visible, ref: section1Ref } =
 		useIntersectionObserver({
 			threshold: 0.3,
@@ -102,7 +99,7 @@ export function AboutSection(): React.ReactElement {
 					ref={section1Ref}
 					className={`group relative overflow-hidden rounded-xl sm:rounded-2xl bg-linear-to-br from-blue-50 to-cyan-50/30 p-6 sm:p-8 md:p-10 shadow-md ring-1 ring-blue-200/60 transition-all duration-300 hover:shadow-lg hover:ring-blue-300 hover:-translate-y-1 ${
 						isSection1Visible
-							? `animate-in fade-in slide-in-from-bottom-8 ${isMobile ? "duration-400" : "duration-700"}`
+							? "animate-in fade-in slide-in-from-bottom-8 duration-700"
 							: "opacity-0 translate-y-8"
 					}`}
 				>
@@ -118,7 +115,7 @@ export function AboutSection(): React.ReactElement {
 							<div
 								className={`flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-linear-to-br from-blue-100 to-blue-50 ring-1 ring-blue-200/50 group-hover:ring-blue-300 group-hover:shadow-md transition-all duration-300 ${
 									isSection1Visible
-										? `animate-in zoom-in ${isMobile ? "duration-300" : "duration-500"} delay-300`
+										? "animate-in zoom-in duration-500 delay-300"
 										: "opacity-0 scale-0"
 								}`}
 							>
@@ -133,7 +130,7 @@ export function AboutSection(): React.ReactElement {
 							<h3
 								className={`text-lg sm:text-xl font-bold text-blue-950 ${
 									isSection1Visible
-										? `animate-in fade-in slide-in-from-left ${isMobile ? "duration-300" : "duration-500"} delay-500`
+										? "animate-in fade-in slide-in-from-left duration-500 delay-500"
 										: "opacity-0 -translate-x-4"
 								}`}
 							>
@@ -142,14 +139,14 @@ export function AboutSection(): React.ReactElement {
 							<div
 								className={`mt-2 h-1 w-8 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 ${
 									isSection1Visible
-										? `animate-in fade-in slide-in-from-left ${isMobile ? "duration-300" : "duration-500"} delay-700`
+										? "animate-in fade-in slide-in-from-left duration-500 delay-700"
 										: "opacity-0 -translate-x-4"
 								}`}
 							/>
 							<p
 								className={`mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-blue-950/80 ${
 									isSection1Visible
-										? `animate-in fade-in slide-in-from-right ${isMobile ? "duration-400" : "duration-700"} delay-[900ms]`
+										? "animate-in fade-in slide-in-from-right duration-700 delay-[900ms]"
 										: "opacity-0 translate-x-4"
 								}`}
 							>
@@ -164,7 +161,7 @@ export function AboutSection(): React.ReactElement {
 					ref={section2Ref}
 					className={`group relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-50/30 p-6 sm:p-8 md:p-10 shadow-md ring-1 ring-purple-200/60 transition-all duration-300 hover:shadow-lg hover:ring-purple-300 hover:-translate-y-1 ${
 						isSection2Visible
-							? `animate-in fade-in slide-in-from-bottom-8 ${isMobile ? "duration-400" : "duration-700"}`
+							? "animate-in fade-in slide-in-from-bottom-8 duration-700"
 							: "opacity-0 translate-y-8"
 					}`}
 				>
@@ -180,7 +177,7 @@ export function AboutSection(): React.ReactElement {
 							<div
 								className={`flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-100 to-purple-50 ring-1 ring-purple-200/50 group-hover:ring-purple-300 group-hover:shadow-md transition-all duration-300 ${
 									isSection2Visible
-										? `animate-in zoom-in ${isMobile ? "duration-300" : "duration-500"} delay-300`
+										? "animate-in zoom-in duration-500 delay-300"
 										: "opacity-0 scale-0"
 								}`}
 							>
@@ -197,7 +194,7 @@ export function AboutSection(): React.ReactElement {
 							<h3
 								className={`text-lg sm:text-xl font-bold text-purple-950 ${
 									isSection2Visible
-										? `animate-in fade-in slide-in-from-left ${isMobile ? "duration-300" : "duration-500"} delay-500`
+										? "animate-in fade-in slide-in-from-left duration-500 delay-500"
 										: "opacity-0 -translate-x-4"
 								}`}
 							>
@@ -206,14 +203,14 @@ export function AboutSection(): React.ReactElement {
 							<div
 								className={`mt-2 h-1 w-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 ${
 									isSection2Visible
-										? `animate-in fade-in slide-in-from-left ${isMobile ? "duration-300" : "duration-500"} delay-700`
+										? "animate-in fade-in slide-in-from-left duration-500 delay-700"
 										: "opacity-0 -translate-x-4"
 								}`}
 							/>
 							<p
 								className={`mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-purple-950/80 ${
 									isSection2Visible
-										? `animate-in fade-in slide-in-from-right ${isMobile ? "duration-400" : "duration-700"} delay-[900ms]`
+										? "animate-in fade-in slide-in-from-right duration-700 delay-[900ms]"
 										: "opacity-0 translate-x-4"
 								}`}
 							>
@@ -228,7 +225,7 @@ export function AboutSection(): React.ReactElement {
 					ref={section3Ref}
 					className={`group relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50/30 p-6 sm:p-8 md:p-10 shadow-md ring-1 ring-orange-200/60 transition-all duration-300 hover:shadow-lg hover:ring-orange-300 hover:-translate-y-1 ${
 						isSection3Visible
-							? `animate-in fade-in slide-in-from-bottom-8 ${isMobile ? "duration-400" : "duration-700"}`
+							? "animate-in fade-in slide-in-from-bottom-8 duration-700"
 							: "opacity-0 translate-y-8"
 					}`}
 				>
@@ -244,7 +241,7 @@ export function AboutSection(): React.ReactElement {
 							<div
 								className={`flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-orange-100 to-orange-50 ring-1 ring-orange-200/50 group-hover:ring-orange-300 group-hover:shadow-md transition-all duration-300 ${
 									isSection3Visible
-										? `animate-in zoom-in ${isMobile ? "duration-300" : "duration-500"} delay-300`
+										? "animate-in zoom-in duration-500 delay-300"
 										: "opacity-0 scale-0"
 								}`}
 							>
@@ -259,7 +256,7 @@ export function AboutSection(): React.ReactElement {
 							<h3
 								className={`text-lg sm:text-xl font-bold text-orange-950 ${
 									isSection3Visible
-										? `animate-in fade-in slide-in-from-left ${isMobile ? "duration-300" : "duration-500"} delay-500`
+										? "animate-in fade-in slide-in-from-left duration-500 delay-500"
 										: "opacity-0 -translate-x-4"
 								}`}
 							>
@@ -268,14 +265,14 @@ export function AboutSection(): React.ReactElement {
 							<div
 								className={`mt-2 h-1 w-8 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 ${
 									isSection3Visible
-										? `animate-in fade-in slide-in-from-left ${isMobile ? "duration-300" : "duration-500"} delay-700`
+										? "animate-in fade-in slide-in-from-left duration-500 delay-700"
 										: "opacity-0 -translate-x-4"
 								}`}
 							/>
 							<p
 								className={`mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-orange-950/80 ${
 									isSection3Visible
-										? `animate-in fade-in slide-in-from-right ${isMobile ? "duration-400" : "duration-700"} delay-[900ms]`
+										? "animate-in fade-in slide-in-from-right duration-700 delay-[900ms]"
 										: "opacity-0 translate-x-4"
 								}`}
 							>
@@ -290,7 +287,7 @@ export function AboutSection(): React.ReactElement {
 					ref={section4Ref}
 					className={`group relative overflow-hidden rounded-xl sm:rounded-2xl bg-linear-to-br from-rose-50 to-pink-50/30 p-6 sm:p-8 md:p-10 shadow-md ring-1 ring-rose-200/60 transition-all duration-300 hover:shadow-lg hover:ring-rose-300 hover:-translate-y-1 ${
 						isSection4Visible
-							? `animate-in fade-in slide-in-from-bottom-8 ${isMobile ? "duration-400" : "duration-700"}`
+							? "animate-in fade-in slide-in-from-bottom-8 duration-700"
 							: "opacity-0 translate-y-8"
 					}`}
 				>
@@ -306,7 +303,7 @@ export function AboutSection(): React.ReactElement {
 							<div
 								className={`flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-rose-100 to-rose-50 ring-1 ring-rose-200/50 group-hover:ring-rose-300 group-hover:shadow-md transition-all duration-300 ${
 									isSection4Visible
-										? `animate-in zoom-in ${isMobile ? "duration-300" : "duration-500"} delay-300`
+										? "animate-in zoom-in duration-500 delay-300"
 										: "opacity-0 scale-0"
 								}`}
 							>
@@ -321,7 +318,7 @@ export function AboutSection(): React.ReactElement {
 							<h3
 								className={`text-lg sm:text-xl font-bold text-rose-950 ${
 									isSection4Visible
-										? `animate-in fade-in slide-in-from-left ${isMobile ? "duration-300" : "duration-500"} delay-500`
+										? "animate-in fade-in slide-in-from-left duration-500 delay-500"
 										: "opacity-0 -translate-x-4"
 								}`}
 							>
@@ -330,14 +327,14 @@ export function AboutSection(): React.ReactElement {
 							<div
 								className={`mt-2 h-1 w-8 rounded-full bg-linear-to-r from-rose-500 to-pink-500 ${
 									isSection4Visible
-										? `animate-in fade-in slide-in-from-left ${isMobile ? "duration-300" : "duration-500"} delay-700`
+										? "animate-in fade-in slide-in-from-left duration-500 delay-700"
 										: "opacity-0 -translate-x-4"
 								}`}
 							/>
 							<p
 								className={`mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-rose-950/80 ${
 									isSection4Visible
-										? `animate-in fade-in slide-in-from-right ${isMobile ? "duration-400" : "duration-700"} delay-[900ms]`
+										? "animate-in fade-in slide-in-from-right duration-700 delay-[900ms]"
 										: "opacity-0 translate-x-4"
 								}`}
 							>
@@ -353,7 +350,7 @@ export function AboutSection(): React.ReactElement {
 				ref={closingRef}
 				className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-900 via-emerald-950 to-teal-950 p-8 sm:p-10 md:p-14 text-center shadow-xl ring-1 ring-emerald-800/50 transition-all duration-500 hover:shadow-2xl hover:scale-105 ${
 					isClosingVisible
-						? `animate-in fade-in zoom-in ${isMobile ? "duration-600" : "duration-1000"}`
+						? "animate-in fade-in zoom-in duration-1000"
 						: "opacity-0 scale-75"
 				}`}
 			>

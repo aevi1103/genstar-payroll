@@ -3,11 +3,8 @@
 import TypingText from "@/components/ui/shadcn-io/typing-text";
 import type { CompanyInfo } from "@/lib/db/get-company-info";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
-	const isMobile = useIsMobile();
-
 	const { isIntersecting: isHeaderVisible, ref: headerRef } =
 		useIntersectionObserver({
 			threshold: 0.3,
@@ -176,7 +173,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 					ref={headerRef}
 					className={`mb-12 space-y-4 ${
 						isHeaderVisible
-							? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-400" : "duration-700"}`
+							? "animate-in fade-in slide-in-from-bottom-4 duration-700"
 							: "opacity-0 translate-y-4"
 					}`}
 				>
@@ -197,7 +194,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 						ref={offsetRef}
 						className={`group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 ${
 							isOffsetVisible
-								? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-300" : "duration-600"}`
+								? "animate-in fade-in slide-in-from-bottom-4 duration-600"
 								: "opacity-0 translate-y-4"
 						}`}
 					>
@@ -234,7 +231,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 						ref={digitalRef}
 						className={`group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 ${
 							isDigitalVisible
-								? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-300" : "duration-600"} delay-100`
+								? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-100"
 								: "opacity-0 translate-y-4"
 						}`}
 					>
@@ -271,7 +268,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 						ref={largeFormatRef}
 						className={`group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 ${
 							isLargeFormatVisible
-								? `animate-in fade-in slide-in-from-bottom-4 ${isMobile ? "duration-300" : "duration-600"} delay-200`
+								? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-200"
 								: "opacity-0 translate-y-4"
 						}`}
 					>
