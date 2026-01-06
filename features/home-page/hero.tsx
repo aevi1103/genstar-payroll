@@ -1,7 +1,34 @@
+"use client";
+
 import TypingText from "@/components/ui/shadcn-io/typing-text";
 import type { CompanyInfo } from "@/lib/db/get-company-info";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
+	const { isIntersecting: isHeaderVisible, ref: headerRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isOffsetVisible, ref: offsetRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isDigitalVisible, ref: digitalRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isLargeFormatVisible, ref: largeFormatRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
 	return (
 		<>
 			<section
@@ -141,8 +168,15 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 				</div>
 			</section>
 
-			<section className="relative z-10 mx-auto max-w-6xl px-6 py-10 animate__animated animate__fadeInUp animate__slow">
-				<div className="mb-12 space-y-4">
+			<section className="relative z-10 mx-auto max-w-6xl px-6 py-10">
+				<div
+					ref={headerRef}
+					className={`mb-12 space-y-4 ${
+						isHeaderVisible
+							? "animate-in fade-in slide-in-from-bottom-4 duration-700"
+							: "opacity-0 translate-y-4"
+					}`}
+				>
 					<div>
 						<h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-950 leading-tight">
 							Complete Printing Solutions
@@ -156,7 +190,14 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
 					{/* Offset Printing */}
-					<div className="group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 animate__animated animate__fadeInUp animate__slow">
+					<div
+						ref={offsetRef}
+						className={`group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 ${
+							isOffsetVisible
+								? "animate-in fade-in slide-in-from-bottom-4 duration-600"
+								: "opacity-0 translate-y-4"
+						}`}
+					>
 						<div className="absolute inset-0 rounded-2xl bg-linear-to-t from-emerald-600/0 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 						<div className="relative space-y-4">
 							<div className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-emerald-100 group-hover:bg-emerald-600 transition-all duration-300">
@@ -186,7 +227,14 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 					</div>
 
 					{/* Digital Printing */}
-					<div className="group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 animate__animated animate__fadeInUp animate__slow animate__delay-1s">
+					<div
+						ref={digitalRef}
+						className={`group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 ${
+							isDigitalVisible
+								? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-100"
+								: "opacity-0 translate-y-4"
+						}`}
+					>
 						<div className="absolute inset-0 rounded-2xl bg-linear-to-t from-emerald-600/0 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 						<div className="relative space-y-4">
 							<div className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-emerald-100 group-hover:bg-emerald-600 transition-all duration-300">
@@ -216,7 +264,14 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 					</div>
 
 					{/* Large Format */}
-					<div className="group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 animate__animated animate__fadeInUp animate__slow animate__delay-2s">
+					<div
+						ref={largeFormatRef}
+						className={`group relative rounded-2xl bg-linear-to-br from-white to-emerald-50/50 p-8 shadow-lg ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300/80 hover:bg-linear-to-br hover:from-white hover:to-emerald-100/40 transition-all duration-500 ${
+							isLargeFormatVisible
+								? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-200"
+								: "opacity-0 translate-y-4"
+						}`}
+					>
 						<div className="absolute inset-0 rounded-2xl bg-linear-to-t from-emerald-600/0 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 						<div className="relative space-y-4">
 							<div className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-emerald-100 group-hover:bg-emerald-600 transition-all duration-300">

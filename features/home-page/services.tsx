@@ -13,6 +13,7 @@ import {
 	ChevronDown,
 } from "lucide-react";
 import type { CompanyInfo } from "@/lib/db/get-company-info";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 export function ServicesSection({
 	companyInfo,
@@ -29,6 +30,48 @@ export function ServicesSection({
 			[cardId]: !prev[cardId],
 		}));
 	};
+
+	const { isIntersecting: isHeroVisible, ref: heroRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isBusinessVisible, ref: businessRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isTeamVisible, ref: teamRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isEquipmentVisible, ref: equipmentRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isPrintingVisible, ref: printingRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isServicesVisible, ref: servicesRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isPartnersVisible, ref: partnersRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
 
 	return (
 		<section className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-28 lg:py-32">
@@ -60,10 +103,25 @@ export function ServicesSection({
 			</div>
 
 			{/* Hero Card */}
-			<div className="mb-16 sm:mb-20 md:mb-24 relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-900 via-emerald-950 to-teal-950 p-8 sm:p-10 md:p-12 text-white shadow-xl ring-1 ring-emerald-800/50">
+			<div
+				ref={heroRef}
+				className={`mb-16 sm:mb-20 md:mb-24 relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-900 via-emerald-950 to-teal-950 p-8 sm:p-10 md:p-12 text-white shadow-xl ring-1 ring-emerald-800/50 transition-all duration-500 ${
+					isHeroVisible
+						? "animate-in fade-in slide-in-from-bottom-6 duration-700"
+						: "opacity-0 translate-y-6"
+				}`}
+			>
 				<div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-transparent to-teal-500/0 group-hover:from-emerald-500/10 group-hover:to-teal-500/10" />
-				<div className="absolute -top-20 -right-20 h-48 w-48 rounded-full bg-emerald-400/10 blur-3xl" />
-				<div className="absolute -bottom-20 -left-20 h-48 w-48 rounded-full bg-teal-400/10 blur-3xl" />
+				<div
+					className={`absolute -top-20 -right-20 h-48 w-48 rounded-full bg-emerald-400/10 blur-3xl ${
+						isHeroVisible ? "animate-pulse" : ""
+					}`}
+				/>
+				<div
+					className={`absolute -bottom-20 -left-20 h-48 w-48 rounded-full bg-teal-400/10 blur-3xl ${
+						isHeroVisible ? "animate-pulse" : ""
+					}`}
+				/>
 				<div className="relative">
 					<div className="grid gap-8 md:grid-cols-2">
 						<div className="space-y-6">
@@ -164,7 +222,14 @@ export function ServicesSection({
 			{/* Grid of Services */}
 			<div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 				{/* Business Details Card */}
-				<div className="group relative flex flex-col overflow-hidden rounded-2xl bg-linear-to-br from-blue-50 to-cyan-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-blue-300">
+				<div
+					ref={businessRef}
+					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-linear-to-br from-blue-50 to-cyan-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-blue-300 ${
+						isBusinessVisible
+							? "animate-in fade-in slide-in-from-bottom-4 duration-600"
+							: "opacity-0 translate-y-4"
+					}`}
+				>
 					<div className="absolute inset-0 bg-linear-to-br from-blue-500/0 via-transparent to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300" />
 					<div className="relative">
 						<div className="mb-5 inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 ring-1 ring-blue-200/50">
@@ -201,8 +266,13 @@ export function ServicesSection({
 				{/* Team Card */}
 				{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 				<div
+					ref={teamRef}
 					onClick={() => toggleCard("team")}
-					className="group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-purple-300 cursor-pointer"
+					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-indigo-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-purple-300 cursor-pointer ${
+						isTeamVisible
+							? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-100"
+							: "opacity-0 translate-y-4"
+					}`}
 				>
 					<div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 via-transparent to-indigo-500/0 group-hover:from-purple-500/5 group-hover:to-indigo-500/5 transition-all duration-300" />
 					<div className="relative">
@@ -249,8 +319,13 @@ export function ServicesSection({
 				{/* Equipment Card */}
 				{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 				<div
+					ref={equipmentRef}
 					onClick={() => toggleCard("equipment")}
-					className="group relative flex flex-col overflow-hidden rounded-2xl bg-linear-to-br from-orange-50 to-amber-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-orange-300 cursor-pointer"
+					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-linear-to-br from-orange-50 to-amber-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-orange-300 cursor-pointer ${
+						isEquipmentVisible
+							? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-200"
+							: "opacity-0 translate-y-4"
+					}`}
 				>
 					<div className="absolute inset-0 bg-linear-to-br from-orange-500/0 via-transparent to-amber-500/0 group-hover:from-orange-500/5 group-hover:to-amber-500/5 transition-all duration-300" />
 					<div className="relative">
@@ -298,8 +373,13 @@ export function ServicesSection({
 				{/* Printing Services Card */}
 				{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 				<div
+					ref={printingRef}
 					onClick={() => toggleCard("printing")}
-					className="group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-green-300 cursor-pointer"
+					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-green-300 cursor-pointer ${
+						isPrintingVisible
+							? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-300"
+							: "opacity-0 translate-y-4"
+					}`}
 				>
 					<div className="absolute inset-0 bg-gradient-to-br from-green-500/0 via-transparent to-emerald-500/0 group-hover:from-green-500/5 group-hover:to-emerald-500/5 transition-all duration-300" />
 					<div className="relative">
@@ -345,8 +425,13 @@ export function ServicesSection({
 				{/* Value Added Services Card */}
 				{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 				<div
+					ref={servicesRef}
 					onClick={() => toggleCard("services")}
-					className="group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 to-yellow-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-amber-300 cursor-pointer"
+					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 to-yellow-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-amber-300 cursor-pointer ${
+						isServicesVisible
+							? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-[400ms]"
+							: "opacity-0 translate-y-4"
+					}`}
 				>
 					<div className="absolute inset-0 bg-gradient-to-br from-amber-500/0 via-transparent to-yellow-500/0 group-hover:from-amber-500/5 group-hover:to-yellow-500/5 transition-all duration-300" />
 					<div className="relative">
@@ -395,8 +480,13 @@ export function ServicesSection({
 				{/* Partners Card */}
 				{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 				<div
+					ref={partnersRef}
 					onClick={() => toggleCard("partners")}
-					className="group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 to-blue-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-indigo-300 cursor-pointer"
+					className={`group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 to-blue-50/30 p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:ring-2 hover:ring-indigo-300 cursor-pointer ${
+						isPartnersVisible
+							? "animate-in fade-in slide-in-from-bottom-4 duration-600 delay-500"
+							: "opacity-0 translate-y-4"
+					}`}
 				>
 					<div className="absolute inset-0 bg-gradient-to-br from-indigo-500/0 via-transparent to-blue-500/0 group-hover:from-indigo-500/5 group-hover:to-blue-500/5 transition-all duration-300" />
 					<div className="relative">

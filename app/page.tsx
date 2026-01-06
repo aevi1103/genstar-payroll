@@ -15,28 +15,137 @@ import { getCompanyInfo } from "@/lib/db/get-company-info";
 import { getPublicImages } from "@/lib/db/get-public-images";
 import Script from "next/script";
 
+// Static base keywords for SEO
+const baseKeywords = [
+	// Core location-based keywords
+	"printing services quezon city",
+	"printing services manila",
+	"printing services philippines",
+	"print shop quezon city",
+	"printing company manila",
+	"printing company philippines",
+	"printing services project 8",
+	"printing services near me",
+
+	// Service-specific keywords
+	"offset printing quezon city",
+	"offset printing manila",
+	"offset printing philippines",
+	"digital printing quezon city",
+	"digital printing manila",
+	"digital printing philippines",
+	"large format printing quezon city",
+	"large format printing manila",
+	"large format printing philippines",
+
+	// Product keywords
+	"tarpaulin printing quezon city",
+	"tarpaulin printing manila",
+	"signage printing philippines",
+	"signage printing quezon city",
+	"banner printing quezon city",
+	"banner printing manila",
+	"poster printing philippines",
+	"poster printing quezon city",
+	"sticker printing quezon city",
+	"sticker printing manila",
+	"business card printing quezon city",
+	"business card printing manila",
+	"brochure printing philippines",
+	"brochure printing quezon city",
+	"flyer printing manila",
+	"catalog printing philippines",
+	"packaging printing quezon city",
+
+	// Speed/service keywords
+	"same day printing quezon city",
+	"same day printing manila",
+	"rush printing services philippines",
+	"fast printing quezon city",
+	"quick printing manila",
+	"express printing philippines",
+
+	// Location-specific
+	"printer near project 8",
+	"printing along general avenue",
+	"printer tandang sora",
+
+	// Quality/value keywords
+	"affordable printing quezon city",
+	"cheap printing manila",
+	"quality printing services philippines",
+	"professional printing quezon city",
+	"commercial printing manila",
+	"custom printing philippines",
+];
+
 const baseMetadata: Metadata = {
 	title:
 		"Premium Print Solutions | Genstar - Offset, Digital & Large Format Printing",
 	description:
 		"Professional printing services in Quezon City, Philippines. Offset, digital & large-format printing with same-day turnaround. Free quotes. Trusted since 2007. Call +63-915-736-5273 or visit us today!",
-	keywords: [
-		"offset printing quezon city",
-		"digital printing philippines",
-		"large format printing quezon city",
-		"printing services manila",
-		"signage printing philippines",
-		"tarpaulin printing quezon city",
-		"same day printing services",
-		"printing company project 8",
-	],
+	keywords: baseKeywords,
 };
 
 export async function generateMetadata(): Promise<Metadata> {
 	const companyInfo = await getCompanyInfo();
 
+	// Generate dynamic keywords from company data
+	const dynamicKeywords: string[] = [];
+
+	// Add location-based keywords
+	if (companyInfo.cityAddress) {
+		const city = companyInfo.cityAddress.toLowerCase();
+		dynamicKeywords.push(
+			`printing services ${city}`,
+			`print shop ${city}`,
+			`printing company ${city}`,
+		);
+	}
+
+	// Add service-based keywords from mainServices
+	if (companyInfo.mainServices) {
+		const services = companyInfo.mainServices
+			.split(",")
+			.map((s) => s.trim().toLowerCase());
+
+		for (const service of services) {
+			dynamicKeywords.push(
+				`${service} quezon city`,
+				`${service} manila`,
+				`${service} philippines`,
+			);
+		}
+	}
+
+	// Add keywords from what we print
+	if (companyInfo.companyWhatWePrint) {
+		for (const item of companyInfo.companyWhatWePrint) {
+			const itemLower = item.toLowerCase();
+			dynamicKeywords.push(
+				`${itemLower} printing quezon city`,
+				`${itemLower} printing manila`,
+			);
+		}
+	}
+
+	// Add keywords from other services
+	if (companyInfo.companyOtherServices) {
+		for (const service of companyInfo.companyOtherServices) {
+			const serviceLower = service.toLowerCase();
+			dynamicKeywords.push(
+				`${serviceLower} quezon city`,
+				`${serviceLower} manila`,
+			);
+		}
+	}
+
+	// Combine base keywords with dynamic ones and remove duplicates
+	const allKeywords = [...new Set([...baseKeywords, ...dynamicKeywords])];
+
 	return {
 		...baseMetadata,
+		keywords: allKeywords,
 		other: {
 			"geo.position": `${companyInfo.lat};${companyInfo.long}`,
 			ICBM: `${companyInfo.lat}, ${companyInfo.long}`,
@@ -44,7 +153,8 @@ export async function generateMetadata(): Promise<Metadata> {
 	};
 }
 
-const companyUrl = "https://www.genstarprintingservices.com";
+const companyUrl =
+	process.env.PROD_SITE_URL || "https://www.genstarprintingservices.com";
 
 export default async function Home({
 	searchParams,
@@ -123,13 +233,9 @@ export default async function Home({
 				}}
 			/>
 
-			<Header user={user} />
+			<Header user={user} images={images} />
 
 			<main className="relative min-h-screen bg-linear-to-b from-emerald-50/50 via-white to-emerald-950/5 text-emerald-950 overflow-hidden">
-				{/* Decorative gradient orbs */}
-				{/* <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-emerald-200/20 blur-3xl" />
-			<div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-emerald-300/10 blur-3xl" /> */}
-
 				<BackgroundBeams className="absolute inset-0" />
 
 				{message === "no role assigned to user" && (

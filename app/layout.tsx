@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import Providers from "@/components/providers";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -15,8 +16,10 @@ const geistMono = Geist_Mono({
 	subsets: ["latin"],
 });
 
-const companyUrl = "https://www.genstarprintingservices.com";
-const developer = "Aebbie Rontos";
+const companyUrl =
+	process.env.PROD_SITE_URL || "https://www.genstarprintingservices.com";
+const developer = process.env.DEVELOPER || "Aebbie Rontos";
+const gaId = process.env.GA_ID || "";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(companyUrl),
@@ -44,22 +47,73 @@ export const metadata: Metadata = {
 		],
 	},
 	keywords: [
+		// Core location-based keywords
+		"printing services quezon city",
+		"printing services manila",
+		"printing services philippines",
+		"print shop quezon city",
+		"printing company manila",
+		"printing company philippines",
+		"printing services project 8",
+		"printing services near me",
+
+		// Service-specific keywords
 		"offset printing quezon city",
+		"offset printing manila",
+		"offset printing philippines",
+		"digital printing quezon city",
+		"digital printing manila",
 		"digital printing philippines",
 		"large format printing quezon city",
-		"printing services manila",
+		"large format printing manila",
+		"large format printing philippines",
+
+		// Product keywords
+		"tarpaulin printing quezon city",
+		"tarpaulin printing manila",
 		"signage printing philippines",
-		"packaging printing quezon city",
-		"printing company philippines",
-		"print shop quezon city",
-		"tarpaulin printing near me",
-		"business card printing manila",
+		"signage printing quezon city",
 		"banner printing quezon city",
-		"same day printing philippines",
-		"affordable printing services",
+		"banner printing manila",
+		"poster printing philippines",
+		"poster printing quezon city",
 		"sticker printing quezon city",
-		"brochure printing manila",
-		"rush printing services",
+		"sticker printing manila",
+		"business card printing quezon city",
+		"business card printing manila",
+		"brochure printing philippines",
+		"brochure printing quezon city",
+		"flyer printing manila",
+		"catalog printing philippines",
+		"packaging printing quezon city",
+		"vinyl printing philippines",
+		"canvas printing quezon city",
+		"photo printing manila",
+
+		// Speed/service keywords
+		"same day printing quezon city",
+		"same day printing manila",
+		"rush printing services philippines",
+		"fast printing quezon city",
+		"quick printing manila",
+		"express printing philippines",
+		"24 hour printing quezon city",
+
+		// Location-specific
+		"printer near project 8",
+		"printing along general avenue",
+		"printer tandang sora",
+		"printing near me quezon city",
+
+		// Quality/value keywords
+		"affordable printing quezon city",
+		"cheap printing manila",
+		"quality printing services philippines",
+		"professional printing quezon city",
+		"commercial printing manila",
+		"custom printing philippines",
+		"best printing services quezon city",
+		"trusted printing company manila",
 	],
 	applicationName: "Genstar Printing Services",
 	referrer: "origin-when-cross-origin",
@@ -132,7 +186,8 @@ export default function RootLayout({
 				<Providers>{children}</Providers>
 				<Toaster position="top-center" richColors />
 			</body>
-			<GoogleAnalytics gaId="G-ZQZGQ357XS" />
+			<GoogleAnalytics gaId={gaId} />
+			<Analytics />
 		</html>
 	);
 }

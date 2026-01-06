@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { Eye, Target, Heart, Sparkles } from "lucide-react";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 export const VISION_TEXT =
 	"Clients total satisfaction as to Quality, Affordability and Service.";
@@ -20,28 +21,70 @@ export const CORE_VALUES: Array<{
 		description: "Built on integrity and transparency",
 	},
 	{
-		name: "Service",
-		color: "blue",
-		description: "Dedicated to excellence",
-	},
-	{
 		name: "Accountability",
 		color: "purple",
 		description: "Responsible and reliable",
-	},
-	{
-		name: "Innovation",
-		color: "orange",
-		description: "Embracing new ideas",
 	},
 	{
 		name: "Prompt",
 		color: "rose",
 		description: "Always timely delivery",
 	},
+	{
+		name: "Service",
+		color: "blue",
+		description: "Dedicated to excellence",
+	},
+	{
+		name: "Innovation",
+		color: "orange",
+		description: "Embracing new ideas",
+	},
 ];
 
 export function VisionSection(): React.ReactElement {
+	const { isIntersecting: isVisionVisible, ref: visionRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isMissionVisible, ref: missionRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isTrustVisible, ref: trustRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isAccountabilityVisible, ref: accountabilityRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isPromptVisible, ref: promptRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isServiceVisible, ref: serviceRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
+	const { isIntersecting: isInnovationVisible, ref: innovationRef } =
+		useIntersectionObserver({
+			threshold: 0.3,
+			freezeOnceVisible: true,
+		});
+
 	return (
 		<section
 			id="vision"
@@ -76,19 +119,53 @@ export function VisionSection(): React.ReactElement {
 			{/* Vision & Mission Cards */}
 			<div className="grid gap-6 sm:gap-8 lg:grid-cols-2 mb-16 sm:mb-20 md:mb-24">
 				{/* Vision Card */}
-				<div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 via-blue-50/50 to-cyan-50/30 p-8 sm:p-10 md:p-12 shadow-lg ring-1 ring-blue-200/60 transition-all duration-300 hover:shadow-2xl hover:ring-blue-300 hover:-translate-y-2">
+				<div
+					ref={visionRef}
+					className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 via-blue-50/50 to-cyan-50/30 p-8 sm:p-10 md:p-12 shadow-lg ring-1 ring-blue-200/60 transition-all duration-300 hover:shadow-2xl hover:ring-blue-300 hover:-translate-y-2 ${
+						isVisionVisible
+							? "animate-in fade-in slide-in-from-left-4 duration-700"
+							: "opacity-0 -translate-x-4"
+					}`}
+				>
 					<div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-transparent to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300" />
-					<div className="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-blue-200/20 blur-3xl group-hover:bg-blue-200/30 transition-all duration-300" />
-
+					<div
+						className={`absolute -top-16 -right-16 h-40 w-40 rounded-full bg-blue-200/20 blur-3xl group-hover:bg-blue-200/30 transition-all duration-300 ${
+							isVisionVisible ? "animate-pulse" : ""
+						}`}
+					/>
 					<div className="relative">
-						<div className="inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 ring-1 ring-blue-200/50 group-hover:ring-blue-300 group-hover:shadow-md transition-all duration-300">
+						<div
+							className={`inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 ring-1 ring-blue-200/50 group-hover:ring-blue-300 group-hover:shadow-md transition-all duration-300 ${
+								isVisionVisible
+									? "animate-in zoom-in duration-500 delay-200"
+									: "opacity-0 scale-0"
+							}`}
+						>
 							<Eye className="h-7 sm:h-8 w-7 sm:w-8 text-blue-600" />
 						</div>
-						<h3 className="mt-6 sm:mt-8 text-2xl sm:text-3xl font-bold text-blue-950">
+						<h3
+							className={`mt-6 sm:mt-8 text-2xl sm:text-3xl font-bold text-blue-950 ${
+								isVisionVisible
+									? "animate-in fade-in slide-in-from-bottom-2 duration-500 delay-300"
+									: "opacity-0 translate-y-2"
+							}`}
+						>
 							Our Vision
 						</h3>
-						<div className="mt-3 h-1 w-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500" />
-						<p className="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-blue-950/85">
+						<div
+							className={`mt-3 h-1 w-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 ${
+								isVisionVisible
+									? "animate-in fade-in slide-in-from-left duration-400 delay-500"
+									: "opacity-0 -translate-x-4"
+							}`}
+						/>
+						<p
+							className={`mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-blue-950/85 ${
+								isVisionVisible
+									? "animate-in fade-in duration-600 delay-700"
+									: "opacity-0"
+							}`}
+						>
 							{VISION_TEXT}
 						</p>
 						<div className="mt-6 sm:mt-8 inline-flex items-center gap-3 rounded-lg bg-blue-100/40 px-4 py-2.5 ring-1 ring-blue-200/50">
@@ -101,19 +178,53 @@ export function VisionSection(): React.ReactElement {
 				</div>
 
 				{/* Mission Card */}
-				<div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 via-emerald-50/50 to-teal-50/30 p-8 sm:p-10 md:p-12 shadow-lg ring-1 ring-emerald-200/60 transition-all duration-300 hover:shadow-2xl hover:ring-emerald-300 hover:-translate-y-2">
+				<div
+					ref={missionRef}
+					className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 via-emerald-50/50 to-teal-50/30 p-8 sm:p-10 md:p-12 shadow-lg ring-1 ring-emerald-200/60 transition-all duration-300 hover:shadow-2xl hover:ring-emerald-300 hover:-translate-y-2 ${
+						isMissionVisible
+							? "animate-in fade-in slide-in-from-right-4 duration-700"
+							: "opacity-0 translate-x-4"
+					}`}
+				>
 					<div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-transparent to-teal-500/0 group-hover:from-emerald-500/5 group-hover:to-teal-500/5 transition-all duration-300" />
-					<div className="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-emerald-200/20 blur-3xl group-hover:bg-emerald-200/30 transition-all duration-300" />
-
+					<div
+						className={`absolute -top-16 -right-16 h-40 w-40 rounded-full bg-emerald-200/20 blur-3xl group-hover:bg-emerald-200/30 transition-all duration-300 ${
+							isMissionVisible ? "animate-pulse" : ""
+						}`}
+					/>
 					<div className="relative">
-						<div className="inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 ring-1 ring-emerald-200/50 group-hover:ring-emerald-300 group-hover:shadow-md transition-all duration-300">
+						<div
+							className={`inline-flex h-14 sm:h-16 w-14 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 ring-1 ring-emerald-200/50 group-hover:ring-emerald-300 group-hover:shadow-md transition-all duration-300 ${
+								isMissionVisible
+									? "animate-in zoom-in duration-500 delay-200"
+									: "opacity-0 scale-0"
+							}`}
+						>
 							<Target className="h-7 sm:h-8 w-7 sm:w-8 text-emerald-600" />
 						</div>
-						<h3 className="mt-6 sm:mt-8 text-2xl sm:text-3xl font-bold text-emerald-950">
+						<h3
+							className={`mt-6 sm:mt-8 text-2xl sm:text-3xl font-bold text-emerald-950 ${
+								isMissionVisible
+									? "animate-in fade-in slide-in-from-bottom-2 duration-500 delay-300"
+									: "opacity-0 translate-y-2"
+							}`}
+						>
 							Our Mission
 						</h3>
-						<div className="mt-3 h-1 w-12 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500" />
-						<p className="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-emerald-950/85">
+						<div
+							className={`mt-3 h-1 w-12 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 ${
+								isMissionVisible
+									? "animate-in fade-in slide-in-from-left duration-400 delay-500"
+									: "opacity-0 -translate-x-4"
+							}`}
+						/>
+						<p
+							className={`mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-emerald-950/85 ${
+								isMissionVisible
+									? "animate-in fade-in duration-600 delay-700"
+									: "opacity-0"
+							}`}
+						>
 							{MISSION_TEXT}
 						</p>
 						<div className="mt-6 sm:mt-8 inline-flex items-center gap-3 rounded-lg bg-emerald-100/40 px-4 py-2.5 ring-1 ring-emerald-200/50">
@@ -151,7 +262,32 @@ export function VisionSection(): React.ReactElement {
 					</p>
 				</div>
 				<div className="grid gap-5 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-					{CORE_VALUES.map((value) => {
+					{CORE_VALUES.map((value, index) => {
+						const valueRefs = [
+							trustRef,
+							accountabilityRef,
+							promptRef,
+							serviceRef,
+							innovationRef,
+						];
+						const valueVisibilities = [
+							isTrustVisible,
+							isAccountabilityVisible,
+							isPromptVisible,
+							isServiceVisible,
+							isInnovationVisible,
+						];
+						const delays = [
+							"",
+							"delay-100",
+							"delay-200",
+							"delay-300",
+							"delay-[400ms]",
+						];
+						const currentRef = valueRefs[index];
+						const isVisible = valueVisibilities[index];
+						const delay = delays[index];
+
 						const colorMap = {
 							emerald: {
 								bg: "from-emerald-50 to-teal-50/30",
@@ -215,7 +351,12 @@ export function VisionSection(): React.ReactElement {
 						return (
 							<div
 								key={value.name}
-								className={`group relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br ${colors.bg} p-6 sm:p-8 shadow-md ring-1 ${colors.ring} transition-all duration-300 hover:shadow-xl ${colors.hoverRing} hover:-translate-y-2`}
+								ref={currentRef}
+								className={`group relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br ${colors.bg} p-6 sm:p-8 shadow-md ring-1 ${colors.ring} transition-all duration-300 hover:shadow-xl ${colors.hoverRing} hover:-translate-y-2 ${
+									isVisible
+										? `animate-in fade-in slide-in-from-bottom-4 duration-600 ${delay}`
+										: "opacity-0 translate-y-4"
+								}`}
 							>
 								{/* Gradient overlay on hover */}
 								<div

@@ -38,12 +38,15 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import type { CompanyInfo } from "@/lib/db/get-company-info";
+import type { PublicImages } from "@/lib/db/get-public-images";
 
 interface HeaderProps {
 	user: User | null;
+	images: PublicImages;
 }
 
-export function Header({ user }: HeaderProps) {
+export function Header({ user, images }: HeaderProps) {
 	const [open, setOpen] = useState(false);
 
 	const router = useRouter();
@@ -72,9 +75,13 @@ export function Header({ user }: HeaderProps) {
 					<Link href="#about" className="hover:text-emerald-900">
 						About Us
 					</Link>
-					<Link href="#gallery" className="hover:text-emerald-900">
-						Portfolio
-					</Link>
+
+					{(images?.length ?? 0) > 0 && (
+						<Link href="#gallery" className="hover:text-emerald-900">
+							Portfolio
+						</Link>
+					)}
+
 					<Link href="#contact" className="hover:text-emerald-900">
 						Contact
 					</Link>
