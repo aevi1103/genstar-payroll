@@ -31,6 +31,12 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 			freezeOnceVisible: true,
 		});
 
+	const { isIntersecting: isWhyChooseUsVisible, ref: whyChooseUsRef } =
+		useIntersectionObserver({
+			threshold: 0.2,
+			freezeOnceVisible: true,
+		});
+
 	return (
 		<>
 			<section
@@ -39,15 +45,16 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 			 md:flex-row md:items-center md:py-32 animate__animated animate__slideInUp animate__slow"
 			>
 				<div className="flex-1 space-y-8 animate__animated animate__fadeInLeft animate__slower">
-					<h1 className="min-h-32 sm:min-h-56 md:min-h-64">
+					<h1 className="sm:min-h-20 md:min-h-28">
 						<TypingText
-							text={["Premium print solutions that move your brand forward."]}
-							typingSpeed={200}
+							text={["Premium prints that elevate your brand."]}
+							typingSpeed={75}
 							pauseDuration={1500}
 							showCursor={false}
-							className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight text-emerald-950 lg:py-2"
+							className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight
+							 tracking-tight text-emerald-950"
 							textColors={["#059669", "#047857", "#065f46"]}
-							variableSpeed={{ min: 50, max: 200 }}
+							variableSpeed={{ min: 50, max: 120 }}
 							initialDelay={1000}
 						/>
 					</h1>
@@ -71,33 +78,52 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 					</div>
 				</div>
 
-				<div className="relative transform-gpu flex-1 animate__animated animate__fadeInRight animate__slower hover:scale-105 transition-transform duration-500">
-					<div className="absolute inset-0 bg-linear-to-br from-emerald-600/20 to-emerald-400/10 rounded-3xl blur-2xl" />
-					<div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-white via-emerald-50/30 to-white p-8 shadow-2xl ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-2xl hover:ring-emerald-300 transition-all duration-500 group">
-						<div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/5 rounded-full -mr-48 -mt-48 blur-3xl" />
+				<div
+					ref={whyChooseUsRef}
+					className={`relative transform-gpu flex-1 transition-all duration-700 ${
+						isWhyChooseUsVisible
+							? "animate-in fade-in slide-in-from-right-8 duration-700"
+							: "opacity-0 translate-x-8"
+					}`}
+				>
+					<div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-emerald-400/10 rounded-3xl blur-2xl animate-pulse" />
+					<div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-emerald-50/30 to-white p-8 shadow-2xl ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-emerald-200/50 hover:ring-emerald-300 transition-all duration-500 group">
+						<div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/5 rounded-full -mr-48 -mt-48 blur-3xl group-hover:bg-emerald-400/10 transition-all duration-700" />
 						<div className="relative space-y-6">
-							<div className="flex items-center justify-between gap-3">
+							<div
+								className={`flex items-center justify-between gap-3 transition-all duration-500 ${
+									isWhyChooseUsVisible
+										? "animate-in fade-in slide-in-from-top-4 duration-500 delay-200"
+										: "opacity-0 -translate-y-4"
+								}`}
+							>
 								<div>
-									<h2 className="text-2xl font-bold text-emerald-950">
+									<h2 className="text-2xl font-bold text-emerald-950 bg-gradient-to-r from-emerald-900 to-emerald-700 bg-clip-text text-transparent">
 										Why Choose Us
 									</h2>
 									<p className="text-sm text-emerald-600 font-semibold mt-1">
 										Since {companyInfo.dateOfCreation} • Premium Quality
 									</p>
 								</div>
-								<span className="rounded-full bg-emerald-100 px-4 py-2 text-sm font-bold text-emerald-700 whitespace-nowrap">
+								<span className="rounded-full bg-gradient-to-br from-emerald-100 to-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700 whitespace-nowrap shadow-sm ring-1 ring-emerald-200/50 group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
 									{dayjs().diff(dayjs(companyInfo.dateOfCreation), "year")}{" "}
 									Years
 								</span>
 							</div>
 
 							<div className="space-y-4 pt-4">
-								<div className="flex gap-4">
+								<div
+									className={`flex gap-4 p-3 rounded-xl hover:bg-emerald-50/50 transition-all duration-300 group/item ${
+										isWhyChooseUsVisible
+											? "animate-in fade-in slide-in-from-left-4 duration-500 delay-300"
+											: "opacity-0 -translate-x-4"
+									}`}
+								>
 									<div className="shrink-0">
-										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 group-hover:bg-emerald-200 transition-colors">
+										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-100 to-emerald-50 group-hover/item:from-emerald-200 group-hover/item:to-emerald-100 group-hover/item:scale-110 group-hover/item:rotate-3 transition-all duration-300 shadow-sm">
 											{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 											<svg
-												className="h-6 w-6 text-emerald-700"
+												className="h-6 w-6 text-emerald-700 group-hover/item:scale-110 transition-transform duration-300"
 												fill="none"
 												stroke="currentColor"
 												viewBox="0 0 24 24"
@@ -111,8 +137,8 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 											</svg>
 										</div>
 									</div>
-									<div>
-										<p className="font-semibold text-emerald-950">
+									<div className="flex-1">
+										<p className="font-semibold text-emerald-950 group-hover/item:text-emerald-700 transition-colors duration-300">
 											Color-Managed Workflows
 										</p>
 										<p className="text-sm text-emerald-900/70 mt-0.5">
@@ -121,12 +147,18 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 									</div>
 								</div>
 
-								<div className="flex gap-4">
+								<div
+									className={`flex gap-4 p-3 rounded-xl hover:bg-emerald-50/50 transition-all duration-300 group/item ${
+										isWhyChooseUsVisible
+											? "animate-in fade-in slide-in-from-left-4 duration-500 delay-400"
+											: "opacity-0 -translate-x-4"
+									}`}
+								>
 									<div className="shrink-0">
-										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 group-hover:bg-emerald-200 transition-colors">
+										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-100 to-emerald-50 group-hover/item:from-emerald-200 group-hover/item:to-emerald-100 group-hover/item:scale-110 group-hover/item:rotate-3 transition-all duration-300 shadow-sm">
 											{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 											<svg
-												className="h-6 w-6 text-emerald-700"
+												className="h-6 w-6 text-emerald-700 group-hover/item:scale-110 transition-transform duration-300"
 												fill="none"
 												stroke="currentColor"
 												viewBox="0 0 24 24"
@@ -140,8 +172,8 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 											</svg>
 										</div>
 									</div>
-									<div>
-										<p className="font-semibold text-emerald-950">
+									<div className="flex-1">
+										<p className="font-semibold text-emerald-950 group-hover/item:text-emerald-700 transition-colors duration-300">
 											Fast Turnarounds
 										</p>
 										<p className="text-sm text-emerald-900/70 mt-0.5">
@@ -150,12 +182,18 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 									</div>
 								</div>
 
-								<div className="flex gap-4">
+								<div
+									className={`flex gap-4 p-3 rounded-xl hover:bg-emerald-50/50 transition-all duration-300 group/item ${
+										isWhyChooseUsVisible
+											? "animate-in fade-in slide-in-from-left-4 duration-500 delay-500"
+											: "opacity-0 -translate-x-4"
+									}`}
+								>
 									<div className="shrink-0">
-										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100 group-hover:bg-emerald-200 transition-colors">
+										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-100 to-emerald-50 group-hover/item:from-emerald-200 group-hover/item:to-emerald-100 group-hover/item:scale-110 group-hover/item:rotate-3 transition-all duration-300 shadow-sm">
 											{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 											<svg
-												className="h-6 w-6 text-emerald-700"
+												className="h-6 w-6 text-emerald-700 group-hover/item:scale-110 transition-transform duration-300"
 												fill="none"
 												stroke="currentColor"
 												viewBox="0 0 24 24"
@@ -169,8 +207,8 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 											</svg>
 										</div>
 									</div>
-									<div>
-										<p className="font-semibold text-emerald-950">
+									<div className="flex-1">
+										<p className="font-semibold text-emerald-950 group-hover/item:text-emerald-700 transition-colors duration-300">
 											Precise Control
 										</p>
 										<p className="text-sm text-emerald-900/70 mt-0.5">
