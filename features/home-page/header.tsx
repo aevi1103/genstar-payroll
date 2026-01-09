@@ -38,7 +38,6 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import type { CompanyInfo } from "@/lib/db/get-company-info";
 import type { PublicImages } from "@/lib/db/get-public-images";
 
 interface HeaderProps {
@@ -66,31 +65,51 @@ export function Header({ user, images }: HeaderProps) {
 
 				{/* Desktop nav */}
 				<nav className="hidden items-center gap-4 text-sm text-emerald-800 md:flex">
-					<Link href="#services" className="hover:text-emerald-900">
+					<Link
+						href="#home"
+						className="relative pb-1 hover:text-emerald-900 transition-colors duration-500 ease-in-out after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-emerald-600 after:transition-all after:duration-500 after:ease-in-out hover:after:w-full"
+					>
+						Home
+					</Link>
+
+					<Link
+						href="#services"
+						className="relative pb-1 hover:text-emerald-900 transition-colors duration-500 ease-in-out after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-emerald-600 after:transition-all after:duration-500 after:ease-in-out hover:after:w-full"
+					>
 						Services
 					</Link>
-					<Link href="#vision" className="hover:text-emerald-900">
+					<Link
+						href="#vision"
+						className="relative pb-1 hover:text-emerald-900 transition-colors duration-500 ease-in-out after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-emerald-600 after:transition-all after:duration-500 after:ease-in-out hover:after:w-full"
+					>
 						Vision
 					</Link>
-					<Link href="#about" className="hover:text-emerald-900">
+					<Link
+						href="#about"
+						className="relative pb-1 hover:text-emerald-900 transition-colors duration-500 ease-in-out after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-emerald-600 after:transition-all after:duration-500 after:ease-in-out hover:after:w-full"
+					>
 						About Us
 					</Link>
 
 					{(images?.length ?? 0) > 0 && (
-						<Link href="#gallery" className="hover:text-emerald-900">
+						<Link
+							href="#gallery"
+							className="relative pb-1 hover:text-emerald-900 transition-colors duration-500 ease-in-out after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-emerald-600 after:transition-all after:duration-500 after:ease-in-out hover:after:w-full"
+						>
 							Portfolio
 						</Link>
 					)}
 
-					<Link href="#contact" className="hover:text-emerald-900">
+					<Link
+						href="#contact"
+						className="relative pb-1 hover:text-emerald-900 transition-colors duration-500 ease-in-out after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-emerald-600 after:transition-all after:duration-500 after:ease-in-out hover:after:w-full"
+					>
 						Contact
 					</Link>
 					{user && (
 						<Link
 							href="/payroll"
-							className="hover:text-emerald-900
-							 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1 rounded-full font-medium
-							  transition-colors ease-in-out duration-200 lg:hidden"
+							className="hover:text-emerald-900 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1 rounded-full font-medium transition-colors ease-in-out duration-200 lg:hidden"
 						>
 							Payroll
 						</Link>
@@ -195,21 +214,21 @@ export function Header({ user, images }: HeaderProps) {
 									<Link
 										href="#services"
 										onClick={() => setOpen(false)}
-										className="hover:text-emerald-900"
+										className="hover:text-emerald-900 transition-all duration-300 hover:translate-x-1"
 									>
 										Services
 									</Link>
 									<Link
 										href="#vision"
 										onClick={() => setOpen(false)}
-										className="hover:text-emerald-900"
+										className="hover:text-emerald-900 transition-all duration-300 hover:translate-x-1"
 									>
 										Vision
 									</Link>
 									<Link
 										href="#about"
 										onClick={() => setOpen(false)}
-										className="hover:text-emerald-900"
+										className="hover:text-emerald-900 transition-all duration-300 hover:translate-x-1"
 									>
 										About
 									</Link>
@@ -218,7 +237,7 @@ export function Header({ user, images }: HeaderProps) {
 										<Link
 											href="#gallery"
 											onClick={() => setOpen(false)}
-											className="hover:text-emerald-900"
+											className="hover:text-emerald-900 transition-all duration-300 hover:translate-x-1"
 										>
 											Portfolio
 										</Link>
@@ -227,7 +246,7 @@ export function Header({ user, images }: HeaderProps) {
 									<Link
 										href="#contact"
 										onClick={() => setOpen(false)}
-										className="hover:text-emerald-900"
+										className="hover:text-emerald-900 transition-all duration-300 hover:translate-x-1"
 									>
 										Contact
 									</Link>
@@ -235,7 +254,7 @@ export function Header({ user, images }: HeaderProps) {
 										<Link
 											href="/payroll"
 											onClick={() => setOpen(false)}
-											className="hover:text-emerald-900"
+											className="hover:text-emerald-900 transition-all duration-300 hover:translate-x-1"
 										>
 											Payroll
 										</Link>

@@ -12,9 +12,9 @@ import { BackgroundBeams } from "@/components/ui/shadcn-io/background-beams";
 import type { Metadata } from "next";
 import { Hero } from "@/features/home-page/hero";
 import { getCompanyInfo } from "@/lib/db/get-company-info";
-import { getPublicImages } from "@/lib/db/get-public-images";
 import Script from "next/script";
 import { Suspense } from "react";
+import { SectionObserver } from "@/components/section-observer";
 
 // Static base keywords for SEO
 const baseKeywords = [
@@ -88,71 +88,9 @@ const baseMetadata: Metadata = {
 	keywords: baseKeywords,
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-	const companyInfo = await getCompanyInfo();
-
-	// Generate dynamic keywords from company data
-	const dynamicKeywords: string[] = [];
-
-	// Add location-based keywords
-	if (companyInfo.cityAddress) {
-		const city = companyInfo.cityAddress.toLowerCase();
-		dynamicKeywords.push(
-			`printing services ${city}`,
-			`print shop ${city}`,
-			`printing company ${city}`,
-		);
-	}
-
-	// Add service-based keywords from mainServices
-	if (companyInfo.mainServices) {
-		const services = companyInfo.mainServices
-			.split(",")
-			.map((s) => s.trim().toLowerCase());
-
-		for (const service of services) {
-			dynamicKeywords.push(
-				`${service} quezon city`,
-				`${service} manila`,
-				`${service} philippines`,
-			);
-		}
-	}
-
-	// Add keywords from what we print
-	if (companyInfo.companyWhatWePrint) {
-		for (const item of companyInfo.companyWhatWePrint) {
-			const itemLower = item.toLowerCase();
-			dynamicKeywords.push(
-				`${itemLower} printing quezon city`,
-				`${itemLower} printing manila`,
-			);
-		}
-	}
-
-	// Add keywords from other services
-	if (companyInfo.companyOtherServices) {
-		for (const service of companyInfo.companyOtherServices) {
-			const serviceLower = service.toLowerCase();
-			dynamicKeywords.push(
-				`${serviceLower} quezon city`,
-				`${serviceLower} manila`,
-			);
-		}
-	}
-
-	// Combine base keywords with dynamic ones and remove duplicates
-	const allKeywords = [...new Set([...baseKeywords, ...dynamicKeywords])];
-
-	return {
-		...baseMetadata,
-		keywords: allKeywords,
-		other: {
-			"geo.position": `${companyInfo.lat};${companyInfo.long}`,
-			ICBM: `${companyInfo.lat}, ${companyInfo.long}`,
-		},
-	};
-}
+export const metadata: Metadata = {
+	...baseMetadata,
+};
 
 const companyUrl =
 	process.env.PROD_SITE_URL || "https://www.genstarprintingservices.com";
@@ -171,7 +109,6 @@ export default async function Home({
 	const apiKey = process.env.GOOGLE_CLOUD_API_KEY || "";
 
 	const companyInfo = await getCompanyInfo();
-	const images = await getPublicImages();
 
 	const {
 		localBusinessSchema,
@@ -234,13 +171,20 @@ export default async function Home({
 				}}
 			/>
 
-			<Header user={user} images={images} />
+			<Header user={user} images={companyInfo.images || []} />
 
 			<main
 				className="relative min-h-screen bg-linear-to-b
 			 from-emerald-50/50 via-white to-emerald-950/5
 			  text-emerald-950 overflow-hidden"
 			>
+				<SectionObserver
+					sectionIds={
+						companyInfo.images?.length > 0
+							? ["home", "services", "vision", "about", "gallery", "contact"]
+							: ["home", "services", "vision", "about", "contact"]
+					}
+				/>
 				<Suspense>
 					<BackgroundBeams className="absolute inset-0" />
 				</Suspense>
@@ -280,7 +224,7 @@ export default async function Home({
 					id="gallery"
 					className="scroll-mt-20 animate__animated animate__fadeInUp animate__slow"
 				>
-					<ImagesSection images={images || []} />
+					<ImagesSection images={companyInfo.images || []} />
 				</section>
 				<section
 					id="contact"

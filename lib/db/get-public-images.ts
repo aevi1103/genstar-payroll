@@ -13,7 +13,11 @@ export const getPublicImages = async () => {
 
 	if (error) {
 		console.error("Error fetching public images:", error);
-		return null;
+		return [];
+	}
+
+	if (!files || files.length === 0) {
+		return [];
 	}
 
 	const filesWithUrls =

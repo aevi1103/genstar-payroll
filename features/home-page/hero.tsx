@@ -4,6 +4,7 @@ import TypingText from "@/components/ui/shadcn-io/typing-text";
 import type { CompanyInfo } from "@/lib/db/get-company-info";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import dayjs from "dayjs";
+import { ArrowRight } from "lucide-react";
 
 export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 	const { isIntersecting: isHeaderVisible, ref: headerRef } =
@@ -33,6 +34,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 	return (
 		<>
 			<section
+				id="home"
 				className="relative z-10 mx-auto flex max-w-6xl flex-col gap-12 px-6 py-12 lg:py-20
 			 md:flex-row md:items-center md:py-32 animate__animated animate__slideInUp animate__slow"
 			>
@@ -54,7 +56,15 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 						meticulous color management, fast turnarounds, and a team that
 						sweats the details so you do not have to.
 					</p>
-					<div className="flex flex-wrap gap-4 pt-4" />
+					<div className="flex flex-wrap gap-4 pt-4">
+						<a
+							href="#contact"
+							className="group inline-flex items-center justify-center rounded-lg bg-emerald-600 px-8 py-4 text-base font-semibold text-white shadow-lg hover:bg-emerald-700 hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+						>
+							Get Your Free Quote
+							<ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+						</a>
+					</div>
 				</div>
 
 				<div className="relative transform-gpu flex-1 animate__animated animate__fadeInRight animate__slower hover:scale-105 transition-transform duration-500">
