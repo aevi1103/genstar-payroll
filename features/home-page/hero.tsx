@@ -59,7 +59,11 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 					<div className="flex flex-wrap gap-4 pt-4">
 						<a
 							href="#contact"
-							className="group inline-flex items-center justify-center rounded-lg bg-emerald-600 px-8 py-4 text-base font-semibold text-white shadow-lg hover:bg-emerald-700 hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+							className="group inline-flex items-center justify-center rounded-full bg-emerald-600 px-8 py-4
+							 text-base font-semibold text-white shadow-lg hover:bg-emerald-700
+							  hover:shadow-xl transition-all duration-300 transform
+								 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500
+								  focus:ring-offset-2"
 						>
 							Get Your Free Quote
 							<ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
