@@ -25,8 +25,15 @@ export function useSectionObserver(sectionIds: string[]) {
 					setActiveSection(sectionId);
 
 					// Update URL hash without scrolling
-					if (sectionId && window.location.hash !== `#${sectionId}`) {
-						window.history.replaceState(null, "", `#${sectionId}`);
+					if (sectionId) {
+						if (sectionId.includes("home")) {
+							// Remove hash for home section
+							if (window.location.hash) {
+								window.history.replaceState(null, "", window.location.pathname);
+							}
+						} else if (window.location.hash !== `#${sectionId}`) {
+							window.history.replaceState(null, "", `#${sectionId}`);
+						}
 					}
 				}
 			},
@@ -37,12 +44,12 @@ export function useSectionObserver(sectionIds: string[]) {
 		);
 
 		// Observe all sections
-		sectionIds.forEach((id) => {
+		for (const id of sectionIds) {
 			const element = document.getElementById(id);
 			if (element && observerRef.current) {
 				observerRef.current.observe(element);
 			}
-		});
+		}
 
 		// Cleanup
 		return () => {

@@ -185,6 +185,7 @@ export default async function Home({
 							: ["home", "services", "vision", "about", "contact"]
 					}
 				/>
+
 				<Suspense>
 					<BackgroundBeams className="absolute inset-0" />
 				</Suspense>

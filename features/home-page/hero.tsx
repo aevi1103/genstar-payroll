@@ -86,8 +86,8 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 							: "opacity-0 translate-x-8"
 					}`}
 				>
-					<div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-emerald-400/10 rounded-3xl blur-2xl animate-pulse" />
-					<div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-emerald-50/30 to-white p-8 shadow-2xl ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-emerald-200/50 hover:ring-emerald-300 transition-all duration-500 group">
+					<div className="absolute inset-0 bg-linear-to-br from-emerald-600/20 to-emerald-400/10 rounded-3xl blur-2xl animate-pulse" />
+					<div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-white via-emerald-50/30 to-white p-8 shadow-2xl ring-1 ring-emerald-200/60 backdrop-blur-sm hover:shadow-emerald-200/50 hover:ring-emerald-300 transition-all duration-500 group">
 						<div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/5 rounded-full -mr-48 -mt-48 blur-3xl group-hover:bg-emerald-400/10 transition-all duration-700" />
 						<div className="relative space-y-6">
 							<div
@@ -98,14 +98,14 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 								}`}
 							>
 								<div>
-									<h2 className="text-2xl font-bold text-emerald-950 bg-gradient-to-r from-emerald-900 to-emerald-700 bg-clip-text text-transparent">
+									<h2 className="text-2xl font-bold text-emerald-950 bg-linear-to-r from-emerald-900 to-emerald-700 bg-clip-text">
 										Why Choose Us
 									</h2>
 									<p className="text-sm text-emerald-600 font-semibold mt-1">
 										Since {companyInfo.dateOfCreation} • Premium Quality
 									</p>
 								</div>
-								<span className="rounded-full bg-gradient-to-br from-emerald-100 to-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700 whitespace-nowrap shadow-sm ring-1 ring-emerald-200/50 group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
+								<span className="rounded-full bg-linear-to-br from-emerald-100 to-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700 whitespace-nowrap shadow-sm ring-1 ring-emerald-200/50 group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
 									{dayjs().diff(dayjs(companyInfo.dateOfCreation), "year")}{" "}
 									Years
 								</span>
@@ -120,7 +120,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 									}`}
 								>
 									<div className="shrink-0">
-										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-100 to-emerald-50 group-hover/item:from-emerald-200 group-hover/item:to-emerald-100 group-hover/item:scale-110 group-hover/item:rotate-3 transition-all duration-300 shadow-sm">
+										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-linear-to-br from-emerald-100 to-emerald-50 group-hover/item:from-emerald-200 group-hover/item:to-emerald-100 group-hover/item:scale-110 group-hover/item:rotate-3 transition-all duration-300 shadow-sm">
 											{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 											<svg
 												className="h-6 w-6 text-emerald-700 group-hover/item:scale-110 transition-transform duration-300"
@@ -155,7 +155,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 									}`}
 								>
 									<div className="shrink-0">
-										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-100 to-emerald-50 group-hover/item:from-emerald-200 group-hover/item:to-emerald-100 group-hover/item:scale-110 group-hover/item:rotate-3 transition-all duration-300 shadow-sm">
+										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-linear-to-br from-emerald-100 to-emerald-50 group-hover/item:from-emerald-200 group-hover/item:to-emerald-100 group-hover/item:scale-110 group-hover/item:rotate-3 transition-all duration-300 shadow-sm">
 											{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 											<svg
 												className="h-6 w-6 text-emerald-700 group-hover/item:scale-110 transition-transform duration-300"
@@ -190,7 +190,7 @@ export const Hero = ({ companyInfo }: { companyInfo: CompanyInfo }) => {
 									}`}
 								>
 									<div className="shrink-0">
-										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-100 to-emerald-50 group-hover/item:from-emerald-200 group-hover/item:to-emerald-100 group-hover/item:scale-110 group-hover/item:rotate-3 transition-all duration-300 shadow-sm">
+										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-linear-to-br from-emerald-100 to-emerald-50 group-hover/item:from-emerald-200 group-hover/item:to-emerald-100 group-hover/item:scale-110 group-hover/item:rotate-3 transition-all duration-300 shadow-sm">
 											{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 											<svg
 												className="h-6 w-6 text-emerald-700 group-hover/item:scale-110 transition-transform duration-300"
