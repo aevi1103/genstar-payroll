@@ -52,10 +52,9 @@ export const QrScanner = ({ validUrl }: { validUrl: string }) => {
 
 	if (status) {
 		return (
-			<div className="text-center">
-				<h1 className="font-bold">
-					{status} <Spinner />
-				</h1>
+			<div className="text-center flex gap-1 items-center">
+				<h1 className="font-bold text-xl">{status}</h1>
+				<Spinner />
 			</div>
 		);
 	}
