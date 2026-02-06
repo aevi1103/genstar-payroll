@@ -3,6 +3,7 @@ import { type IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { useState } from "react";
 import { toast } from "sonner";
 import { clockInOut } from "@/app/payroll/entry/actions";
+import { Spinner } from "@/components/ui/spinner";
 
 export const QrScanner = ({ validUrl }: { validUrl: string }) => {
 	const [status, setStatus] = useState<string | undefined>(undefined);
@@ -50,7 +51,13 @@ export const QrScanner = ({ validUrl }: { validUrl: string }) => {
 	};
 
 	if (status) {
-		return <h2>{status}</h2>;
+		return (
+			<div className="text-center">
+				<h1 className="font-bold">
+					{status} <Spinner />
+				</h1>
+			</div>
+		);
 	}
 
 	return (
