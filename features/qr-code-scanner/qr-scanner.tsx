@@ -7,28 +7,31 @@ export const QrScanner = ({ validUrl }: { validUrl: string }) => {
 	const handleClockInOut = async () => {
 		try {
 			if ("geolocation" in navigator) {
-				toast("Getting your location...");
+				toast.info("Getting your location...");
 				navigator.geolocation.getCurrentPosition(
 					async (position) => {
 						const { latitude, longitude } = position.coords;
-						toast("Processing clock in/out...");
+						toast.info("Processing clock in/out...");
 						await clockInOut(latitude, longitude);
+						toast.success("Clock in/out successful.");
 					},
 					async (error) => {
 						console.warn("Geolocation error:", error);
-						toast("Processing clock in/out...");
+						toast.info("Processing clock in/out...");
 						// Proceed without GPS if permission denied
 						await clockInOut();
+						toast.success("Clock in/out successful.");
 					},
 					{ timeout: 5000 },
 				);
 			} else {
 				// Browser doesn't support geolocation
-				toast("Processing clock in/out...");
+				toast.info("Processing clock in/out...");
 				await clockInOut();
 			}
 		} catch (error) {
 			console.error("Error during clock in/out:", error);
+			toast.error("Error during clock in/out.");
 		}
 	};
 
