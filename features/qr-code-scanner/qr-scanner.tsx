@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { clockInOut } from "@/app/payroll/entry/actions";
 
 export const QrScanner = ({ validUrl }: { validUrl: string }) => {
-	const [status, setStatus] = useState<string>("Initializing...");
+	const [status, setStatus] = useState<string | undefined>(undefined);
 
 	const handleClockInOut = async () => {
 		try {
