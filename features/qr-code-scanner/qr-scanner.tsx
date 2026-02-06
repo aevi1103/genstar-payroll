@@ -1,57 +1,48 @@
 "use client";
 import { type IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
-import { useEffect, useEffectEvent, useState } from "react";
 import { toast } from "sonner";
 import { clockInOut } from "@/app/payroll/entry/actions";
 
 export const QrScanner = ({ validUrl }: { validUrl: string }) => {
-	const [status, setStatus] = useState<string>("Initializing...");
-
 	const handleClockInOut = async () => {
 		try {
 			if ("geolocation" in navigator) {
-				setStatus("Getting your location...");
+				toast("Getting your location...");
 				navigator.geolocation.getCurrentPosition(
-					(position) => {
+					async (position) => {
 						const { latitude, longitude } = position.coords;
-						setStatus("Processing clock in/out...");
-						clockInOut(latitude, longitude);
+						toast("Processing clock in/out...");
+						await clockInOut(latitude, longitude);
 					},
-					(error) => {
+					async (error) => {
 						console.warn("Geolocation error:", error);
-						setStatus("Processing clock in/out...");
+						toast("Processing clock in/out...");
 						// Proceed without GPS if permission denied
-						clockInOut();
+						await clockInOut();
 					},
 					{ timeout: 5000 },
 				);
 			} else {
 				// Browser doesn't support geolocation
-				setStatus("Processing clock in/out...");
-				clockInOut();
+				toast("Processing clock in/out...");
+				await clockInOut();
 			}
 		} catch (error) {
 			console.error("Error during clock in/out:", error);
 		}
 	};
 
-	const notifyStatus = useEffectEvent(() => {
-		toast(status);
-	});
+	const handleScan = async (detectedCodes: IDetectedBarcode[]) => {
+		const hasValidUrl = detectedCodes.some(
+			(code) => code.rawValue === validUrl,
+		);
 
-	useEffect(() => {
-		notifyStatus();
-	}, []);
+		if (!hasValidUrl) {
+			toast("Invalid QR code scanned.");
+			return;
+		}
 
-	const handleScan = (detectedCodes: IDetectedBarcode[]) => {
-		detectedCodes.forEach((code) => {
-			console.log(`Format: ${code.format}, Value: ${code.rawValue}`);
-
-			if (code.rawValue === validUrl) {
-				handleClockInOut();
-				return;
-			}
-		});
+		await handleClockInOut();
 	};
 
 	return (
