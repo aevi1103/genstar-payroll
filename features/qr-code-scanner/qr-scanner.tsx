@@ -50,7 +50,7 @@ export const QrScanner = ({ validUrl }: { validUrl: string }) => {
 	};
 
 	if (status) {
-		<h2>{status}</h2>;
+		return <h2>{status}</h2>;
 	}
 
 	return (
