@@ -1,8 +1,8 @@
 "use client";
 
-import { ClockInOutQrCode } from "@/features/qr-code/qr-code";
-import { QrCodePdfDownload } from "@/features/qr-code/pdf-qr-code";
 import { useEffect, useState } from "react";
+import { QrCodePdfDownload } from "@/features/qr-code/pdf-qr-code";
+import { ClockInOutQrCode } from "@/features/qr-code/qr-code";
 
 export default function QrCode() {
 	const [isAuthorized, setIsAuthorized] = useState(false);

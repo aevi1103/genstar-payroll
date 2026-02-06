@@ -1,14 +1,14 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import {
-	SidebarProvider,
-	SidebarInset,
-	SidebarTrigger,
-} from "@/components/ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
-import { getSessionWithRole } from "@/lib/session";
+import { AppSidebar } from "@/components/app-sidebar";
 import DynamicBreadcrumb from "@/components/dynamic-bread-crumb";
 import { Logo } from "@/components/logo";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import {
+	SidebarInset,
+	SidebarProvider,
+	SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { getSessionWithRole } from "@/lib/session";
 
 export default async function Layout({
 	children,

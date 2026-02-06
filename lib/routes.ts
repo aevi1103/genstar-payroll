@@ -1,5 +1,5 @@
-import type { NavMainItem } from "@/components/nav";
 import { CircleDollarSign, Gauge, ShieldUser } from "lucide-react";
+import type { NavMainItem } from "@/components/nav";
 
 export const navs = {
 	navMain: [
@@ -9,6 +9,10 @@ export const navs = {
 			icon: Gauge,
 			isActive: true,
 			items: [
+				{
+					title: "QR Code Scanner",
+					url: "/payroll/qrcode-scanner",
+				},
 				{
 					title: "Hours",
 					url: "/payroll",

@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import type * as React from "react";
-import { Nav, type NavMainItem } from "@/components/nav";
+import { Nav } from "@/components/nav";
 import { NavUser } from "@/components/nav-user";
 import {
 	Sidebar,
@@ -10,10 +12,8 @@ import {
 	SidebarHeader,
 	SidebarRail,
 } from "@/components/ui/sidebar";
-import Image from "next/image";
-import type { SessionWithRole } from "@/lib/session";
-import Link from "next/link";
 import { navs } from "@/lib/routes";
+import type { SessionWithRole } from "@/lib/session";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 	session: SessionWithRole;
