@@ -18,19 +18,12 @@ export default function Loading() {
 
 				{/* Loading Text */}
 				<div className="flex flex-col items-center gap-2">
-					<h2 className="text-2xl font-semibold text-emerald-950 animate__animated animate__pulse animate__infinite">
+					<h2 className="text-2xl font-semibold text-emerald-950">
 						Preparing Your Experience
 					</h2>
 					<p className="text-sm text-emerald-700/70">
 						Setting up your professional printing solutions...
 					</p>
-				</div>
-
-				{/* Animated Dots */}
-				<div className="flex gap-2">
-					<span className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce [animation-delay:0ms]" />
-					<span className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce [animation-delay:150ms]" />
-					<span className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce [animation-delay:300ms]" />
 				</div>
 			</div>
 		</div>
