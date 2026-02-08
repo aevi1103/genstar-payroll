@@ -1,7 +1,10 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
+import { House } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -12,10 +15,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Image from "next/image";
+import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 const redirectTo = "/payroll";
 
@@ -83,13 +85,15 @@ export function SignUpForm({
 			<Card className="border-0 sm:border shadow-none sm:shadow-sm">
 				<CardHeader>
 					<div className="flex justify-center mb-6">
-						<Image
-							src="/logo.png"
-							alt="GenStar Printing Services"
-							width={300}
-							height={80}
-							priority
-						/>
+						<Link href={"/"}>
+							<Image
+								src="/logo.png"
+								alt="GenStar Printing Services"
+								width={300}
+								height={80}
+								priority
+							/>
+						</Link>
 					</div>
 					<CardTitle className="text-2xl">Sign up</CardTitle>
 					<CardDescription>Create a new account</CardDescription>
@@ -178,11 +182,29 @@ export function SignUpForm({
 								Sign up with Google
 							</Button>
 						</div>
-						<div className="mt-4 text-center text-sm">
+						<div className="mt-4 text-center text-sm flex items-center gap-2">
 							Already have an account?{" "}
 							<Link href="/auth/login" className="underline underline-offset-4">
 								Login
 							</Link>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Link href="/" className="underline underline-offset-4">
+										<Button
+											variant={"link"}
+											size="sm"
+											// size="icon"
+											aria-label="Submit"
+											className="cursor-pointer"
+										>
+											<House /> Home
+										</Button>
+									</Link>
+								</TooltipTrigger>
+								<TooltipContent>
+									<p>Go to Home</p>
+								</TooltipContent>
+							</Tooltip>
 						</div>
 					</form>
 				</CardContent>

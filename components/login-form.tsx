@@ -1,7 +1,10 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
+import { House } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -12,11 +15,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Image from "next/image";
-import { House } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 const redirectTo = "/payroll";
@@ -76,13 +76,15 @@ export function LoginForm({
 			<Card className="border-0 sm:border shadow-none sm:shadow-sm">
 				<CardHeader>
 					<div className="flex justify-center mb-6">
-						<Image
-							src="/logo.png"
-							alt="GenStar Printing Services"
-							width={300}
-							height={80}
-							priority
-						/>
+						<Link href={"/"}>
+							<Image
+								src="/logo.png"
+								alt="GenStar Printing Services"
+								width={300}
+								height={80}
+								priority
+							/>
+						</Link>
 					</div>
 					<CardTitle className="text-2xl">Login</CardTitle>
 					<CardDescription>
@@ -185,7 +187,7 @@ export function LoginForm({
 											aria-label="Submit"
 											className="cursor-pointer"
 										>
-											<House />
+											<House /> Home
 										</Button>
 									</Link>
 								</TooltipTrigger>
