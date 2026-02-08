@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -82,23 +83,42 @@ export function SignUpForm({
 
 	return (
 		<div className={cn("flex flex-col gap-6", className)} {...props}>
-			<Card className="border-0 sm:border shadow-none sm:shadow-sm">
-				<CardHeader>
-					<div className="flex justify-center mb-6">
-						<Link href={"/"}>
+			<Card className="border-emerald-200/50 bg-white/80 backdrop-blur-sm shadow-xl shadow-emerald-900/5">
+				<CardHeader className="space-y-4">
+					<div className="flex justify-center mb-2">
+						<Link href={"/"} className="transition-transform hover:scale-105">
 							<Image
 								src="/logo.png"
 								alt="GenStar Printing Services"
 								width={300}
 								height={80}
 								priority
+								className="drop-shadow-md"
 							/>
 						</Link>
 					</div>
-					<CardTitle className="text-2xl">Sign up</CardTitle>
-					<CardDescription>Create a new account</CardDescription>
+					<CardTitle className="text-2xl text-emerald-950">
+						Employee Sign up
+					</CardTitle>
+					<CardDescription className="text-emerald-800">
+						Create a new account
+					</CardDescription>
 				</CardHeader>
 				<CardContent>
+					{" "}
+					<Alert className="mb-6 border-emerald-200 bg-emerald-50/50 backdrop-blur-sm">
+						<AlertDescription className="text-sm text-emerald-900">
+							<span className="font-semibold">Employee Sign up Only:</span> This
+							is for GenStar employees only. If you&apos;re looking for the
+							GenStar website, please{" "}
+							<Link
+								href="/"
+								className="font-medium text-emerald-700 underline underline-offset-2 hover:text-emerald-900 transition-colors"
+							>
+								visit the homepage.
+							</Link>
+						</AlertDescription>
+					</Alert>{" "}
 					<form onSubmit={handleSignUp}>
 						<div className="flex flex-col gap-6">
 							<div className="grid gap-2">
@@ -136,8 +156,16 @@ export function SignUpForm({
 									onChange={(e) => setRepeatPassword(e.target.value)}
 								/>
 							</div>
-							{error && <p className="text-sm text-red-500">{error}</p>}
-							<Button type="submit" className="w-full" disabled={isLoading}>
+							{error && (
+								<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
+									{error}
+								</p>
+							)}
+							<Button
+								type="submit"
+								className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition-all"
+								disabled={isLoading}
+							>
 								{isLoading ? "Creating an account..." : "Sign up"}
 							</Button>
 							<div className="relative">
@@ -153,7 +181,7 @@ export function SignUpForm({
 							<Button
 								type="button"
 								variant="outline"
-								className="w-full"
+								className="w-full border-emerald-200 hover:bg-emerald-50 hover:border-emerald-300 transition-all"
 								onClick={handleGoogleSignUp}
 								disabled={isLoading}
 							>
@@ -182,29 +210,14 @@ export function SignUpForm({
 								Sign up with Google
 							</Button>
 						</div>
-						<div className="mt-4 text-center text-sm flex items-center gap-2">
+						<div className="mt-4 text-center text-sm flex flex-wrap items-center justify-center gap-2 text-emerald-800">
 							Already have an account?{" "}
-							<Link href="/auth/login" className="underline underline-offset-4">
+							<Link
+								href="/auth/login"
+								className="font-medium text-emerald-700 underline underline-offset-4 hover:text-emerald-900 transition-colors"
+							>
 								Login
 							</Link>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Link href="/" className="underline underline-offset-4">
-										<Button
-											variant={"link"}
-											size="sm"
-											// size="icon"
-											aria-label="Submit"
-											className="cursor-pointer"
-										>
-											<House /> Home
-										</Button>
-									</Link>
-								</TooltipTrigger>
-								<TooltipContent>
-									<p>Go to Home</p>
-								</TooltipContent>
-							</Tooltip>
 						</div>
 					</form>
 				</CardContent>

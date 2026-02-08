@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -73,25 +74,42 @@ export function LoginForm({
 
 	return (
 		<div className={cn("flex flex-col gap-6", className)} {...props}>
-			<Card className="border-0 sm:border shadow-none sm:shadow-sm">
-				<CardHeader>
-					<div className="flex justify-center mb-6">
-						<Link href={"/"}>
+			<Card className="border-emerald-200/50 bg-white/80 backdrop-blur-sm shadow-xl shadow-emerald-900/5">
+				<CardHeader className="space-y-4">
+					<div className="flex justify-center mb-2">
+						<Link href={"/"} className="transition-transform hover:scale-105">
 							<Image
 								src="/logo.png"
 								alt="GenStar Printing Services"
 								width={300}
 								height={80}
 								priority
+								className="drop-shadow-md"
 							/>
 						</Link>
 					</div>
-					<CardTitle className="text-2xl">Login</CardTitle>
-					<CardDescription>
+					<CardTitle className="text-2xl text-emerald-950">
+						Employee Login
+					</CardTitle>
+					<CardDescription className="text-emerald-800">
 						Enter your email below to login to your account
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
+					{" "}
+					<Alert className="mb-6 border-emerald-200 bg-emerald-50/50 backdrop-blur-sm">
+						<AlertDescription className="text-sm text-emerald-900">
+							<span className="font-semibold">Employee Login Only:</span> This
+							is for GenStar employees only. If you&apos;re looking for the
+							GenStar website, please{" "}
+							<Link
+								href="/"
+								className="font-medium text-emerald-700 underline underline-offset-2 hover:text-emerald-900 transition-colors"
+							>
+								visit the homepage.
+							</Link>
+						</AlertDescription>
+					</Alert>{" "}
 					<form onSubmit={handleLogin}>
 						<div className="flex flex-col gap-6">
 							<div className="grid gap-2">
@@ -123,8 +141,16 @@ export function LoginForm({
 									onChange={(e) => setPassword(e.target.value)}
 								/>
 							</div>
-							{error && <p className="text-sm text-red-500">{error}</p>}
-							<Button type="submit" className="w-full" disabled={isLoading}>
+							{error && (
+								<p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
+									{error}
+								</p>
+							)}
+							<Button
+								type="submit"
+								className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition-all"
+								disabled={isLoading}
+							>
 								{isLoading ? "Logging in..." : "Login"}
 							</Button>
 							<div className="relative">
@@ -140,7 +166,7 @@ export function LoginForm({
 							<Button
 								type="button"
 								variant="outline"
-								className="w-full"
+								className="w-full border-emerald-200 hover:bg-emerald-50 hover:border-emerald-300 transition-all"
 								onClick={handleGoogleLogin}
 								disabled={isLoading}
 							>
@@ -169,32 +195,14 @@ export function LoginForm({
 								Sign in with Google
 							</Button>
 						</div>
-						<div className="mt-4 text-center text-sm flex items-center gap-2">
+						<div className="mt-4 text-center text-sm flex flex-wrap items-center justify-center gap-2 text-emerald-800">
 							Don&apos;t have an account?{" "}
 							<Link
 								href="/auth/sign-up"
-								className="underline underline-offset-4"
+								className="font-medium text-emerald-700 underline underline-offset-4 hover:text-emerald-900 transition-colors"
 							>
 								Sign up
 							</Link>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Link href="/" className="underline underline-offset-4">
-										<Button
-											variant={"link"}
-											size="sm"
-											// size="icon"
-											aria-label="Submit"
-											className="cursor-pointer"
-										>
-											<House /> Home
-										</Button>
-									</Link>
-								</TooltipTrigger>
-								<TooltipContent>
-									<p>Go to Home</p>
-								</TooltipContent>
-							</Tooltip>
 						</div>
 					</form>
 				</CardContent>
