@@ -1,8 +1,8 @@
+import { type NextRequest, NextResponse } from "next/server";
 import type { WeeklySummaryDataSource } from "@/features/weekly-history/hooks/use-weekly-summary";
 import { verifyEmailConnection } from "@/lib/email/send-email";
 import { sendPayrollEmail } from "@/lib/email/send-payroll";
 import { getSessionWithRole } from "@/lib/session";
-import { type NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
 	const { session, isAdmin } = await getSessionWithRole();

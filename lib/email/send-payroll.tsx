@@ -1,7 +1,7 @@
+import { render } from "@react-email/components";
+import PayrollEmail from "@/emails/payroll-email";
 import type { WeeklySummaryDataSource } from "@/features/weekly-history/hooks/use-weekly-summary";
 import { sendEmail } from "./send-email";
-import PayrollEmail from "@/emails/payroll-email";
-import { render } from "@react-email/components";
 
 export const sendPayrollEmail = async (body: WeeklySummaryDataSource) => {
 	const period = `${body.weekStart} to ${body.weekEnd}`;
